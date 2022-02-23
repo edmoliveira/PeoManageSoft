@@ -1,1 +1,1 @@
-# PeoManageSoft
+# PeoManageSoft - People management software

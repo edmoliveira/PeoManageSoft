@@ -1,0 +1,31 @@
+{
+  "AppConfig": {
+    "AuthTokenExpireSeconds": 120,
+    "SqlCommandTimeout": 120,
+    "TermsOfServiceOpenApi": "https://example.com/terms",
+    "NameOpenApiContact": "Shayne Boyer",
+    "EmailOpenApiContact": "string.Empty",
+    "UrlOpenApiContact": "https://twitter.com/spboyer",
+    "NameOpenApiLicense": "Use under LICX",
+    "UrlOpenApiLicense": "https://example.com/license",
+    "Documents": [
+      {
+        "DocumentName": "Users",
+        "Title": "PeoManageSoft Api",
+        "Description": "PeoManageSoft Api documentation"
+      }
+    ],
+    "AllowedMethods": [
+      "GET",
+      "POST",
+      "PUT",
+      "DELETE"
+    ],
+    "AllowedHeaders": [
+      "Authorization",
+      "X-Auth",
+      "serial-number",
+      "request-id"
+    ]
+  }
+}

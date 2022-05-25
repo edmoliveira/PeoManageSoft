@@ -50,7 +50,28 @@ namespace PeoManageSoft.Business.Infrastructure.ObjectRelationalMapper
             using DbConnection connection = _connection.CreateConnection();
             connection.Open();
 
-            action(GetScope(connection));
+            IIScope scope = (IIScope)GetScope(connection);
+
+            try
+            {
+                action(scope);
+            }
+            catch (Exception)
+            {
+                if (scope.TransactionStatus == TransactionStatus.Initialized)
+                {
+                    scope.RollBackTransaction();
+                }
+
+                throw;
+            }
+            finally
+            {
+                if (scope.TransactionStatus == TransactionStatus.Initialized)
+                {
+                    scope.CommitTransaction();
+                }
+            }
         }
 
         /// <summary>
@@ -63,7 +84,28 @@ namespace PeoManageSoft.Business.Infrastructure.ObjectRelationalMapper
             using DbConnection connection = _connection.CreateConnection();
             await connection.OpenAsync();
 
-            await func(GetScope(connection)).ConfigureAwait(false);
+            IIScope scope = (IIScope)GetScope(connection);
+
+            try
+            {
+                await func(scope).ConfigureAwait(false);
+            }
+            catch (Exception)
+            {
+                if (scope.TransactionStatus == TransactionStatus.Initialized)
+                {
+                    scope.RollBackTransaction();
+                }
+
+                throw;
+            }
+            finally
+            {
+                if (scope.TransactionStatus == TransactionStatus.Initialized)
+                {
+                    scope.CommitTransaction();
+                }
+            }
         }
 
         /// <summary>
@@ -77,7 +119,28 @@ namespace PeoManageSoft.Business.Infrastructure.ObjectRelationalMapper
             using DbConnection connection = _connection.CreateConnection();
             connection.Open();
 
-            return func(GetScope(connection));
+            IIScope scope = (IIScope)GetScope(connection);
+
+            try
+            {
+                return func(GetScope(connection));
+            }
+            catch (Exception)
+            {
+                if (scope.TransactionStatus == TransactionStatus.Initialized)
+                {
+                    scope.RollBackTransaction();
+                }
+
+                throw;
+            }
+            finally
+            {
+                if (scope.TransactionStatus == TransactionStatus.Initialized)
+                {
+                    scope.CommitTransaction();
+                }
+            }
         }
 
         /// <summary>
@@ -91,7 +154,28 @@ namespace PeoManageSoft.Business.Infrastructure.ObjectRelationalMapper
             using DbConnection connection = _connection.CreateConnection();
             await connection.OpenAsync();
 
-            return await func(GetScope(connection)).ConfigureAwait(false);
+            IIScope scope = (IIScope)GetScope(connection);
+
+            try
+            {
+                return await func(GetScope(connection)).ConfigureAwait(false);
+            }
+            catch (Exception)
+            {
+                if (scope.TransactionStatus == TransactionStatus.Initialized)
+                {
+                    scope.RollBackTransaction();
+                }
+
+                throw;
+            }
+            finally
+            {
+                if (scope.TransactionStatus == TransactionStatus.Initialized)
+                {
+                    scope.CommitTransaction();
+                }
+            }
         }
 
         #endregion

@@ -5,7 +5,7 @@ namespace PeoManageSoft.Business.Infrastructure.ObjectRelationalMapper
     /// <summary>
     /// Transactional scope
     /// </summary>
-    public sealed class ScopeOrm : IContentScope
+    public sealed class ScopeOrm : IContentScope, IIScope
     {
         #region Properties
 
@@ -17,6 +17,10 @@ namespace PeoManageSoft.Business.Infrastructure.ObjectRelationalMapper
         /// Represents a transaction to be performed at a data source, and is implemented by .NET data providers that access relational databases.
         /// </summary>
         public IDbTransaction DbTransaction { get; private set; }
+        /// <summary>
+        /// Indicates the transaction status.
+        /// </summary>
+        public TransactionStatus TransactionStatus { get; private set; } = TransactionStatus.None;
 
         #endregion
 
@@ -30,6 +34,8 @@ namespace PeoManageSoft.Business.Infrastructure.ObjectRelationalMapper
         public void BeginTransaction()
         {
             DbTransaction = this.Connection.BeginTransaction();
+
+            this.TransactionStatus = TransactionStatus.Initialized;
         }
 
         /// <summary>
@@ -40,6 +46,7 @@ namespace PeoManageSoft.Business.Infrastructure.ObjectRelationalMapper
             if (DbTransaction != null)
             {
                 DbTransaction.Commit();
+                this.TransactionStatus = TransactionStatus.Committed;
             }
         }
 
@@ -51,6 +58,7 @@ namespace PeoManageSoft.Business.Infrastructure.ObjectRelationalMapper
             if (DbTransaction != null)
             {
                 DbTransaction.Rollback();
+                this.TransactionStatus = TransactionStatus.RolledBack;
             }
         }
 

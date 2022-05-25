@@ -6,7 +6,7 @@ namespace PeoManageSoft.Business.Infrastructure.Repositories.User
     /// <summary>
     /// User encapsulation of logic to access data sources.
     /// </summary>
-    public interface IUserRepository : IBaseRepository<UserEntity>
+    internal interface IUserRepository : IBaseRepository<UserEntity>
     {
         #region Methods
 

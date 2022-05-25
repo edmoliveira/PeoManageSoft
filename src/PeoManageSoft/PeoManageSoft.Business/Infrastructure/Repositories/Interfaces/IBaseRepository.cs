@@ -6,7 +6,7 @@ namespace PeoManageSoft.Business.Infrastructure.Repositories.Interfaces
     /// Base encapsulation of logic to access data sources.
     /// </summary>
     /// <typeparam name="TEntity">Entity type</typeparam>
-    public interface IBaseRepository<TEntity>
+    internal interface IBaseRepository<TEntity>
     {
         #region Methods
 

@@ -1,4 +1,5 @@
-﻿using System.Data;
+﻿using PeoManageSoft.Business.Infrastructure.Helpers.Interfaces;
+using System.Data;
 
 namespace PeoManageSoft.Business.Infrastructure.Repositories.User
 {
@@ -81,14 +82,18 @@ namespace PeoManageSoft.Business.Infrastructure.Repositories.User
         /// <param name="username">Username</param>
         /// <param name="oldPassword">User old password</param>
         /// <param name="newPassword">User new password</param>
+        /// <param name="applicationContext">Class to be used on one instance throughout the application per request</param>
         /// <returns>Returns the sql statement, the parameters and the command type</returns>
-        public static (string sqlStatement, object parameters, CommandType commandType) GetUpdateChangePassSqlStatement(string username, string oldPassword, string newPassword)
+        public static (string sqlStatement, object parameters, CommandType commandType) GetUpdateChangePassSqlStatement(string username, string oldPassword, string newPassword, IApplicationContext applicationContext)
         {
             return (sqlStatement: "[SP_UPDATE_CHANGE_PASS_User]", parameters: new
             {
                 Username = username,
                 Password = oldPassword,
-                NewPassword = newPassword
+                NewPassword = newPassword,
+                applicationContext.RequestId,
+                UpdatedUserId = applicationContext.LoggedUser.Id,
+                UpdatedDate = DateTime.Now
             }, CommandType.StoredProcedure);
         }
 

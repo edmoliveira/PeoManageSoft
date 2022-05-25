@@ -7,7 +7,7 @@ namespace PeoManageSoft.Business.Infrastructure.Helpers
     /// <summary>
     /// Class to be used on one instance throughout the application per request
     /// </summary>
-    public sealed class ApplicationContext : IApplicationContext, ISetApplicationContext
+    internal sealed class ApplicationContext : IApplicationContext, ISetApplicationContext
     {
         #region Fields private
 
@@ -38,6 +38,10 @@ namespace PeoManageSoft.Business.Infrastructure.Helpers
                 return MappedDiagnosticsLogicalContext.Get(_requestIdName, CultureInfo.InvariantCulture);
             }
         }
+        /// <summary>
+        /// Logged in user.
+        /// </summary>
+        public LoggedUser LoggedUser { get; private set; }
 
         #endregion
 
@@ -69,6 +73,16 @@ namespace PeoManageSoft.Business.Infrastructure.Helpers
         {
             SerialNumber = serialNumber;
         }
+
+        /// <summary>
+        /// Sets the logged in user.
+        /// </summary>
+        /// <param name="loggedUser">Logged in user.</param>
+        public void SetLoggedUser(LoggedUser loggedUser)
+        {
+            LoggedUser = loggedUser;
+        }
+
 
         #endregion
     }

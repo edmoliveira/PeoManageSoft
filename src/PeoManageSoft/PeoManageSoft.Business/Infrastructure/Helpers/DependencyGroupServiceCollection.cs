@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.Extensions.Configuration;
@@ -9,14 +10,14 @@ using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
+using PeoManageSoft.Business.Application.User;
+using PeoManageSoft.Business.Domain.Commands.User;
 using PeoManageSoft.Business.Infrastructure.Helpers.Exceptions;
 using PeoManageSoft.Business.Infrastructure.Helpers.Extensions;
 using PeoManageSoft.Business.Infrastructure.Helpers.Filters;
 using PeoManageSoft.Business.Infrastructure.Helpers.Interfaces;
 using PeoManageSoft.Business.Infrastructure.ObjectRelationalMapper;
 using PeoManageSoft.Business.Infrastructure.Tokens;
-
-using repositories = PeoManageSoft.Business.Infrastructure.Repositories;
 
 namespace PeoManageSoft.Business.Infrastructure.Helpers
 {
@@ -30,7 +31,7 @@ namespace PeoManageSoft.Business.Infrastructure.Helpers
         #region public
 
         /// <summary>
-        /// Method to add a services group to the container.
+        /// Method to add the services group to the container.
         /// </summary>
         /// <param name="services">Specifies the contract for a collection of service descriptors.</param>
         /// <param name="configuration">Represents a set of key/value application configuration properties.</param>
@@ -46,9 +47,16 @@ namespace PeoManageSoft.Business.Infrastructure.Helpers
             services.AddScoped(c => (ISetApplicationContext)c.GetService<IApplicationContext>());
 
             AddMapperConfiguration(services);
+            AddFluentValidationConfiguration(services);
 
             services.AddControllers();
             services.AddHttpContextAccessor();
+
+            services.AddFluentValidation(options =>
+            {
+                options.ImplicitlyValidateChildProperties = true;
+                options.ImplicitlyValidateRootCollectionElements = true;
+            });
 
             services.AddScoped<IDbContext, DbContext>();
             services.AddScoped<IContentScope, ScopeOrm>();
@@ -57,9 +65,10 @@ namespace PeoManageSoft.Business.Infrastructure.Helpers
 
             services.AddSingleton<IAppConfig>(c => appConfig);
 
+            services.AddRepositoryDependencies();
+
             AddApplicationServices(services);
-            AddDomainServices(services);
-            AddRepositoryServices(services);
+            AddCommandServices(services);
 
             services.AddSwaggerGen(c =>
             {
@@ -154,7 +163,6 @@ namespace PeoManageSoft.Business.Infrastructure.Helpers
 
             IServiceProvider serviceProvider = services.BuildServiceProvider();
 
-
             if (serviceProvider.GetService(typeof(ILoggerFactory))
                     is not ILoggerFactory loggerFactory)
             {
@@ -199,6 +207,16 @@ namespace PeoManageSoft.Business.Infrastructure.Helpers
 
         #region private
 
+
+        /// <summary>
+        /// Adds Fluent Validation services to the specified Microsoft.Extensions.DependencyInjection.IServiceCollection.
+        /// </summary>
+        /// <param name="services">Specifies the contract for a collection of service descriptors.</param>
+        private static void AddFluentValidationConfiguration(IServiceCollection services)
+        {
+            services.AddUserApplicationValidation();
+        }
+
         /// <summary>
         ///  Adds services of the type Application in TService with an implementation type specified in 
         ///  TImplementation to the specified Microsoft.Extensions.DependencyInjection.IServiceCollection.
@@ -206,30 +224,17 @@ namespace PeoManageSoft.Business.Infrastructure.Helpers
         /// <param name="services">Specifies the contract for a collection of service descriptors.</param>
         private static void AddApplicationServices(IServiceCollection services)
         {
-            //services.AddScoped<IUserApplication, UserApplication>();
-            //services.AddScoped<IAuthenticationApplication, AuthenticationApplication>();
-            //services.AddScoped<IEnvironmentApplication, EnvironmentApplication>();
+            services.AddUserApplicationDependencies();
         }
 
         /// <summary>
-        ///  Adds services of the type Domain in TService with an implementation type specified in 
+        ///  Adds services of the type Command in TService with an implementation type specified in 
         ///  TImplementation to the specified Microsoft.Extensions.DependencyInjection.IServiceCollection.
         /// </summary>
         /// <param name="services">Specifies the contract for a collection of service descriptors.</param>
-        private static void AddDomainServices(IServiceCollection services)
+        private static void AddCommandServices(IServiceCollection services)
         {
-            //services.AddScoped<IEnvironmentService, EnvironmentService>();
-            //services.AddScoped<IUserService, UserService>();
-        }
-
-        /// <summary>
-        ///  Adds services of the type Repository in TService with an implementation type specified in 
-        ///  TImplementation to the specified Microsoft.Extensions.DependencyInjection.IServiceCollection.
-        /// </summary>
-        /// <param name="services">Specifies the contract for a collection of service descriptors.</param>
-        private static void AddRepositoryServices(IServiceCollection services)
-        {
-            services.AddScoped<repositories.User.IUserRepository, repositories.User.UserRepository>();
+            services.AddUserCommandDependencies();
         }
 
         /// <summary>
@@ -241,7 +246,12 @@ namespace PeoManageSoft.Business.Infrastructure.Helpers
             var configuration = new MapperConfiguration(c =>
             {
                 //c.AddProfile<EnvironmentMapper>();
-                //c.AddProfile<UserMapper>();
+
+                //Commmands
+                c.AddUserCommandProfiles();
+
+                //Applications
+                c.AddUserApplicationProfiles();
             });
 
             configuration.CreateMapper();

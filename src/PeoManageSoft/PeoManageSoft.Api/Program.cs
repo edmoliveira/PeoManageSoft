@@ -12,6 +12,8 @@ LogManager.Configuration = new NLogLoggingConfiguration(configuration.GetSection
 
 builder.Services.AddDependencyGroup(configuration, allowSpecificOrigins, new Version(1, 0), typeof(Program));
 
-var app = builder.Build();
+builder.Logging.AddNLog();
+
+WebApplication? app = builder.Build();
 
 app.UseGroup(configuration, app.Environment, allowSpecificOrigins);

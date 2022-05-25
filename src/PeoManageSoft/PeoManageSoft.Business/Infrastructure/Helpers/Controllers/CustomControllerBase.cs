@@ -193,6 +193,22 @@ namespace PeoManageSoft.Business.Infrastructure.Helpers.Controllers
         }
 
         /// <summary>
+        /// Validates the model state whether it is invalid or not.
+        /// </summary>
+        /// <exception cref="RequestException">Represents errors that occur during application execution (Request Data)</exception>
+        protected void ValidateModelState()
+        {
+            if (!ModelState.IsValid)
+            {
+                IEnumerable<string>? errors = ModelState.Values.SelectMany(v => v.Errors).DefaultIfEmpty().Select(c => c.ErrorMessage);
+
+                List<string> messageList = errors != null ? errors.ToList() : new();
+
+                throw new RequestException(HttpStatusCode.BadRequest, messageList);
+            }
+        }
+
+        /// <summary>
         /// Creates an QuixaPartnersApi.Helpers.InternalServerErrorResult that produces a Microsoft.AspNetCore.Http.StatusCodes.Status500InternalServerError response.
         /// </summary>
         /// <returns>The created QuixaPartnersApi.Helpers.InternalServerErrorResult for the response.</returns>

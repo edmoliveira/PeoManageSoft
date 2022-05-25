@@ -5,6 +5,7 @@ using Newtonsoft.Json;
 using PeoManageSoft.Business.Infrastructure.Helpers.Extensions;
 using PeoManageSoft.Business.Infrastructure.Helpers.Interfaces;
 using System.Net.Http.Headers;
+using System.Security.Claims;
 
 namespace PeoManageSoft.Business.Infrastructure.Helpers.Filters
 {
@@ -68,6 +69,17 @@ namespace PeoManageSoft.Business.Infrastructure.Helpers.Filters
             if (context.HttpContext.Request.Headers.TryGetValue(ApplicationResource.SerialNumberHeaderKey, out StringValues serialNumber))
             {
                 _applicationContext.SetSerialNumber(serialNumber.FirstOrDefault());
+            }
+
+            if (context.HttpContext.User.Identity is ClaimsIdentity claimsIdentity &&
+                claimsIdentity.IsAuthenticated)
+            {
+                _applicationContext.SetLoggedUser(new LoggedUser
+                {
+                    Id = long.Parse(claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value),
+                    User = claimsIdentity.FindFirst(ClaimTypes.Name).Value,
+                    Role = (UserRole)Enum.Parse(typeof(UserRole), claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value)
+                });
             }
 
             _logger.DebugIsEnabled(() => string.Concat("Request.Query: ", JsonConvert.SerializeObject(context?.HttpContext?.Request?.Query)));

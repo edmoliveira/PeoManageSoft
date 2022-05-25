@@ -43,5 +43,32 @@ namespace PeoManageSoft.Business.Infrastructure
         MySql = 2,
     }
 
+    /// <summary>
+    /// Transaction status
+    /// </summary>ype
+    public enum TransactionStatus
+    {
+        /// <summary>
+        /// Indicates that the transaction was not initialized.
+        /// </summary>
+        [Description("None")]
+        None = 0,
+        /// <summary>
+        /// Indicates that the transaction was initialized.
+        /// </summary>
+        [Description("Initialized")]
+        Initialized = 1,
+        /// <summary>
+        /// Indicates that the transaction was committed. 
+        /// </summary>
+        [Description("Committed")]
+        Committed = 2,
+        /// <summary>
+        /// Indicates that the transaction was rolled back. 
+        /// </summary>
+        [Description("Committed")]
+        RolledBack = 3,
+    }
+
     #endregion
 }

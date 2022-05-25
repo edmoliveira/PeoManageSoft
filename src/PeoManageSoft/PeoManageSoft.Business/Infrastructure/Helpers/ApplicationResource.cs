@@ -3,7 +3,7 @@
     /// <summary>
     /// Resources of the application
     /// </summary>
-    public static class ApplicationResource
+    internal static class ApplicationResource
     {
         #region Properties
 

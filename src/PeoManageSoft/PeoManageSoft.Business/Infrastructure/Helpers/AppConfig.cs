@@ -5,7 +5,7 @@ namespace PeoManageSoft.Business.Infrastructure.Helpers
     /// <summary>
     /// Aplication configuration
     /// </summary>
-    public sealed class AppConfig : IAppConfig
+    internal sealed class AppConfig : IAppConfig
     {
         #region Properties
 

@@ -19,6 +19,10 @@
         /// Specifies the serial mumber of the platform.
         /// </summary>
         string SerialNumber { get; }
+        /// <summary>
+        /// Logged in user.
+        /// </summary>
+        LoggedUser LoggedUser { get; }
 
         #endregion
     }
@@ -45,6 +49,11 @@
         /// </summary>
         /// <param name="serialNumber">Specifies the serial mumber of the platform.</param>
         void SetSerialNumber(string serialNumber);
+        /// <summary>
+        /// Sets the logged in user.
+        /// </summary>
+        /// <param name="loggedUser">Logged in user.</param>
+        void SetLoggedUser(LoggedUser loggedUser);
 
         #endregion
     }

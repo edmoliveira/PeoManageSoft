@@ -13,6 +13,26 @@ namespace PeoManageSoft.Business.Infrastructure.ObjectRelationalMapper
         /// Begins a database transaction.
         /// </summary>
         void BeginTransaction();
+
+        #endregion
+    }
+
+    /// <summary>
+    /// Transactional scope
+    /// </summary>
+    public interface IIScope : IScope
+    {
+        #region Properties
+
+        /// <summary>
+        /// Indicates the transaction status.
+        /// </summary>
+        TransactionStatus TransactionStatus { get; }
+
+        #endregion
+
+        #region Methods
+
         /// <summary>
         /// Commits the database transaction.
         /// </summary>

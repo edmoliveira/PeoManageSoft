@@ -17,7 +17,7 @@ namespace PeoManageSoft.Business.Application.User
         /// <summary>
         /// New user application layer.
         /// </summary>
-        private readonly Lazy<INewUserApplication> _newUserApplication;
+        private readonly Lazy<INewApplication> _newApplication;
 
         #endregion
 
@@ -31,7 +31,7 @@ namespace PeoManageSoft.Business.Application.User
         {
             _provider = provider;
 
-            _newUserApplication = new Lazy<INewUserApplication>(() => GetService<INewUserApplication>());
+            _newApplication = new Lazy<INewApplication>(() => GetService<INewApplication>());
         }
 
         #endregion
@@ -48,9 +48,9 @@ namespace PeoManageSoft.Business.Application.User
         /// Task: Represents an asynchronous operation. 
         /// Response data.
         /// </returns>
-        public async Task<NewUserResponse> AddAsync(NewUserRequest request)
+        public async Task<NewResponse> AddAsync(NewRequest request)
         {
-            return await _newUserApplication.Value.HandleAsync(request);
+            return await _newApplication.Value.HandleAsync(request);
         }
 
         #endregion

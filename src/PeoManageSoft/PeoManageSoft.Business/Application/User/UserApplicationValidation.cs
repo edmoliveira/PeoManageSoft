@@ -1,5 +1,4 @@
 ﻿using FluentValidation;
-using FluentValidation.AspNetCore;
 using Microsoft.Extensions.DependencyInjection;
 using PeoManageSoft.Business.Application.User.New;
 
@@ -20,7 +19,7 @@ namespace PeoManageSoft.Business.Application.User
         /// <param name="services">Specifies the contract for a collection of service descriptors.</param>
         public static void AddUserApplicationValidation(this IServiceCollection services)
         {
-            services.AddScoped<IValidator<NewUserRequest>, NewUserValidator>();
+            services.AddScoped<IValidator<NewRequest>, NewValidator>();
         }
 
         #endregion

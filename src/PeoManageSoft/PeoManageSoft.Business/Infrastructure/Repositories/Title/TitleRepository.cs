@@ -21,7 +21,7 @@ namespace PeoManageSoft.Business.Infrastructure.Repositories.Title
         /// <summary>
         /// Class to be used on one instance throughout the application per request
         /// </summary>
-        private readonly IApplicationContext _applicationContext; 
+        private readonly IApplicationContext _applicationContext;
         /// <summary>
         /// Log
         /// </summary>

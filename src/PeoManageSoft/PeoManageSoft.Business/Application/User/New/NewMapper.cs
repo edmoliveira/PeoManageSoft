@@ -6,16 +6,16 @@ namespace PeoManageSoft.Business.Application.User.New
     /// <summary>
     /// Configuration for maps.
     /// </summary>
-    public class NewUserMapper : Profile
+    public class NewMapper : Profile
     {
         #region Constructors
 
         /// <summary>
         /// Initializes a new instance of the PeoManageSoft.Business.Application.User.New.NewUserMapper class.
         /// </summary>
-        public NewUserMapper()
+        public NewMapper()
         {
-            CreateMap<NewUserRequest, AddRequest>()
+            CreateMap<NewRequest, AddRequest>()
                 .ForMember(dest => dest.Role, opt => opt.MapFrom(src => src.Role))
                 .ForMember(dest => dest.Login, opt => opt.MapFrom(src => src.Login))
                 .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name))
@@ -27,7 +27,7 @@ namespace PeoManageSoft.Business.Application.User.New
                 .ForMember(dest => dest.MobilePhone, opt => opt.MapFrom(src => src.MobilePhone))
                 .ForMember(dest => dest.Location, opt => opt.MapFrom(src => src.Location));
 
-            CreateMap<AddResponse, NewUserResponse>()
+            CreateMap<AddResponse, NewResponse>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.NewId));
         }
 

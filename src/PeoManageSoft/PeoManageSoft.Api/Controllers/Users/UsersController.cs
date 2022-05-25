@@ -61,7 +61,7 @@ namespace PeoManageSoft.Api.Controllers.Users
         [ApiVersion("1.0")]
         [Route("{v:apiVersion}")]
         [TypeFilter(typeof(LogFilterAttribute))]
-        [ProducesResponseType(typeof(NewUserResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(NewResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -71,7 +71,7 @@ namespace PeoManageSoft.Api.Controllers.Users
             Summary = "Add User",
             Description = "Registers an new user."
         )]
-        public async Task<IActionResult> AddAsync([BindRequired] NewUserRequest request)
+        public async Task<IActionResult> AddAsync([BindRequired] NewRequest request)
         {
             return await TryActionResultAsync(async stopwatch =>
             {
@@ -83,7 +83,7 @@ namespace PeoManageSoft.Api.Controllers.Users
 
                 _Logger.DebugIsEnabled(() => string.Concat("Request: ", JsonConvert.SerializeObject(request)));
 
-                NewUserResponse response = await _facade.AddAsync(request).ConfigureAwait(false);
+                NewResponse response = await _facade.AddAsync(request).ConfigureAwait(false);
 
                 _Logger.DebugIsEnabled(() => string.Concat("Response: ", JsonConvert.SerializeObject(response)));
 

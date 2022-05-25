@@ -1,6 +1,6 @@
 ﻿using PeoManageSoft.Business.Infrastructure.Helpers.Interfaces;
-using PeoManageSoft.Business.Infrastructure.Repositories.Interfaces;
 using PeoManageSoft.Business.Infrastructure.Repositories.Department;
+using PeoManageSoft.Business.Infrastructure.Repositories.Interfaces;
 using PeoManageSoft.Business.Infrastructure.Repositories.Title;
 
 namespace PeoManageSoft.Business.Infrastructure.Repositories.User

@@ -19,7 +19,7 @@ namespace PeoManageSoft.Business.Application.User
         public static void AddUserApplicationDependencies(this IServiceCollection services)
         {
             services.AddScoped<IUserApplicationFacade, UserApplicationFacade>();
-            services.AddScoped<INewUserApplication, NewUserApplication>();            
+            services.AddScoped<INewApplication, NewApplication>();
         }
 
         #endregion

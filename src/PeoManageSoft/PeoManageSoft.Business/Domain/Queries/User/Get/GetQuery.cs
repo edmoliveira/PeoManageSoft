@@ -1,15 +1,17 @@
 ﻿using AutoMapper;
 using Microsoft.Extensions.Logging;
+using PeoManageSoft.Business.Infrastructure.Helpers.Exceptions;
 using PeoManageSoft.Business.Infrastructure.Helpers.Extensions;
 using PeoManageSoft.Business.Infrastructure.ObjectRelationalMapper;
 using PeoManageSoft.Business.Infrastructure.Repositories.User;
+using System.Net;
 
-namespace PeoManageSoft.Business.Domain.Commands.User.Add
+namespace PeoManageSoft.Business.Domain.Queries.User.Get
 {
     /// <summary>
-    /// Add user command.
+    /// Get user query.
     /// </summary>
-    internal class AddCommand : IAddCommand
+    internal class GetQuery : IGetQuery
     {
         #region Fields
 
@@ -24,22 +26,22 @@ namespace PeoManageSoft.Business.Domain.Commands.User.Add
         /// <summary>
         /// Log
         /// </summary>
-        private readonly ILogger<AddHandler> _logger;
+        private readonly ILogger<GetQuery> _logger;
 
         #endregion
 
         #region Constructors
 
         /// <summary>
-        /// Initializes a new instance of the PeoManageSoft.Business.Domain.Commands.User.Add.AddCommand class.
+        /// Initializes a new instance of the PeoManageSoft.Business.Domain.Queries.User.Get.GetQuery class.
         /// </summary>
         /// <param name="repository">Data Access Layer</param>
         /// <param name="mapper">Data Mapper </param>
         /// <param name="logger">Log</param>
-        public AddCommand(
+        public GetQuery(
                 IUserRepository repository,
                 IMapper mapper,
-                ILogger<AddHandler> logger
+                ILogger<GetQuery> logger
             )
         {
             _repository = repository;
@@ -54,25 +56,28 @@ namespace PeoManageSoft.Business.Domain.Commands.User.Add
         #region public
 
         /// <summary>
-        /// Executes the command and asynchronously using Task.
+        /// Executes the query and asynchronously using Task.
         /// </summary>
         /// <param name="scope">Transactional scope</param>
-        /// <param name="request">Request for the add user command.</param>
+        /// <param name="request">Request</param>
         /// <returns>
         /// Task: Represents an asynchronous operation. 
-        /// Response for the add user command.
+        /// The return value
         /// </returns>
-        public async Task<AddResponse> ExecuteAsync(IScope scope, AddRequest request)
+        public async Task<GetResponse> ExecuteAsync(IScope scope, GetRequest request)
         {
             string methodName = nameof(ExecuteAsync);
 
             _logger.LogBeginInformation(methodName);
 
-            UserEntity entity = _mapper.Map<UserEntity>(request);
+            UserEntity entity = await _repository.SelectByIdAsync(scope, request.Id).ConfigureAwait(false);
 
-            await _repository.InsertAsync(scope, entity).ConfigureAwait(false);
+            if (entity == null)
+            {
+                throw new RequestException(HttpStatusCode.NotFound, "User not found!");
+            }
 
-            AddResponse response = _mapper.Map<AddResponse>(entity);
+            GetResponse response = _mapper.Map<GetResponse>(entity);
 
             _logger.LogEndInformation(methodName);
 

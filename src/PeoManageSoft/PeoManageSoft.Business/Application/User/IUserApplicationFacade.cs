@@ -17,7 +17,7 @@ namespace PeoManageSoft.Business.Application.User
         /// Task: Represents an asynchronous operation. 
         /// Response data.
         /// </returns>
-        Task<NewUserResponse> AddAsync(NewUserRequest request);
+        Task<NewResponse> AddAsync(NewRequest request);
 
         #endregion
     }

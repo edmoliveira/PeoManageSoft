@@ -5,7 +5,7 @@ namespace PeoManageSoft.Business.Application.User.New
     /// <summary>
     /// Request data.
     /// </summary>
-    public class NewUserRequest
+    public class NewRequest
     {
         #region Properties
 

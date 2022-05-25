@@ -19,6 +19,16 @@ namespace PeoManageSoft.Business.Infrastructure.Helpers.Exceptions
         #region Constructors
 
         /// <summary>
+        /// Initializes a new instance of the PeoManageSoft.Business.Infrastructure.Exceptions.BadRequestException class with a specific message that describes the current exception.
+        /// </summary>
+        /// <param name="statusCode">Contains the values of status codes defined for HTTP</param>
+        /// <param name="message">The message that describes the error.</param>
+        public RequestException(HttpStatusCode statusCode, string message) : base(message)
+        {
+            StatusCode = statusCode;
+        }
+
+        /// <summary>
         /// Initializes a new instance of the PeoManageSoft.Business.Infrastructure.Exceptions.BadRequestException class with a specific messages that describes the current exception.
         /// </summary>
         /// <param name="statusCode">Contains the values of status codes defined for HTTP</param>

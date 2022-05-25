@@ -1,12 +1,12 @@
 ﻿using AutoMapper;
-using PeoManageSoft.Business.Application.User.New;
+using PeoManageSoft.Business.Domain.Queries.User.Get;
 
-namespace PeoManageSoft.Business.Application.User
+namespace PeoManageSoft.Business.Domain.Queries.User
 {
     /// <summary>
-    /// Extension methods to add user application mappers.
+    /// Extension methods to add user query mappers.
     /// </summary>
-    internal static class UserApplicationMappers
+    internal static class UserQueryMappers
     {
         #region Methods
 
@@ -16,9 +16,9 @@ namespace PeoManageSoft.Business.Application.User
         /// Adds an existing profiles type. Profile will be instantiated and added to the configuration.
         /// </summary>
         /// <param name="services">Create a MapperConfiguration instance and initialize configuration via the constructor.</param>
-        public static void AddUserApplicationProfiles(this IMapperConfigurationExpression configuration)
+        public static void AddUserQueryProfiles(this IMapperConfigurationExpression configuration)
         {
-            configuration.AddProfile<NewMapper>();
+            configuration.AddProfile<GetMapper>();
         }
 
         #endregion

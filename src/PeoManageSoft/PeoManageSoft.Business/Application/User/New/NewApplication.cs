@@ -10,7 +10,7 @@ namespace PeoManageSoft.Business.Application.User.New
     /// <summary>
     /// New user application layer.
     /// </summary>
-    internal class NewUserApplication : INewUserApplication
+    internal class NewApplication : INewApplication
     {
         #region Fields
 
@@ -29,7 +29,7 @@ namespace PeoManageSoft.Business.Application.User.New
         /// <summary>
         /// Log
         /// </summary>
-        private readonly ILogger<NewUserApplication> _logger;
+        private readonly ILogger<NewApplication> _logger;
 
         #endregion
 
@@ -42,11 +42,11 @@ namespace PeoManageSoft.Business.Application.User.New
         /// <param name="appConfig">Application Configuration</param>
         /// <param name="mapper">Data Mapper </param>
         /// <param name="logger">Log</param>
-        public NewUserApplication(
+        public NewApplication(
                 IAddHandler addHandler,
                 IAppConfig appConfig,
                 IMapper mapper,
-                ILogger<NewUserApplication> logger
+                ILogger<NewApplication> logger
             )
         {
             _addHandler = addHandler;
@@ -69,7 +69,7 @@ namespace PeoManageSoft.Business.Application.User.New
         /// Task: Represents an asynchronous operation. 
         /// Response for the application layer.
         /// </returns>
-        public async Task<NewUserResponse> HandleAsync(NewUserRequest request)
+        public async Task<NewResponse> HandleAsync(NewRequest request)
         {
             string methodName = nameof(HandleAsync);
 
@@ -81,7 +81,7 @@ namespace PeoManageSoft.Business.Application.User.New
 
             AddResponse commandResponse = await _addHandler.HandleAsync(commandRequest).ConfigureAwait(false);
 
-            NewUserResponse response = _mapper.Map<NewUserResponse>(commandResponse);
+            NewResponse response = _mapper.Map<NewResponse>(commandResponse);
 
             _logger.LogEndInformation(methodName);
 

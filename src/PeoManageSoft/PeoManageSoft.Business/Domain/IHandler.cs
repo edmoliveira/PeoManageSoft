@@ -1,7 +1,7 @@
-﻿namespace PeoManageSoft.Business.Domain.Commands
+﻿namespace PeoManageSoft.Business.Domain
 {
     /// <summary>
-    /// Handles the commands created in the application.
+    /// Handles the commands and queries created in the application.
     /// </summary>
     /// <typeparam name="TRequest">Request for the commands</typeparam>
     /// <typeparam name="TResponse">Response for the commands.</typeparam>
@@ -20,7 +20,7 @@
     }
 
     /// <summary>
-    /// Handles the commands created in the application and asynchronously using Task.
+    /// Handles the commands and queries created in the application and asynchronously using Task.
     /// </summary>
     /// <typeparam name="TRequest">Request for the commands</typeparam>
     /// <typeparam name="TResponse">Response for the commands.</typeparam>
@@ -42,7 +42,7 @@
     }
 
     /// <summary>
-    /// Handles the commands created in the application.
+    /// Handles the commands and queries created in the application.
     /// </summary>
     /// <typeparam name="TRequest">Request for the commands</typeparam>
     internal interface IHandler<TRequest> where TRequest : class
@@ -59,7 +59,7 @@
     }
 
     /// <summary>
-    /// Handles the commands created in the application and asynchronously using Task.
+    /// Handles the commands and queries created in the application and asynchronously using Task.
     /// </summary>
     /// <typeparam name="TRequest">Request for the commands</typeparam>
     internal interface IHandlerAsync<TRequest> where TRequest : class

@@ -10,7 +10,7 @@ namespace PeoManageSoft.Business.Domain.Queries.User.GetAll
     /// <summary>
     /// Configuration for maps.
     /// </summary>
-    public class GetAllMapper : Profile
+    internal class GetAllMapper : Profile
     {
         #region Constructors
 

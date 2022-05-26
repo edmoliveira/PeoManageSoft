@@ -6,7 +6,7 @@ namespace PeoManageSoft.Business.Application.User.New
     /// <summary>
     /// Configuration for maps.
     /// </summary>
-    public class NewMapper : Profile
+    internal class NewMapper : Profile
     {
         #region Constructors
 

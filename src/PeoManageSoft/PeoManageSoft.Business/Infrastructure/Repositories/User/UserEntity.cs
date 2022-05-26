@@ -8,7 +8,7 @@ namespace PeoManageSoft.Business.Infrastructure.Repositories.User
     /// <summary>
     /// Mapping to the database user table.
     /// </summary>
-    internal class UserEntity : IEntity
+    internal class UserEntity : IEntity, IUser
     {
         #region Properties
 
@@ -117,6 +117,28 @@ namespace PeoManageSoft.Business.Infrastructure.Repositories.User
 
         #endregion
 
+        #region IUser Members
+
+        /// <summary>
+        /// Set Title object
+        /// </summary>
+        /// <param name="title">The object that describes user's job or position.</param>
+        void IUser.SetTitle(TitleEntity title)
+        {
+            this.Title = title;
+        }
+
+        /// <summary>
+        /// Set Department object
+        /// </summary>
+        /// <param name="department">The object that describes user's department.</param>
+        void IUser.SetDepartment(DepartmentEntity department)
+        {
+            this.Department = department;
+        }
+
+        #endregion
+
         #region IEntity Members
 
         /// <summary>
@@ -175,6 +197,7 @@ namespace PeoManageSoft.Business.Infrastructure.Repositories.User
                 Id,
                 IsActive,
                 Login,
+                Password,
                 Role,
                 Name,
                 ShortName,

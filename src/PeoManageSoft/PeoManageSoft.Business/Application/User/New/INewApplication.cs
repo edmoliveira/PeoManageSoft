@@ -3,7 +3,7 @@
     /// <summary>
     /// New user application layer.
     /// </summary>
-    public interface INewApplication : IApplicationAsync<NewRequest, NewResponse>
+    internal interface INewApplication : IApplicationAsync<NewRequest, NewResponse>
     {
     }
 }

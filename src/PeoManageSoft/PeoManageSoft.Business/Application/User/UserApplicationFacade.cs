@@ -1,4 +1,6 @@
 ﻿using PeoManageSoft.Business.Application.User.New;
+using PeoManageSoft.Business.Application.User.ReadAll;
+using PeoManageSoft.Business.Application.User.ReadAll.Response;
 using PeoManageSoft.Business.Infrastructure.Helpers.Exceptions;
 
 namespace PeoManageSoft.Business.Application.User
@@ -18,6 +20,10 @@ namespace PeoManageSoft.Business.Application.User
         /// New user application layer.
         /// </summary>
         private readonly Lazy<INewApplication> _newApplication;
+        /// <summary>
+        /// Read all user application layer.
+        /// </summary>
+        private readonly Lazy<IReadAllApplication> _readAllApplication;
 
         #endregion
 
@@ -32,6 +38,7 @@ namespace PeoManageSoft.Business.Application.User
             _provider = provider;
 
             _newApplication = new Lazy<INewApplication>(() => GetService<INewApplication>());
+            _readAllApplication = new Lazy<IReadAllApplication>(() => GetService<IReadAllApplication>());
         }
 
         #endregion
@@ -51,6 +58,19 @@ namespace PeoManageSoft.Business.Application.User
         public async Task<NewResponse> AddAsync(NewRequest request)
         {
             return await _newApplication.Value.HandleAsync(request);
+        }
+
+        /// <summary>
+        /// Gets all registered users and asynchronously using Task.
+        /// </summary>
+        /// <param name="request">Request data</param>
+        /// <returns>
+        /// Task: Represents an asynchronous operation. 
+        /// Response data.
+        /// </returns>
+        public async Task<IEnumerable<ReadAllResponse>> GetAllAsync()
+        {
+            return await _readAllApplication.Value.HandleAsync();
         }
 
         #endregion

@@ -21,7 +21,7 @@ namespace PeoManageSoft.Business.Infrastructure.Repositories.User
         /// </returns>
         public static (string sqlStatement, object parameterId, CommandType commandType) GetDeleteSqlStatement(long id)
         {
-            return (sqlStatement: "[SP_DELETE_User]", parameterId: new { Id = id }, CommandType.StoredProcedure);
+            return (sqlStatement: "sp_delete_user", parameterId: new { Id = id }, CommandType.StoredProcedure);
         }
 
         /// <summary>
@@ -33,7 +33,7 @@ namespace PeoManageSoft.Business.Infrastructure.Repositories.User
         /// </returns>
         public static (string sqlStatement, object parameterId, CommandType commandType) GetExistsByIdSqlStatement(long id)
         {
-            return (sqlStatement: "[SP_EXISTS_BY_ID_User]", parameterId: new { Id = id }, CommandType.StoredProcedure);
+            return (sqlStatement: "sp_exists_by_id_user", parameterId: new { Id = id }, CommandType.StoredProcedure);
         }
 
         /// <summary>
@@ -44,7 +44,7 @@ namespace PeoManageSoft.Business.Infrastructure.Repositories.User
         /// </returns>
         public static (string sqlStatement, CommandType commandType) GetInsertSqlStatement()
         {
-            return (sqlStatement: "[SP_INSERT_User]", CommandType.StoredProcedure);
+            return (sqlStatement: "sp_insert_user", CommandType.StoredProcedure);
         }
 
         /// <summary>
@@ -54,18 +54,18 @@ namespace PeoManageSoft.Business.Infrastructure.Repositories.User
         /// <returns>
         /// Returns the sql statement and the command type.
         /// </returns>
-        public static (string sqlStatement, object parameterId, CommandType commandType) GetSelectByIdSqlStatement(long id)
+        public static (string sqlStatement, object parameterId, string splitOn, CommandType commandType) GetSelectByIdSqlStatement(long id)
         {
-            return (sqlStatement: "[SP_SELECT_BY_ID_User]", parameterId: new { Id = id }, CommandType.StoredProcedure);
+            return (sqlStatement: "sp_select_by_id_user", parameterId: new { Id = id }, splitOn: "TitleId,DepartmentId", CommandType.StoredProcedure);
         }
 
         /// <summary>
         /// Stored procedures "SELECT"
         /// </summary>
-        /// <returns>Returns the sql statement and the command type.</returns>
-        public static (string sqlStatement, CommandType commandType) GetSelectSqlStatement()
+        /// <returns>Returns the sql statement, splitOn and the command type.</returns>
+        public static (string sqlStatement, string splitOn, CommandType commandType) GetSelectSqlStatement()
         {
-            return (sqlStatement: "[SP_SELECT_User]", CommandType.StoredProcedure);
+            return (sqlStatement: "sp_select_user", splitOn: "TitleId,DepartmentId", CommandType.StoredProcedure);
         }
 
         /// <summary>
@@ -74,7 +74,7 @@ namespace PeoManageSoft.Business.Infrastructure.Repositories.User
         /// <returns>Returns the sql statement and the command type.</returns>
         public static (string sqlStatement, CommandType commandType) GetUpdateSqlStatement()
         {
-            return (sqlStatement: "[SP_UPDATE_User]", CommandType.StoredProcedure);
+            return (sqlStatement: "sp_update_user", CommandType.StoredProcedure);
         }
 
         /// <summary>
@@ -85,7 +85,7 @@ namespace PeoManageSoft.Business.Infrastructure.Repositories.User
         /// <returns>Returns the sql statement, the parameters and the command type</returns>
         public static (string sqlStatement, object parameters, CommandType commandType) GetSelectUserSqlStatement(string username, string password)
         {
-            return (sqlStatement: "[SP_SELECT_AUTH_User]", parameters: new { Username = username, Password = password }, CommandType.StoredProcedure);
+            return (sqlStatement: "sp_select_auth_user", parameters: new { Username = username, Password = password }, CommandType.StoredProcedure);
         }
 
         /// <summary>
@@ -98,14 +98,14 @@ namespace PeoManageSoft.Business.Infrastructure.Repositories.User
         /// <returns>Returns the sql statement, the parameters and the command type</returns>
         public static (string sqlStatement, object parameters, CommandType commandType) GetUpdateChangePassSqlStatement(string username, string oldPassword, string newPassword, IApplicationContext applicationContext)
         {
-            return (sqlStatement: "[SP_UPDATE_CHANGE_PASS_User]", parameters: new
+            return (sqlStatement: "sp_update_change_pass_user", parameters: new
             {
-                Username = username,
-                Password = oldPassword,
-                NewPassword = newPassword,
-                applicationContext.RequestId,
-                UpdatedUserId = applicationContext.LoggedUser.Id,
-                UpdatedDate = DateTime.Now
+                username,
+                password = oldPassword,
+                newpassword = newPassword,
+                requestid = applicationContext.RequestId,
+                updateduser = applicationContext.LoggedUser.User,
+                updateddate = DateTime.Now
             }, CommandType.StoredProcedure);
         }
 

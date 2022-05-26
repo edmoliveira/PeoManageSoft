@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using PeoManageSoft.Business.Application.User.New;
+using PeoManageSoft.Business.Application.User.ReadAll;
 
 namespace PeoManageSoft.Business.Application.User
 {
@@ -20,6 +21,7 @@ namespace PeoManageSoft.Business.Application.User
         {
             services.AddScoped<IUserApplicationFacade, UserApplicationFacade>();
             services.AddScoped<INewApplication, NewApplication>();
+            services.AddScoped<IReadAllApplication, ReadAllApplication>();
         }
 
         #endregion

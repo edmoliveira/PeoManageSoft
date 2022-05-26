@@ -20,7 +20,7 @@ namespace PeoManageSoft.Business.Infrastructure.Repositories.Title
         /// </returns>
         public static (string sqlStatement, object parameterId, CommandType commandType) GetDeleteSqlStatement(long id)
         {
-            return (sqlStatement: "[SP_DELETE_Title]", parameterId: new { Id = id }, CommandType.StoredProcedure);
+            return (sqlStatement: "sp_delete_title", parameterId: new { Id = id }, CommandType.StoredProcedure);
         }
 
         /// <summary>
@@ -32,7 +32,7 @@ namespace PeoManageSoft.Business.Infrastructure.Repositories.Title
         /// </returns>
         public static (string sqlStatement, object parameterId, CommandType commandType) GetExistsByIdSqlStatement(long id)
         {
-            return (sqlStatement: "[SP_EXISTS_BY_ID_Title]", parameterId: new { Id = id }, CommandType.StoredProcedure);
+            return (sqlStatement: "sp_exists_by_id_title", parameterId: new { Id = id }, CommandType.StoredProcedure);
         }
 
         /// <summary>
@@ -43,7 +43,7 @@ namespace PeoManageSoft.Business.Infrastructure.Repositories.Title
         /// </returns>
         public static (string sqlStatement, CommandType commandType) GetInsertSqlStatement()
         {
-            return (sqlStatement: "[SP_INSERT_Title]", CommandType.StoredProcedure);
+            return (sqlStatement: "sp_insert_title", CommandType.StoredProcedure);
         }
 
         /// <summary>
@@ -55,7 +55,7 @@ namespace PeoManageSoft.Business.Infrastructure.Repositories.Title
         /// </returns>
         public static (string sqlStatement, object parameterId, CommandType commandType) GetSelectByIdSqlStatement(long id)
         {
-            return (sqlStatement: "[SP_SELECT_BY_ID_Title]", parameterId: new { Id = id }, CommandType.StoredProcedure);
+            return (sqlStatement: "sp_select_by_id_title", parameterId: new { Id = id }, CommandType.StoredProcedure);
         }
 
         /// <summary>
@@ -64,7 +64,7 @@ namespace PeoManageSoft.Business.Infrastructure.Repositories.Title
         /// <returns>Returns the sql statement and the command type.</returns>
         public static (string sqlStatement, CommandType commandType) GetSelectSqlStatement()
         {
-            return (sqlStatement: "[SP_SELECT_Title]", CommandType.StoredProcedure);
+            return (sqlStatement: "sp_select_title", CommandType.StoredProcedure);
         }
 
         /// <summary>
@@ -73,7 +73,7 @@ namespace PeoManageSoft.Business.Infrastructure.Repositories.Title
         /// <returns>Returns the sql statement and the command type.</returns>
         public static (string sqlStatement, CommandType commandType) GetUpdateSqlStatement()
         {
-            return (sqlStatement: "[SP_UPDATE_Title]", CommandType.StoredProcedure);
+            return (sqlStatement: "sp_update_title", CommandType.StoredProcedure);
         }
 
         #endregion

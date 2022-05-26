@@ -121,6 +121,79 @@ namespace PeoManageSoft.Business.Infrastructure.ObjectRelationalMapper
         Task<IEnumerable<TResult>> QueryAsync<TResult>(IDbConnection connection, string sqlStatement, object parameters, IDbTransaction transaction = null, CommandType? commandType = null);
 
         /// <summary>
+        /// Perform a multi-mapping query with 2 input types.
+        /// Executes a query, returning the data typed as TResult.
+        /// </summary>
+        /// <typeparam name="TFirst">The first type in the recordset.</typeparam>
+        /// <typeparam name="TSecond">The second type in the recordset.</typeparam>
+        /// <typeparam name="TResult">The combined type to return.</typeparam>
+        /// <param name="connection">The connection to query on.</param>
+        /// <param name="map">The function to map row types to the return type.</param>
+        /// <param name="sqlStatement">The SQL to execute for this query.</param>
+        /// <param name="parameters">The parameters to pass, if any.</param>
+        /// <param name="splitOn">The field we should split and read the second object from (default: "Id").</param>
+        /// <param name="transaction">The transaction to use for this query.</param>
+        /// <param name="commandType">Is it a stored proc or a batch?</param>
+        /// <returns>A sequence of data of the TResult type</returns>
+        public IEnumerable<TResult> Query<TFirst, TSecond, TResult>(IDbConnection connection, Func<TFirst, TSecond, TResult> map, string sqlStatement, object parameters, string splitOn, IDbTransaction transaction = null, CommandType? commandType = null);
+
+        /// <summary>
+        /// Perform a multi-mapping query with 2 input types.
+        /// Executes a query, returning the data typed as TResult and asynchronously using Task.
+        /// </summary>
+        /// <typeparam name="TFirst">The first type in the recordset.</typeparam>
+        /// <typeparam name="TSecond">The second type in the recordset.</typeparam>
+        /// <typeparam name="TResult">The combined type to return.</typeparam>
+        /// <param name="connection">The connection to query on.</param>
+        /// <param name="map">The function to map row types to the return type.</param>
+        /// <param name="sqlStatement">The SQL to execute for this query.</param>
+        /// <param name="parameters">The parameters to pass, if any.</param>
+        /// <param name="splitOn">The field we should split and read the second object from (default: "Id").</param>
+        /// <param name="transaction">The transaction to use for this query.</param>
+        /// <param name="commandType">Is it a stored proc or a batch?</param>
+        /// <returns>
+        /// Task: Represents an asynchronous operation.
+        /// A sequence of data of the TResult type.
+        /// </returns>
+        Task<IEnumerable<TResult>> QueryAsync<TFirst, TSecond, TResult>(IDbConnection connection, Func<TFirst, TSecond, TResult> map, string sqlStatement, object parameters, string splitOn, IDbTransaction transaction = null, CommandType? commandType = null);
+
+        /// <summary>
+        /// Perform a multi-mapping query with 3 input types.
+        /// Executes a query, returning the data typed as TResult.
+        /// </summary>
+        /// <typeparam name="TFirst">The first type in the recordset.</typeparam>
+        /// <typeparam name="TSecond">The second type in the recordset.</typeparam>
+        /// <typeparam name="TThird">The third type in the recordset.</typeparam>
+        /// <typeparam name="TResult">The combined type to return.</typeparam>
+        /// <param name="connection">The connection to query on.</param>
+        /// <param name="map">The function to map row types to the return type.</param>
+        /// <param name="sqlStatement">The SQL to execute for this query.</param>
+        /// <param name="parameters">The parameters to pass, if any.</param>
+        /// <param name="splitOn">The field we should split and read the second object from (default: "Id").</param>
+        /// <param name="transaction">The transaction to use for this query.</param>
+        /// <param name="commandType">Is it a stored proc or a batch?</param>
+        /// <returns>A sequence of data of the TResult type</returns>
+        IEnumerable<TResult> Query<TFirst, TSecond, TThird, TResult>(IDbConnection connection, Func<TFirst, TSecond, TThird, TResult> map, string sqlStatement, object parameters, string splitOn, IDbTransaction transaction = null, CommandType? commandType = null);
+
+        /// <summary>
+        /// Perform a multi-mapping query with 3 input types.
+        /// Executes a query, returning the data typed as TResult and asynchronously using Task.
+        /// </summary>
+        /// <typeparam name="TFirst">The first type in the recordset.</typeparam>
+        /// <typeparam name="TSecond">The second type in the recordset.</typeparam>
+        /// <typeparam name="TThird">The third type in the recordset.</typeparam>
+        /// <typeparam name="TResult">The combined type to return.</typeparam>
+        /// <param name="connection">The connection to query on.</param>
+        /// <param name="map">The function to map row types to the return type.</param>
+        /// <param name="sqlStatement">The SQL to execute for this query.</param>
+        /// <param name="parameters">The parameters to pass, if any.</param>
+        /// <param name="splitOn">The field we should split and read the second object from (default: "Id").</param>
+        /// <param name="transaction">The transaction to use for this query.</param>
+        /// <param name="commandType">Is it a stored proc or a batch?</param>
+        /// <returns>A sequence of data of the TResult type</returns>
+        Task<IEnumerable<TResult>> QueryAsync<TFirst, TSecond, TThird, TResult>(IDbConnection connection, Func<TFirst, TSecond, TThird, TResult> map, string sqlStatement, object parameters, string splitOn, IDbTransaction transaction = null, CommandType? commandType = null);
+
+        /// <summary>
         /// Execute a command that returns multiple result sets, and access each in turn.
         /// </summary>
         /// <param name="connection">The connection to query on.</param>

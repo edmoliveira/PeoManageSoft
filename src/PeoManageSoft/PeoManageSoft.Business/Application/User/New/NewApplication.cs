@@ -79,9 +79,9 @@ namespace PeoManageSoft.Business.Application.User.New
 
             commandRequest.Password = Cryptography.Encrypt(request.Password, _appConfig.AuthTokenSecrect);
 
-            AddResponse commandResponse = await _addHandler.HandleAsync(commandRequest).ConfigureAwait(false);
-
-            NewResponse response = _mapper.Map<NewResponse>(commandResponse);
+            NewResponse response = _mapper.Map<NewResponse>(
+                await _addHandler.HandleAsync(commandRequest).ConfigureAwait(false)
+            );
 
             _logger.LogEndInformation(methodName);
 

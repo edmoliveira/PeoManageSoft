@@ -95,7 +95,7 @@ namespace PeoManageSoft.Business.Infrastructure.Repositories.Department
                 Name,
                 RequestId,
                 CreationUser,
-                CreationDate
+                CreationDate.Value
             };
         }
 
@@ -117,7 +117,7 @@ namespace PeoManageSoft.Business.Infrastructure.Repositories.Department
                 Name,
                 RequestId,
                 UpdatedUser,
-                UpdatedDate
+                UpdatedDate.Value
             };
         }
 

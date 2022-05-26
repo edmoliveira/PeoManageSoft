@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using PeoManageSoft.Business.Application.User.New;
+using PeoManageSoft.Business.Application.User.ReadAll;
 
 namespace PeoManageSoft.Business.Application.User
 {
@@ -19,6 +20,7 @@ namespace PeoManageSoft.Business.Application.User
         public static void AddUserApplicationProfiles(this IMapperConfigurationExpression configuration)
         {
             configuration.AddProfile<NewMapper>();
+            configuration.AddProfile<ReadAllMapper>();
         }
 
         #endregion

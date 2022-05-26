@@ -2,7 +2,9 @@
 using PeoManageSoft.Business.Infrastructure.Helpers.Extensions;
 using PeoManageSoft.Business.Infrastructure.Helpers.Interfaces;
 using PeoManageSoft.Business.Infrastructure.ObjectRelationalMapper;
+using PeoManageSoft.Business.Infrastructure.Repositories.Department;
 using PeoManageSoft.Business.Infrastructure.Repositories.Interfaces;
+using PeoManageSoft.Business.Infrastructure.Repositories.Title;
 using System.Data;
 
 namespace PeoManageSoft.Business.Infrastructure.Repositories.User
@@ -157,12 +159,15 @@ namespace PeoManageSoft.Business.Infrastructure.Repositories.User
 
             IContentScope contentScope = (IContentScope)scope;
             (string sqlStatement,
+             string splitOn,
              CommandType commandType) = UserEntityConfig.GetSelectSqlStatement();
 
-            IEnumerable<UserEntity> result = await _dbContext.QueryAsync<UserEntity>(
+            IEnumerable<UserEntity> result = await _dbContext.QueryAsync<UserEntity, TitleEntity, DepartmentEntity, UserEntity>(
                 contentScope.Connection,
+                SetRelationships,
                 sqlStatement,
                 null,
+                splitOn,
                 contentScope.DbTransaction,
                 commandType
             ).ConfigureAwait(false);
@@ -190,19 +195,22 @@ namespace PeoManageSoft.Business.Infrastructure.Repositories.User
             IContentScope contentScope = (IContentScope)scope;
             (string sqlStatement,
              object parameterId,
+             string splitOn,
              CommandType commandType) = UserEntityConfig.GetSelectByIdSqlStatement(id);
 
-            UserEntity result = await _dbContext.QueryFirstOrDefaultAsync<UserEntity>(
+            IEnumerable<UserEntity> result = await _dbContext.QueryAsync<UserEntity, TitleEntity, DepartmentEntity, UserEntity>(
                 contentScope.Connection,
+                SetRelationships,
                 sqlStatement,
                 parameterId,
+                splitOn,
                 contentScope.DbTransaction,
                 commandType
             ).ConfigureAwait(false);
 
             _logger.LogEndInformation(methodName);
 
-            return result;
+            return result.FirstOrDefault();
         }
 
         /// <summary>
@@ -298,6 +306,27 @@ namespace PeoManageSoft.Business.Infrastructure.Repositories.User
             _logger.LogEndInformation(methodName);
 
             return wasChanged;
+        }
+
+        #endregion
+
+        #region private 
+
+        /// <summary>
+        /// Defines user entity relationships
+        /// </summary>
+        /// <param name="userEntity">User entity</param>
+        /// <param name="titleEntity">Title entity</param>
+        /// <param name="departmentEntity">Department entity</param>
+        /// <returns></returns>
+        private static UserEntity SetRelationships(UserEntity userEntity, TitleEntity titleEntity, DepartmentEntity departmentEntity)
+        {
+            IUser user = userEntity;
+
+            user.SetTitle(titleEntity);
+            user.SetDepartment(departmentEntity);
+
+            return userEntity;
         }
 
         #endregion

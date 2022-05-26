@@ -1,5 +1,8 @@
 ﻿namespace PeoManageSoft.Business.Application.User.New
 {
+    /// <summary>
+    /// Response data.
+    /// </summary>
     public class NewResponse
     {
         #region Properties

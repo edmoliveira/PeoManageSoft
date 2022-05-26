@@ -20,7 +20,7 @@ namespace PeoManageSoft.Business.Infrastructure.Repositories.Department
         /// </returns>
         public static (string sqlStatement, object parameterId, CommandType commandType) GetDeleteSqlStatement(long id)
         {
-            return (sqlStatement: "[SP_DELETE_Department]", parameterId: new { Id = id }, CommandType.StoredProcedure);
+            return (sqlStatement: "sp_delete_department", parameterId: new { Id = id }, CommandType.StoredProcedure);
         }
 
         /// <summary>
@@ -32,7 +32,7 @@ namespace PeoManageSoft.Business.Infrastructure.Repositories.Department
         /// </returns>
         public static (string sqlStatement, object parameterId, CommandType commandType) GetExistsByIdSqlStatement(long id)
         {
-            return (sqlStatement: "[SP_EXISTS_BY_ID_Department]", parameterId: new { Id = id }, CommandType.StoredProcedure);
+            return (sqlStatement: "sp_exists_by_id_department", parameterId: new { Id = id }, CommandType.StoredProcedure);
         }
 
         /// <summary>
@@ -43,7 +43,7 @@ namespace PeoManageSoft.Business.Infrastructure.Repositories.Department
         /// </returns>
         public static (string sqlStatement, CommandType commandType) GetInsertSqlStatement()
         {
-            return (sqlStatement: "[SP_INSERT_Department]", CommandType.StoredProcedure);
+            return (sqlStatement: "sp_insert_department", CommandType.StoredProcedure);
         }
 
         /// <summary>
@@ -55,7 +55,7 @@ namespace PeoManageSoft.Business.Infrastructure.Repositories.Department
         /// </returns>
         public static (string sqlStatement, object parameterId, CommandType commandType) GetSelectByIdSqlStatement(long id)
         {
-            return (sqlStatement: "[SP_SELECT_BY_ID_Department]", parameterId: new { Id = id }, CommandType.StoredProcedure);
+            return (sqlStatement: "sp_select_by_id_department", parameterId: new { Id = id }, CommandType.StoredProcedure);
         }
 
         /// <summary>
@@ -64,7 +64,7 @@ namespace PeoManageSoft.Business.Infrastructure.Repositories.Department
         /// <returns>Returns the sql statement and the command type.</returns>
         public static (string sqlStatement, CommandType commandType) GetSelectSqlStatement()
         {
-            return (sqlStatement: "[SP_SELECT_Department]", CommandType.StoredProcedure);
+            return (sqlStatement: "sp_select_department", CommandType.StoredProcedure);
         }
 
         /// <summary>
@@ -73,7 +73,7 @@ namespace PeoManageSoft.Business.Infrastructure.Repositories.Department
         /// <returns>Returns the sql statement and the command type.</returns>
         public static (string sqlStatement, CommandType commandType) GetUpdateSqlStatement()
         {
-            return (sqlStatement: "[SP_UPDATE_Department]", CommandType.StoredProcedure);
+            return (sqlStatement: "sp_update_department", CommandType.StoredProcedure);
         }
 
         #endregion

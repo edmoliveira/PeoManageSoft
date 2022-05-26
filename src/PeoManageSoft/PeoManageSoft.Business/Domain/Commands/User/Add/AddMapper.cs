@@ -6,7 +6,7 @@ namespace PeoManageSoft.Business.Domain.Commands.User.Add
     /// <summary>
     /// Configuration for maps.
     /// </summary>
-    public class AddMapper : Profile
+    internal class AddMapper : Profile
     {
         #region Constructors
 

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Newtonsoft.Json;
 using PeoManageSoft.Business.Application.User;
 using PeoManageSoft.Business.Application.User.New;
+using PeoManageSoft.Business.Application.User.ReadAll.Response;
 using PeoManageSoft.Business.Infrastructure.Helpers.Controllers;
 using PeoManageSoft.Business.Infrastructure.Helpers.Extensions;
 using PeoManageSoft.Business.Infrastructure.Helpers.Filters;
@@ -47,6 +48,43 @@ namespace PeoManageSoft.Api.Controllers.Users
         #region Method 
 
         #region public
+
+        /// <summary>
+        /// Gets all registered users.
+        /// </summary>
+        /// <returns>IEnumerable<ReadAllResponse></returns>
+        [ApiExplorerSettings(GroupName = "Users")]
+        [HttpGet()]
+        [ApiVersion("1.0")]
+        [Route("{v:apiVersion}")]
+        [TypeFilter(typeof(LogFilterAttribute))]
+        [ProducesResponseType(typeof(IEnumerable<ReadAllResponse>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [SwaggerOperation(
+            Summary = "Get All Users",
+            Description = "Gets all registered users."
+        )]
+        public async Task<IActionResult> GetAllAsync()
+        {
+            return await TryActionResultAsync(async stopwatch =>
+            {
+                string methodName = nameof(GetAllAsync);
+
+                _Logger.LogInformation(GetMethodBeginMessage(methodName));
+
+                IEnumerable<ReadAllResponse> response = await _facade.GetAllAsync().ConfigureAwait(false);
+
+                _Logger.DebugIsEnabled(() => string.Concat("Response: ", JsonConvert.SerializeObject(response)));
+
+                _Logger.LogInformation(GetMethodEndMessage(methodName, stopwatch.StopAndGetMilliseconds()));
+
+                return Ok(response);
+            }).ConfigureAwait(false);
+        }
 
         /// <summary>
         /// Registers an new user and asynchronously using Task.

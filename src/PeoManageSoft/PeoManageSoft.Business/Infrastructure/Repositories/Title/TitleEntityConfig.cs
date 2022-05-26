@@ -24,6 +24,18 @@ namespace PeoManageSoft.Business.Infrastructure.Repositories.Title
         }
 
         /// <summary>
+        /// Stored procedures "EXISTS BY ID"
+        /// </summary>
+        /// <param name="id">Title identifier value</param>
+        /// <returns>
+        /// Returns the sql statement and the command type.
+        /// </returns>
+        public static (string sqlStatement, object parameterId, CommandType commandType) GetExistsByIdSqlStatement(long id)
+        {
+            return (sqlStatement: "[SP_EXISTS_BY_ID_Title]", parameterId: new { Id = id }, CommandType.StoredProcedure);
+        }
+
+        /// <summary>
         /// Stored procedures "INSERT"
         /// </summary>
         /// <returns>
@@ -35,7 +47,7 @@ namespace PeoManageSoft.Business.Infrastructure.Repositories.Title
         }
 
         /// <summary>
-        /// Stored procedures "DELETE"
+        /// Stored procedures "SELECT BY ID"
         /// </summary>
         /// <param name="id">Title identifier value</param>
         /// <returns>

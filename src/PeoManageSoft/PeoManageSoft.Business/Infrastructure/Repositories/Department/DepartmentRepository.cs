@@ -78,6 +78,38 @@ namespace PeoManageSoft.Business.Infrastructure.Repositories.Department
             _logger.LogEndInformation(methodName);
         }
 
+        /// Determines whether the specified Department table contains the record that match the id
+        /// </summary>
+        /// <param name="scope">Transactional scope</param>
+        /// <param name="id">Department identifier</param>
+        /// <returns>
+        /// Task: Represents an asynchronous operation.
+        /// Returns true if the record exists in the table
+        /// </returns>
+        public async Task<bool> ExistsAsync(IScope scope, long id)
+        {
+            string methodName = nameof(SelectByIdAsync);
+
+            _logger.LogBeginInformation(methodName);
+
+            IContentScope contentScope = (IContentScope)scope;
+            (string sqlStatement,
+             object parameterId,
+             CommandType commandType) = DepartmentEntityConfig.GetExistsByIdSqlStatement(id);
+
+            bool result = await _dbContext.ExecuteScalarAsync<object, bool>(
+                contentScope.Connection,
+                sqlStatement,
+                parameterId,
+                contentScope.DbTransaction,
+                commandType
+            ).ConfigureAwait(false);
+
+            _logger.LogEndInformation(methodName);
+
+            return result;
+        }
+
         /// <summary>
         /// Creates the record in the Department table and asynchronously using Task.
         /// </summary>

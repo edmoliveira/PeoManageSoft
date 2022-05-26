@@ -12,6 +12,7 @@ using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
 using PeoManageSoft.Business.Application.User;
 using PeoManageSoft.Business.Domain.Commands.User;
+using PeoManageSoft.Business.Domain.Queries.User;
 using PeoManageSoft.Business.Infrastructure.Helpers.Exceptions;
 using PeoManageSoft.Business.Infrastructure.Helpers.Extensions;
 using PeoManageSoft.Business.Infrastructure.Helpers.Filters;
@@ -69,6 +70,7 @@ namespace PeoManageSoft.Business.Infrastructure.Helpers
 
             AddApplicationServices(services);
             AddCommandServices(services);
+            AddQueryServices(services);
 
             services.AddSwaggerGen(c =>
             {
@@ -207,7 +209,6 @@ namespace PeoManageSoft.Business.Infrastructure.Helpers
 
         #region private
 
-
         /// <summary>
         /// Adds Fluent Validation services to the specified Microsoft.Extensions.DependencyInjection.IServiceCollection.
         /// </summary>
@@ -238,6 +239,16 @@ namespace PeoManageSoft.Business.Infrastructure.Helpers
         }
 
         /// <summary>
+        ///  Adds services of the type Query in TService with an implementation type specified in 
+        ///  TImplementation to the specified Microsoft.Extensions.DependencyInjection.IServiceCollection.
+        /// </summary>
+        /// <param name="services">Specifies the contract for a collection of service descriptors.</param>
+        private static void AddQueryServices(IServiceCollection services)
+        {
+            services.AddUserQueryDependencies();
+        }
+
+        /// <summary>
         /// Adds object mappers to configuration source for generated mappers
         /// </summary>
         /// <param name="services">Specifies the contract for a collection of service descriptors.</param>
@@ -249,6 +260,9 @@ namespace PeoManageSoft.Business.Infrastructure.Helpers
 
                 //Commmands
                 c.AddUserCommandProfiles();
+
+                //Commmands
+                c.AddUserQueryProfiles();
 
                 //Applications
                 c.AddUserApplicationProfiles();

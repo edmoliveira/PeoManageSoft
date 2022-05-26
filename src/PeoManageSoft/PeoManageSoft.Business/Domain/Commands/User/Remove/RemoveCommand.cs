@@ -1,7 +1,9 @@
 ﻿using Microsoft.Extensions.Logging;
+using PeoManageSoft.Business.Infrastructure.Helpers.Exceptions;
 using PeoManageSoft.Business.Infrastructure.Helpers.Extensions;
 using PeoManageSoft.Business.Infrastructure.ObjectRelationalMapper;
 using PeoManageSoft.Business.Infrastructure.Repositories.User;
+using System.Net;
 
 namespace PeoManageSoft.Business.Domain.Commands.User.Remove
 {
@@ -56,6 +58,13 @@ namespace PeoManageSoft.Business.Domain.Commands.User.Remove
             string methodName = nameof(ExecuteAsync);
 
             _logger.LogBeginInformation(methodName);
+
+            bool exists = await _repository.ExistsAsync(scope, request.Id).ConfigureAwait(false);
+
+            if (!exists)
+            {
+                throw new RequestException(HttpStatusCode.NotFound, "User not found!");
+            }
 
             await _repository.DeleteAsync(scope, request.Id).ConfigureAwait(false);
 

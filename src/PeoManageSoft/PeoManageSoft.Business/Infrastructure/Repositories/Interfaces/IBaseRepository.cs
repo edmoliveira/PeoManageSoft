@@ -30,6 +30,15 @@ namespace PeoManageSoft.Business.Infrastructure.Repositories.Interfaces
         /// <param name="id"><see cref="TEntity"/> identifier</param>
         /// <returns>Task: Represents an asynchronous operation.</returns>
         Task DeleteAsync(IScope scope, long id);
+        /// Determines whether the specified <see cref="TEntity"/> table contains the record that match the id
+        /// </summary>
+        /// <param name="scope">Transactional scope</param>
+        /// <param name="id"><see cref="TEntity"/> identifier</param>
+        /// <returns>
+        /// Task: Represents an asynchronous operation.
+        /// Returns true if the record exists in the table
+        /// </returns>
+        Task<bool> ExistsAsync(IScope scope, long id);
         /// <summary>
         /// Query the record in the <see cref="TEntity"/> table and asynchronously using Task.
         /// </summary>

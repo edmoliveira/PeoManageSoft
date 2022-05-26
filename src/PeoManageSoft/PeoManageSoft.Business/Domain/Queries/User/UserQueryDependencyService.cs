@@ -1,7 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using PeoManageSoft.Business.Domain.Commands.User.Add;
-using PeoManageSoft.Business.Domain.Commands.User.Remove;
-using PeoManageSoft.Business.Domain.Commands.User.Update;
+using PeoManageSoft.Business.Domain.Queries.User.Get;
+using PeoManageSoft.Business.Domain.Queries.User.GetAll;
 
 namespace PeoManageSoft.Business.Domain.Queries.User
 {
@@ -20,12 +19,10 @@ namespace PeoManageSoft.Business.Domain.Queries.User
         /// <param name="services">Specifies the contract for a collection of service descriptors.</param>
         public static void AddUserQueryDependencies(this IServiceCollection services)
         {
-            services.AddScoped<IAddHandler, AddHandler>();
-            services.AddScoped<IAddCommand, AddCommand>();
-            services.AddScoped<IUpdateHandler, UpdateHandler>();
-            services.AddScoped<IUpdateCommand, UpdateCommand>();
-            services.AddScoped<IRemoveHandler, RemoveHandler>();
-            services.AddScoped<IRemoveCommand, RemoveCommand>();
+            services.AddScoped<IGetHandler, GetHandler>();
+            services.AddScoped<IGetQuery, GetQuery>();
+            services.AddScoped<IGetAllHandler, GetAllHandler>();
+            services.AddScoped<IGetAllQuery, GetAllQuery>();
         }
 
         #endregion

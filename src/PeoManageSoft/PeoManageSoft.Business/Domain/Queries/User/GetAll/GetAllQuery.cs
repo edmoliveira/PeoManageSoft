@@ -6,12 +6,12 @@ using PeoManageSoft.Business.Infrastructure.ObjectRelationalMapper;
 using PeoManageSoft.Business.Infrastructure.Repositories.User;
 using System.Net;
 
-namespace PeoManageSoft.Business.Domain.Commands.User.Update
+namespace PeoManageSoft.Business.Domain.Queries.User.GetAll
 {
     /// <summary>
-    /// Update user command.
+    /// Get all user query.
     /// </summary>
-    internal class UpdateCommand : IUpdateCommand
+    internal class GetAllQuery : IGetAllQuery
     {
         #region Fields
 
@@ -26,22 +26,22 @@ namespace PeoManageSoft.Business.Domain.Commands.User.Update
         /// <summary>
         /// Log
         /// </summary>
-        private readonly ILogger<UpdateHandler> _logger;
+        private readonly ILogger<GetAllQuery> _logger;
 
         #endregion
 
         #region Constructors
 
         /// <summary>
-        /// Initializes a new instance of the PeoManageSoft.Business.Domain.Commands.User.Update.UpdateCommand class.
+        /// Initializes a new instance of the PeoManageSoft.Business.Domain.Queries.User.GetAll.GetAllQuery class.
         /// </summary>
         /// <param name="repository">Data Access Layer</param>
         /// <param name="mapper">Data Mapper </param>
         /// <param name="logger">Log</param>
-        public UpdateCommand(
+        public GetAllQuery(
                 IUserRepository repository,
                 IMapper mapper,
-                ILogger<UpdateHandler> logger
+                ILogger<GetAllQuery> logger
             )
         {
             _repository = repository;
@@ -56,29 +56,26 @@ namespace PeoManageSoft.Business.Domain.Commands.User.Update
         #region public
 
         /// <summary>
-        /// Executes the command and asynchronously using Task.
+        /// Executes the query and asynchronously using Task.
         /// </summary>
         /// <param name="scope">Transactional scope</param>
-        /// <param name="request">Request for the update user command.</param>
-        /// <returns>Represents an asynchronous operation.</returns>
-        public async Task ExecuteAsync(IScope scope, UpdateRequest request)
+        /// <returns>
+        /// Task: Represents an asynchronous operation. 
+        /// The return value
+        /// </returns>
+        public async Task<IEnumerable<GetAllResponse>> ExecuteAsync(IScope scope)
         {
             string methodName = nameof(ExecuteAsync);
 
             _logger.LogBeginInformation(methodName);
 
-            bool exists = await _repository.ExistsAsync(scope, request.Id).ConfigureAwait(false);
+            IEnumerable<UserEntity> collection = await _repository.SelectAllAsync(scope).ConfigureAwait(false);
 
-            if (!exists)
-            {
-                throw new RequestException(HttpStatusCode.NotFound, "User not found!");
-            }
-
-            UserEntity entity = _mapper.Map<UserEntity>(request);
-
-            await _repository.UpdateAsync(scope, entity).ConfigureAwait(false);
+            IEnumerable<GetAllResponse> response = _mapper.Map<IEnumerable<GetAllResponse>>(collection);
 
             _logger.LogEndInformation(methodName);
+
+            return response;
         }
 
         #endregion

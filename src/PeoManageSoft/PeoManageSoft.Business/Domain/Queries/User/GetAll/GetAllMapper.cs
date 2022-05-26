@@ -1,5 +1,8 @@
 ﻿using AutoMapper;
+using PeoManageSoft.Business.Domain.Queries.User.GetAll.Response;
 using PeoManageSoft.Business.Infrastructure;
+using PeoManageSoft.Business.Infrastructure.Repositories.Department;
+using PeoManageSoft.Business.Infrastructure.Repositories.Title;
 using PeoManageSoft.Business.Infrastructure.Repositories.User;
 
 namespace PeoManageSoft.Business.Domain.Queries.User.GetAll
@@ -16,14 +19,22 @@ namespace PeoManageSoft.Business.Domain.Queries.User.GetAll
         /// </summary>
         public GetAllMapper()
         {
+            CreateMap<TitleEntity, GetAllTitleResponse>()
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
+                .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name));
+
+            CreateMap<DepartmentEntity, GetAllDepartmentResponse>()
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
+                .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name));
+
             CreateMap<UserEntity, GetAllResponse>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
                 .ForMember(dest => dest.Role, opt => opt.MapFrom(src => (UserRole)src.Role))
                 .ForMember(dest => dest.Login, opt => opt.MapFrom(src => src.Login))
                 .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name))
                 .ForMember(dest => dest.ShortName, opt => opt.MapFrom(src => src.ShortName))
-                .ForMember(dest => dest.TitleId, opt => opt.MapFrom(src => src.TitleId))
-                .ForMember(dest => dest.DepartmentId, opt => opt.MapFrom(src => src.DepartmentId))
+                .ForMember(dest => dest.Title, opt => opt.MapFrom(src => src.Title))
+                .ForMember(dest => dest.Department, opt => opt.MapFrom(src => src.Department))
                 .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.Email))
                 .ForMember(dest => dest.BussinessPhone, opt => opt.MapFrom(src => src.BussinessPhone))
                 .ForMember(dest => dest.MobilePhone, opt => opt.MapFrom(src => src.MobilePhone))

@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using PeoManageSoft.Business.Domain.Queries.User.Get.Response;
 using PeoManageSoft.Business.Infrastructure.Helpers.Extensions;
 using PeoManageSoft.Business.Infrastructure.ObjectRelationalMapper;
 

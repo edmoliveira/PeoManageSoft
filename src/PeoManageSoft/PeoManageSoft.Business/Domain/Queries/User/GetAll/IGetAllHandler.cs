@@ -1,4 +1,6 @@
-﻿namespace PeoManageSoft.Business.Domain.Queries.User.GetAll
+﻿using PeoManageSoft.Business.Domain.Queries.User.GetAll.Response;
+
+namespace PeoManageSoft.Business.Domain.Queries.User.GetAll
 {
     /// <summary>
     /// Handles all queries to get all the user.

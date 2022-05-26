@@ -1,11 +1,11 @@
 ﻿using PeoManageSoft.Business.Infrastructure;
 
-namespace PeoManageSoft.Business.Domain.Queries.User.GetAll
+namespace PeoManageSoft.Business.Domain.Queries.User.Get.Response
 {
     /// <summary>
-    /// Response for the get all user query.
+    /// Response for the get user query.
     /// </summary>
-    internal class GetAllResponse
+    internal class GetResponse
     {
         #region Properties
 
@@ -34,13 +34,13 @@ namespace PeoManageSoft.Business.Domain.Queries.User.GetAll
         /// </summary>
         public string ShortName { get; set; }
         /// <summary>
-        /// The name that describes user's job or position.
+        /// The object that describes user's job or position.
         /// </summary>
-        public long TitleId { get; set; }
+        public GetTitleResponse Title { get; set; }
         /// <summary>
-        /// User department
+        /// The object that describes user's department.
         /// </summary>
-        public long DepartmentId { get; set; }
+        public GetDepartmentResponse Department { get; set; }
         /// <summary>
         /// User email
         /// </summary>

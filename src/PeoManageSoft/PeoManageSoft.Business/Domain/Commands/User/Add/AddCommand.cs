@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
 using Microsoft.Extensions.Logging;
+using PeoManageSoft.Business.Infrastructure.Helpers.Exceptions;
 using PeoManageSoft.Business.Infrastructure.Helpers.Extensions;
 using PeoManageSoft.Business.Infrastructure.ObjectRelationalMapper;
 using PeoManageSoft.Business.Infrastructure.Repositories.User;
+using System.Net;
 
 namespace PeoManageSoft.Business.Domain.Commands.User.Add
 {
@@ -67,6 +69,20 @@ namespace PeoManageSoft.Business.Domain.Commands.User.Add
             string methodName = nameof(ExecuteAsync);
 
             _logger.LogBeginInformation(methodName);
+
+            bool titleExists = await _repository.ExistsAsync(scope, request.TitleId).ConfigureAwait(false);
+            bool departmentExists = await _repository.ExistsAsync(scope, request.DepartmentId).ConfigureAwait(false);
+
+            if (!titleExists || !departmentExists)
+            {
+                List<string> messages = new();
+
+                messages
+                    .AddIf(() => !titleExists, "Title not found!")
+                    .AddIf(() => !departmentExists, "Department not found!");
+
+                throw new RequestException(HttpStatusCode.NotFound, messages);
+            }
 
             UserEntity entity = _mapper.Map<UserEntity>(request);
 

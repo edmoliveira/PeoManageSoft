@@ -1,4 +1,5 @@
-﻿using PeoManageSoft.Business.Application.User.Delete;
+﻿using PeoManageSoft.Business.Application.User.Change;
+using PeoManageSoft.Business.Application.User.Delete;
 using PeoManageSoft.Business.Application.User.New;
 using PeoManageSoft.Business.Application.User.Read;
 using PeoManageSoft.Business.Application.User.Read.Response;
@@ -22,6 +23,12 @@ namespace PeoManageSoft.Business.Application.User
         /// Response data.
         /// </returns>
         Task<NewResponse> AddAsync(NewRequest request);
+        /// <summary>
+        /// Updates an user data and asynchronously using Task.
+        /// </summary>
+        /// <param name="request">Request data</param>
+        /// <returns>Represents an asynchronous operation.</returns>
+        Task UpdateAsync(ChangeRequest request);
         /// <summary>
         /// Removes an user and asynchronously using Task.
         /// </summary>

@@ -196,7 +196,6 @@ namespace PeoManageSoft.Business.Infrastructure.Repositories.User
             {
                 Id,
                 IsActive,
-                Login,
                 Password,
                 Role,
                 Name,

@@ -1,11 +1,11 @@
 ﻿using PeoManageSoft.Business.Infrastructure;
 
-namespace PeoManageSoft.Business.Domain.Commands.User.Update
+namespace PeoManageSoft.Business.Application.User.Change
 {
     /// <summary>
-    /// Request for the update user command.
+    /// Request data.
     /// </summary>
-    internal class UpdateRequest
+    public class ChangeRequest
     {
         #region Properties
 

@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using PeoManageSoft.Business.Application.User.Change;
 using PeoManageSoft.Business.Application.User.Delete;
 using PeoManageSoft.Business.Application.User.New;
 using PeoManageSoft.Business.Application.User.Read;
@@ -23,6 +24,7 @@ namespace PeoManageSoft.Business.Application.User
         {
             services.AddScoped<IUserApplicationFacade, UserApplicationFacade>();
             services.AddScoped<INewApplication, NewApplication>();
+            services.AddScoped<IChangeApplication, ChangeApplication>();
             services.AddScoped<IDeleteApplication, DeleteApplication>();
             services.AddScoped<IReadApplication, ReadApplication>();
             services.AddScoped<IReadAllApplication, ReadAllApplication>();

@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Newtonsoft.Json;
 using PeoManageSoft.Business.Application.User;
+using PeoManageSoft.Business.Application.User.Change;
 using PeoManageSoft.Business.Application.User.Delete;
 using PeoManageSoft.Business.Application.User.New;
 using PeoManageSoft.Business.Application.User.Read;
@@ -175,6 +176,43 @@ namespace PeoManageSoft.Api.Controllers.Users
         }
 
         /// <summary>
+        /// Updates an user data.
+        /// </summary>
+        /// <param name="request">Request data</param>
+        [ApiExplorerSettings(GroupName = "Users")]
+        [HttpPut()]
+        [ApiVersion("1.0")]
+        [Route("{v:apiVersion}")]
+        [TypeFilter(typeof(LogFilterAttribute))]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [SwaggerOperation(
+            Summary = "Update User",
+            Description = "Updates an user data."
+        )]
+        public async Task<IActionResult> UpdateAsync([BindRequired] ChangeRequest request)
+        {
+            return await TryActionResultAsync(async stopwatch =>
+            {
+                string methodName = nameof(UpdateAsync);
+
+                _Logger.LogInformation(GetMethodBeginMessage(methodName));
+
+                _Logger.DebugIsEnabled(() => string.Concat("Request: ", JsonConvert.SerializeObject(request)));
+
+                await _facade.UpdateAsync(request).ConfigureAwait(false);
+
+                _Logger.LogInformation(GetMethodEndMessage(methodName, stopwatch.StopAndGetMilliseconds()));
+
+                return NoContent();
+            }).ConfigureAwait(false);
+        }
+
+        /// <summary>
         /// Removes an user.
         /// </summary>
         /// <param name="id">User id</param>
@@ -210,7 +248,6 @@ namespace PeoManageSoft.Api.Controllers.Users
                 return NoContent();
             }).ConfigureAwait(false);
         }
-
 
         #endregion
 

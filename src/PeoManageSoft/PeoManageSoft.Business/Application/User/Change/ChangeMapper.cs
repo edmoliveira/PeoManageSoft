@@ -1,23 +1,23 @@
 ﻿using AutoMapper;
-using PeoManageSoft.Business.Infrastructure.Repositories.User;
+using PeoManageSoft.Business.Domain.Commands.User.Update;
 
-namespace PeoManageSoft.Business.Domain.Commands.User.Update
+namespace PeoManageSoft.Business.Application.User.Change
 {
     /// <summary>
     /// Configuration for maps.
     /// </summary>
-    internal class UpdateMapper : Profile
+    internal class ChangeMapper : Profile
     {
         #region Constructors
 
         /// <summary>
-        /// Initializes a new instance of the PeoManageSoft.Business.Domain.Commands.User.Update.UpdateMapper class.
+        /// Initializes a new instance of the PeoManageSoft.Business.Application.User.Change.ChangeMapper class.
         /// </summary>
-        public UpdateMapper()
+        public ChangeMapper()
         {
-            CreateMap<UpdateRequest, UserEntity>()
+            CreateMap<ChangeRequest, UpdateRequest>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
-                .ForMember(dest => dest.Role, opt => opt.MapFrom(src => (int)src.Role))
+                .ForMember(dest => dest.Role, opt => opt.MapFrom(src => src.Role))
                 .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name))
                 .ForMember(dest => dest.ShortName, opt => opt.MapFrom(src => src.ShortName))
                 .ForMember(dest => dest.TitleId, opt => opt.MapFrom(src => src.TitleId))

@@ -20,7 +20,7 @@ namespace PeoManageSoft.Business.Domain.Commands.User
         public static void AddUserCommandProfiles(this IMapperConfigurationExpression configuration)
         {
             configuration.AddProfile<AddMapper>();
-            configuration.AddProfile<UpdateMapper>(); 
+            configuration.AddProfile<UpdateMapper>();
         }
 
         #endregion

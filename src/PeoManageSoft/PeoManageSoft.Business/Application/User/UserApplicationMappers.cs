@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using PeoManageSoft.Business.Application.User.Change;
 using PeoManageSoft.Business.Application.User.Delete;
 using PeoManageSoft.Business.Application.User.New;
 using PeoManageSoft.Business.Application.User.Read;
@@ -22,6 +23,7 @@ namespace PeoManageSoft.Business.Application.User
         public static void AddUserApplicationProfiles(this IMapperConfigurationExpression configuration)
         {
             configuration.AddProfile<NewMapper>();
+            configuration.AddProfile<ChangeMapper>();
             configuration.AddProfile<DeleteMapper>();
             configuration.AddProfile<ReadMapper>();
             configuration.AddProfile<ReadAllMapper>();

@@ -1,4 +1,5 @@
-﻿using PeoManageSoft.Business.Application.User.Delete;
+﻿using PeoManageSoft.Business.Application.User.Change;
+using PeoManageSoft.Business.Application.User.Delete;
 using PeoManageSoft.Business.Application.User.New;
 using PeoManageSoft.Business.Application.User.Read;
 using PeoManageSoft.Business.Application.User.Read.Response;
@@ -23,6 +24,10 @@ namespace PeoManageSoft.Business.Application.User
         /// New user application layer.
         /// </summary>
         private readonly Lazy<INewApplication> _newApplication;
+        /// <summary>
+        /// Change user application layer.
+        /// </summary>
+        private readonly Lazy<IChangeApplication> _changeApplication;
         /// <summary>
         /// Delete user application layer.
         /// </summary>
@@ -49,6 +54,7 @@ namespace PeoManageSoft.Business.Application.User
             _provider = provider;
 
             _newApplication = new Lazy<INewApplication>(() => GetService<INewApplication>());
+            _changeApplication = new Lazy<IChangeApplication>(() => GetService<IChangeApplication>());
             _deleteApplication = new Lazy<IDeleteApplication>(() => GetService<IDeleteApplication>());
             _readApplication = new Lazy<IReadApplication>(() => GetService<IReadApplication>());
             _readAllApplication = new Lazy<IReadAllApplication>(() => GetService<IReadAllApplication>());
@@ -71,6 +77,16 @@ namespace PeoManageSoft.Business.Application.User
         public async Task<NewResponse> AddAsync(NewRequest request)
         {
             return await _newApplication.Value.HandleAsync(request);
+        }
+
+        /// <summary>
+        /// Updates an user data and asynchronously using Task.
+        /// </summary>
+        /// <param name="request">Request data</param>
+        /// <returns>Represents an asynchronous operation.</returns>
+        public async Task UpdateAsync(ChangeRequest request)
+        {
+            await _changeApplication.Value.HandleAsync(request);
         }
 
         /// <summary>

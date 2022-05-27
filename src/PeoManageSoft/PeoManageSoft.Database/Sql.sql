@@ -1,11 +1,11 @@
 ﻿CREATE TABLE Title (
 	Id BIGINT IDENTITY PRIMARY KEY NOT NULL,
 	IsActive BIT NOT NULL, 
-	Name VARCHAR ( 200 ) NOT NULL UNIQUE,
-	RequestId VARCHAR ( 500 ) NOT NULL,
-	CreationUser VARCHAR ( 70 ) NOT NULL,
+	Name NVARCHAR ( 200 ) NOT NULL UNIQUE,
+	RequestId NVARCHAR ( 500 ) NOT NULL,
+	CreationUser NVARCHAR ( 70 ) NOT NULL,
 	CreationDate DATETIME NOT NULL,
-	UpdatedUser VARCHAR ( 70 ) NULL,
+	UpdatedUser NVARCHAR ( 70 ) NULL,
 	UpdatedDate DATETIME NULL
 );
 GO
@@ -13,11 +13,11 @@ GO
 CREATE TABLE Department (
 	Id BIGINT IDENTITY PRIMARY KEY NOT NULL,
 	IsActive BIT NOT NULL, 
-	Name VARCHAR ( 200 ) NOT NULL UNIQUE,
-	RequestId VARCHAR ( 500 ) NOT NULL,
-	CreationUser VARCHAR ( 70 ) NOT NULL,
+	Name NVARCHAR ( 200 ) NOT NULL UNIQUE,
+	RequestId NVARCHAR ( 500 ) NOT NULL,
+	CreationUser NVARCHAR ( 70 ) NOT NULL,
 	CreationDate DATETIME NOT NULL,
-	UpdatedUser VARCHAR ( 70 ) NULL,
+	UpdatedUser NVARCHAR ( 70 ) NULL,
 	UpdatedDate DATETIME NULL
 );
 GO
@@ -25,21 +25,21 @@ GO
 CREATE TABLE IUser (
 	Id BIGINT IDENTITY PRIMARY KEY NOT NULL,
 	IsActive BIT NOT NULL, 
-	Login VARCHAR ( 70 ) NOT NULL UNIQUE,
-	Password VARCHAR ( 500 ) NOT NULL,
+	Login NVARCHAR ( 70 ) NOT NULL UNIQUE,
+	Password NVARCHAR ( 500 ) NOT NULL,
 	Role INTEGER NOT NULL,
-	Name VARCHAR ( 200 ) NOT NULL,
-	ShortName VARCHAR ( 50 ) NOT NULL,
+	Name NVARCHAR ( 200 ) NOT NULL,
+	ShortName NVARCHAR ( 50 ) NOT NULL,
 	TitleId BIGINT NOT NULL,
 	DepartmentId BIGINT NOT NULL,
-	Email VARCHAR ( 500 ) NOT NULL UNIQUE,
-	BussinessPhone VARCHAR ( 20 ) NULL,
-	MobilePhone VARCHAR ( 20 ) NULL,
-	Location VARCHAR ( 20 ) NULL,
-	RequestId VARCHAR ( 500 ) NOT NULL,
-	CreationUser VARCHAR ( 70 ) NOT NULL,
+	Email NVARCHAR ( 500 ) NOT NULL UNIQUE,
+	BussinessPhone NVARCHAR ( 20 ) NULL,
+	MobilePhone NVARCHAR ( 20 ) NULL,
+	Location NVARCHAR ( 50 ) NULL,
+	RequestId NVARCHAR ( 500 ) NOT NULL,
+	CreationUser NVARCHAR ( 70 ) NOT NULL,
 	CreationDate DATETIME NOT NULL,
-	UpdatedUser VARCHAR ( 70 ) NULL,
+	UpdatedUser NVARCHAR ( 70 ) NULL,
 	UpdatedDate DATETIME NULL,
 	CONSTRAINT FK_Title FOREIGN KEY(TitleId) REFERENCES Title(Id),
 	CONSTRAINT FK_Department FOREIGN KEY(DepartmentId) REFERENCES Department(Id)
@@ -48,19 +48,19 @@ GO
 
 CREATE PROCEDURE sp_insert_user
 	@IsActive BIT, 
-	@Login VARCHAR ( 70 ),
-	@Password VARCHAR ( 500 ),
+	@Login NVARCHAR ( 70 ),
+	@Password NVARCHAR ( 500 ),
 	@Role INTEGER,
-	@Name VARCHAR ( 200 ) ,
-	@ShortName VARCHAR ( 50 ) ,
+	@Name NVARCHAR ( 200 ) ,
+	@ShortName NVARCHAR ( 50 ) ,
 	@TitleId BIGINT,
 	@DepartmentId BIGINT,
-	@Email VARCHAR ( 500 ),
-	@BussinessPhone VARCHAR ( 20 ) ,
-	@MobilePhone VARCHAR ( 20 ) ,
-	@Location VARCHAR ( 20 ) ,
-	@RequestId VARCHAR ( 500 ),
-	@CreationUser VARCHAR ( 70 ),
+	@Email NVARCHAR ( 500 ),
+	@BussinessPhone NVARCHAR ( 20 ) ,
+	@MobilePhone NVARCHAR ( 20 ) ,
+	@Location NVARCHAR ( 50 ) ,
+	@RequestId NVARCHAR ( 500 ),
+	@CreationUser NVARCHAR ( 70 ),
 	@CreationDate DATETIME
 AS
 BEGIN 
@@ -101,6 +101,41 @@ BEGIN
 		@CreationUser,
 		@CreationDate	
 	);
+END;
+GO
+
+CREATE PROCEDURE sp_update_user
+	@Id BIGINT,
+	@IsActive BIT, 
+	@Password NVARCHAR ( 500 ),
+	@Role INTEGER,
+	@Name NVARCHAR ( 200 ) ,
+	@ShortName NVARCHAR ( 50 ) ,
+	@TitleId BIGINT,
+	@DepartmentId BIGINT,
+	@Email NVARCHAR ( 500 ),
+	@BussinessPhone NVARCHAR ( 20 ) ,
+	@MobilePhone NVARCHAR ( 20 ) ,
+	@RequestId NVARCHAR ( 500 ),
+	@UpdatedUser NVARCHAR ( 70 ),
+	@UpdatedDate DATETIME
+AS
+BEGIN 
+	UPDATE dbo.IUser
+	   SET IsActive = @IsActive
+		  ,Role = @Role
+		  ,Name = @Name
+		  ,ShortName = @ShortName
+		  ,TitleId = @TitleId
+		  ,DepartmentId = @DepartmentId
+		  ,Email = @Email
+		  ,BussinessPhone = @BussinessPhone
+		  ,MobilePhone = @MobilePhone
+		  ,RequestId = @RequestId
+		  ,UpdatedUser = @UpdatedUser
+		  ,UpdatedDate = @UpdatedDate
+	 WHERE 
+		Id = @Id
 END;
 GO
 

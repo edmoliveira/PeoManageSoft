@@ -17,7 +17,7 @@
         /// <returns>The object List[T]</returns>
         public static List<T> AddIf<T>(this List<T> source, Func<bool> predicate, T item)
         {
-            if (predicate()) 
+            if (predicate())
             {
                 source.Add(item);
             }

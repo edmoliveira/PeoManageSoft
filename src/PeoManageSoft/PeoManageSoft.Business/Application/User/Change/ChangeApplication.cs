@@ -1,21 +1,21 @@
 ﻿using AutoMapper;
 using Microsoft.Extensions.Logging;
-using PeoManageSoft.Business.Domain.Commands.User.Remove;
+using PeoManageSoft.Business.Domain.Commands.User.Update;
 using PeoManageSoft.Business.Infrastructure.Helpers.Extensions;
 
-namespace PeoManageSoft.Business.Application.User.Delete
+namespace PeoManageSoft.Business.Application.User.Change
 {
     /// <summary>
-    /// Delete user application layer.
+    /// Change user application layer.
     /// </summary>
-    internal class DeleteApplication : IDeleteApplication
+    internal class ChangeApplication : IChangeApplication
     {
         #region Fields
 
         /// <summary>
-        ///  Handles all commands to remove the user.
+        ///  Handles all commands to update the user.
         /// </summary>
-        private readonly IRemoveHandler _removeHandler;
+        private readonly IUpdateHandler _updateHandler;
         /// <summary>
         /// Data Mapper 
         /// </summary>
@@ -23,25 +23,25 @@ namespace PeoManageSoft.Business.Application.User.Delete
         /// <summary>
         /// Log
         /// </summary>
-        private readonly ILogger<DeleteApplication> _logger;
+        private readonly ILogger<ChangeApplication> _logger;
 
         #endregion
 
         #region Constructors
 
         /// <summary>
-        /// Initializes a new instance of the PeoManageSoft.Business.Application.User.Delete.DeleteApplication class.
+        /// Initializes a new instance of the PeoManageSoft.Business.Application.User.Change.ChangeApplication class.
         /// </summary>
-        /// <param name="removeHandler">Handles all commands to remove the user.</param>
+        /// <param name="updateHandler">Handles all commands to update the user.</param>
         /// <param name="mapper">Data Mapper </param>
         /// <param name="logger">Log</param>
-        public DeleteApplication(
-                IRemoveHandler removeHandler,
+        public ChangeApplication(
+                IUpdateHandler updateHandler,
                 IMapper mapper,
-                ILogger<DeleteApplication> logger
+                ILogger<ChangeApplication> logger
             )
         {
-            _removeHandler = removeHandler;
+            _updateHandler = updateHandler;
             _mapper = mapper;
             _logger = logger;
         }
@@ -57,13 +57,13 @@ namespace PeoManageSoft.Business.Application.User.Delete
         /// </summary>
         /// <param name="request">Request for the application layer.</param>
         /// <returns>Represents an asynchronous operation.</returns>
-        public async Task HandleAsync(DeleteRequest request)
+        public async Task HandleAsync(ChangeRequest request)
         {
             string methodName = nameof(HandleAsync);
 
             _logger.LogBeginInformation(methodName);
 
-            await _removeHandler.HandleAsync(_mapper.Map<RemoveRequest>(request)).ConfigureAwait(false);
+            await _updateHandler.HandleAsync(_mapper.Map<UpdateRequest>(request)).ConfigureAwait(false);
 
             _logger.LogEndInformation(methodName);
         }

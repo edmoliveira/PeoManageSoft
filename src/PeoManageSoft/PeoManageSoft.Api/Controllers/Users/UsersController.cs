@@ -3,11 +3,14 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Newtonsoft.Json;
 using PeoManageSoft.Business.Application.User;
 using PeoManageSoft.Business.Application.User.New;
+using PeoManageSoft.Business.Application.User.Read;
+using PeoManageSoft.Business.Application.User.Read.Response;
 using PeoManageSoft.Business.Application.User.ReadAll.Response;
 using PeoManageSoft.Business.Infrastructure.Helpers.Controllers;
 using PeoManageSoft.Business.Infrastructure.Helpers.Extensions;
 using PeoManageSoft.Business.Infrastructure.Helpers.Filters;
 using Swashbuckle.AspNetCore.Annotations;
+using System.ComponentModel.DataAnnotations;
 
 namespace PeoManageSoft.Api.Controllers.Users
 {
@@ -50,6 +53,46 @@ namespace PeoManageSoft.Api.Controllers.Users
         #region public
 
         /// <summary>
+        /// Gets the user by id.
+        /// </summary>
+        /// <param name="id">User id</param>
+        /// <returns>UserResponse</returns>
+        [ApiExplorerSettings(GroupName = "Users")]
+        [HttpGet()]
+        [ApiVersion("1.0")]
+        [Route("{id}/{v:apiVersion}")]
+        [TypeFilter(typeof(LogFilterAttribute))]
+        [ProducesResponseType(typeof(ReadResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [SwaggerOperation(
+            Summary = "Get User",
+            Description = "Gets the user by id."
+        )]
+        public async Task<IActionResult> GetAsync([Required] long id)
+        {
+            return await TryActionResultAsync(async stopwatch =>
+            {
+                string methodName = nameof(GetAsync);
+
+                _Logger.LogInformation(GetMethodBeginMessage(methodName));
+
+                _Logger.DebugIsEnabled(() => string.Concat("Request: ", id));
+
+                ReadResponse response = await _facade.GetAsync(new ReadRequest { Id = id }).ConfigureAwait(false);
+
+                _Logger.DebugIsEnabled(() => string.Concat("Response: ", JsonConvert.SerializeObject(response)));
+
+                _Logger.LogInformation(GetMethodEndMessage(methodName, stopwatch.StopAndGetMilliseconds()));
+
+                return Ok(response);
+            }).ConfigureAwait(false);
+        }
+
+        /// <summary>
         /// Gets all registered users.
         /// </summary>
         /// <returns>IEnumerable<ReadAllResponse></returns>
@@ -61,7 +104,6 @@ namespace PeoManageSoft.Api.Controllers.Users
         [ProducesResponseType(typeof(IEnumerable<ReadAllResponse>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [SwaggerOperation(

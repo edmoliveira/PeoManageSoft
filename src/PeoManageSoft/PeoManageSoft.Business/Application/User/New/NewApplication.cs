@@ -36,7 +36,7 @@ namespace PeoManageSoft.Business.Application.User.New
         #region Constructors
 
         /// <summary>
-        /// Initializes a new instance of the PeoManageSoft.Business.Application.User.New.NewUserApplication class.
+        /// Initializes a new instance of the PeoManageSoft.Business.Application.User.New.NewApplication class.
         /// </summary>
         /// <param name="addHandler">Handles all commands to add the user.</param>
         /// <param name="appConfig">Application Configuration</param>

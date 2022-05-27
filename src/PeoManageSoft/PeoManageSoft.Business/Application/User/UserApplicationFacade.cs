@@ -1,4 +1,6 @@
 ﻿using PeoManageSoft.Business.Application.User.New;
+using PeoManageSoft.Business.Application.User.Read;
+using PeoManageSoft.Business.Application.User.Read.Response;
 using PeoManageSoft.Business.Application.User.ReadAll;
 using PeoManageSoft.Business.Application.User.ReadAll.Response;
 using PeoManageSoft.Business.Infrastructure.Helpers.Exceptions;
@@ -21,6 +23,10 @@ namespace PeoManageSoft.Business.Application.User
         /// </summary>
         private readonly Lazy<INewApplication> _newApplication;
         /// <summary>
+        /// Read user application layer.
+        /// </summary>
+        private readonly Lazy<IReadApplication> _readApplication;
+        /// <summary>
         /// Read all user application layer.
         /// </summary>
         private readonly Lazy<IReadAllApplication> _readAllApplication;
@@ -38,6 +44,7 @@ namespace PeoManageSoft.Business.Application.User
             _provider = provider;
 
             _newApplication = new Lazy<INewApplication>(() => GetService<INewApplication>());
+            _readApplication = new Lazy<IReadApplication>(() => GetService<IReadApplication>());
             _readAllApplication = new Lazy<IReadAllApplication>(() => GetService<IReadAllApplication>());
         }
 
@@ -61,9 +68,21 @@ namespace PeoManageSoft.Business.Application.User
         }
 
         /// <summary>
-        /// Gets all registered users and asynchronously using Task.
+        /// Gets the user and asynchronously using Task.
         /// </summary>
         /// <param name="request">Request data</param>
+        /// <returns>
+        /// Task: Represents an asynchronous operation. 
+        /// Response data.
+        /// </returns>
+        public async Task<ReadResponse> GetAsync(ReadRequest request)
+        {
+            return await _readApplication.Value.HandleAsync(request);
+        }
+
+        /// <summary>
+        /// Gets all registered users and asynchronously using Task.
+        /// </summary>
         /// <returns>
         /// Task: Represents an asynchronous operation. 
         /// Response data.

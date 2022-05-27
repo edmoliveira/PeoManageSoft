@@ -10,7 +10,7 @@ namespace PeoManageSoft.Business.Application.User.New
         #region Constructors
 
         /// <summary>
-        /// Initializes a new instance of the PeoManageSoft.Business.Application.User.New.NewUserValidator class.
+        /// Initializes a new instance of the PeoManageSoft.Business.Application.User.New.NewValidator class.
         /// </summary>
         public NewValidator()
         {

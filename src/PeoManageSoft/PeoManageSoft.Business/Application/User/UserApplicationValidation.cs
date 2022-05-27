@@ -1,6 +1,7 @@
 ﻿using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 using PeoManageSoft.Business.Application.User.New;
+using PeoManageSoft.Business.Application.User.Read;
 
 namespace PeoManageSoft.Business.Application.User
 {
@@ -20,6 +21,7 @@ namespace PeoManageSoft.Business.Application.User
         public static void AddUserApplicationValidation(this IServiceCollection services)
         {
             services.AddScoped<IValidator<NewRequest>, NewValidator>();
+            services.AddScoped<IValidator<ReadRequest>, ReadValidator>();
         }
 
         #endregion

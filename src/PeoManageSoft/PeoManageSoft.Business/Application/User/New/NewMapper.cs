@@ -11,7 +11,7 @@ namespace PeoManageSoft.Business.Application.User.New
         #region Constructors
 
         /// <summary>
-        /// Initializes a new instance of the PeoManageSoft.Business.Application.User.New.NewUserMapper class.
+        /// Initializes a new instance of the PeoManageSoft.Business.Application.User.New.NewMapper class.
         /// </summary>
         public NewMapper()
         {

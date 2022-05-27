@@ -1,4 +1,5 @@
-﻿using PeoManageSoft.Business.Application.User.New;
+﻿using PeoManageSoft.Business.Application.User.Delete;
+using PeoManageSoft.Business.Application.User.New;
 using PeoManageSoft.Business.Application.User.Read;
 using PeoManageSoft.Business.Application.User.Read.Response;
 using PeoManageSoft.Business.Application.User.ReadAll;
@@ -23,6 +24,10 @@ namespace PeoManageSoft.Business.Application.User
         /// </summary>
         private readonly Lazy<INewApplication> _newApplication;
         /// <summary>
+        /// Delete user application layer.
+        /// </summary>
+        private readonly Lazy<IDeleteApplication> _deleteApplication;
+        /// <summary>
         /// Read user application layer.
         /// </summary>
         private readonly Lazy<IReadApplication> _readApplication;
@@ -44,6 +49,7 @@ namespace PeoManageSoft.Business.Application.User
             _provider = provider;
 
             _newApplication = new Lazy<INewApplication>(() => GetService<INewApplication>());
+            _deleteApplication = new Lazy<IDeleteApplication>(() => GetService<IDeleteApplication>());
             _readApplication = new Lazy<IReadApplication>(() => GetService<IReadApplication>());
             _readAllApplication = new Lazy<IReadAllApplication>(() => GetService<IReadAllApplication>());
         }
@@ -65,6 +71,16 @@ namespace PeoManageSoft.Business.Application.User
         public async Task<NewResponse> AddAsync(NewRequest request)
         {
             return await _newApplication.Value.HandleAsync(request);
+        }
+
+        /// <summary>
+        /// Removes an user and asynchronously using Task.
+        /// </summary>
+        /// <param name="request">Request data</param>
+        /// <returns>Represents an asynchronous operation.</returns>
+        public async Task RemoveAsync(DeleteRequest request)
+        {
+            await _deleteApplication.Value.HandleAsync(request);
         }
 
         /// <summary>

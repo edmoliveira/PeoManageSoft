@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Newtonsoft.Json;
 using PeoManageSoft.Business.Application.User;
+using PeoManageSoft.Business.Application.User.Delete;
 using PeoManageSoft.Business.Application.User.New;
 using PeoManageSoft.Business.Application.User.Read;
 using PeoManageSoft.Business.Application.User.Read.Response;
@@ -172,6 +173,44 @@ namespace PeoManageSoft.Api.Controllers.Users
                 return Ok(response);
             }).ConfigureAwait(false);
         }
+
+        /// <summary>
+        /// Removes an user.
+        /// </summary>
+        /// <param name="id">User id</param>
+        [ApiExplorerSettings(GroupName = "Users")]
+        [HttpDelete()]
+        [ApiVersion("1.0")]
+        [Route("{id}/{v:apiVersion}")]
+        [TypeFilter(typeof(LogFilterAttribute))]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [SwaggerOperation(
+            Summary = "Remove User",
+            Description = "Removes an user."
+        )]
+        public async Task<IActionResult> RemoveAsync([Required] long id)
+        {
+            return await TryActionResultAsync(async stopwatch =>
+            {
+                string methodName = nameof(RemoveAsync);
+
+                _Logger.LogInformation(GetMethodBeginMessage(methodName));
+
+                _Logger.DebugIsEnabled(() => string.Concat("Request: ", id));
+
+                await _facade.RemoveAsync(new DeleteRequest { Id = id }).ConfigureAwait(false);
+
+                _Logger.LogInformation(GetMethodEndMessage(methodName, stopwatch.StopAndGetMilliseconds()));
+
+                return NoContent();
+            }).ConfigureAwait(false);
+        }
+
 
         #endregion
 

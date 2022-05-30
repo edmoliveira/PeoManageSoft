@@ -67,14 +67,14 @@ namespace PeoManageSoft.Business.Domain.Commands.User.Update
 
             _logger.LogBeginInformation(methodName);
 
-            bool exists = await _repository.ExistsAsync(scope, request.Id).ConfigureAwait(false);
-
-            if (!exists)
-            {
-                throw new RequestException(HttpStatusCode.NotFound, "User not found!");
-            }
-
             UserEntity entity = _mapper.Map<UserEntity>(request);
+
+            var validationResult = await _repository.ValidateUpdateAsync(scope, entity).ConfigureAwait(false);
+
+            if (validationResult.Any())
+            {
+                throw new RequestException(HttpStatusCode.BadRequest, validationResult.ToList());
+            }
 
             await _repository.UpdateAsync(scope, entity).ConfigureAwait(false);
 

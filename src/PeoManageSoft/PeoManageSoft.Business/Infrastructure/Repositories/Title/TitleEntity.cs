@@ -121,6 +121,31 @@ namespace PeoManageSoft.Business.Infrastructure.Repositories.Title
             };
         }
 
+        /// <summary>
+        /// Get the parameters to the validate insert sql statement
+        /// </summary>
+        /// <returns>Parameters</returns>
+        object IEntity.GetValidateInsertParameters()
+        {
+            return new
+            {
+                Name
+            };
+        }
+
+        /// <summary>
+        /// Get the parameters to the validate update sql statement
+        /// </summary>
+        /// <returns>Parameters</returns>
+        object IEntity.GetValidateUpdateParameters()
+        {
+            return new
+            {
+                Id,
+                Name
+            };
+        }
+
         #endregion
 
         #endregion

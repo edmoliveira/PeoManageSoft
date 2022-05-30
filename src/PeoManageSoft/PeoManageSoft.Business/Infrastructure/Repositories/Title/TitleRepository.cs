@@ -234,6 +234,74 @@ namespace PeoManageSoft.Business.Infrastructure.Repositories.Title
             _logger.LogEndInformation(methodName);
         }
 
+        /// <summary>
+        /// Validates whether inserting into the title table is allowed and asynchronously using Task.
+        /// </summary>
+        /// <param name="scope">Transactional scope</param>
+        ///  <param name="entity">Title Entity</param>
+        /// <returns>
+        /// Task: Represents an asynchronous operation. 
+        /// Returns an enumerator that iterates through the validation collection.
+        /// </returns>
+        public async Task<IEnumerable<string>> ValidateInsertAsync(IScope scope, TitleEntity entity)
+        {
+            string methodName = nameof(ValidateInsertAsync);
+
+            _logger.LogBeginInformation(methodName);
+
+            IContentScope contentScope = (IContentScope)scope;
+            (string sqlStatement,
+             CommandType commandType) = TitleEntityConfig.GetValidateInsertSqlStatement();
+
+            IEntity ientity = entity;
+
+            IEnumerable<string> result = await _dbContext.QueryAsync<string>(
+                contentScope.Connection,
+                sqlStatement,
+                ientity.GetValidateInsertParameters(),
+                contentScope.DbTransaction,
+                commandType
+            ).ConfigureAwait(false);
+
+            _logger.LogEndInformation(methodName);
+
+            return result;
+        }
+
+        /// <summary>
+        /// Validates whether updating into the title table is allowed and asynchronously using Task.
+        /// </summary>
+        /// <param name="scope">Transactional scope</param>
+        ///  <param name="entity">Title entity</param>
+        /// <returns>
+        /// Task: Represents an asynchronous operation. 
+        /// Returns an enumerator that iterates through the validation collection.
+        /// </returns>
+        public async Task<IEnumerable<string>> ValidateUpdateAsync(IScope scope, TitleEntity entity)
+        {
+            string methodName = nameof(ValidateUpdateAsync);
+
+            _logger.LogBeginInformation(methodName);
+
+            IContentScope contentScope = (IContentScope)scope;
+            (string sqlStatement,
+             CommandType commandType) = TitleEntityConfig.GetValidateUpdateSqlStatement();
+
+            IEntity ientity = entity;
+
+            IEnumerable<string> result = await _dbContext.QueryAsync<string>(
+                contentScope.Connection,
+                sqlStatement,
+                ientity.GetValidateUpdateParameters(),
+                contentScope.DbTransaction,
+                commandType
+            ).ConfigureAwait(false);
+
+            _logger.LogEndInformation(methodName);
+
+            return result;
+        }
+
         #endregion
 
         #endregion

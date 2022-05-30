@@ -55,6 +55,16 @@ namespace PeoManageSoft.Business.Infrastructure.Repositories.Interfaces
         ///  <param name="applicationContext"></param>
         /// <returns>Parameters</returns>
         object GetUpdateParameters(IApplicationContext applicationContext);
+        /// <summary>
+        /// Get the parameters to the validate insert sql statement
+        /// </summary>
+        /// <returns>Parameters</returns>
+        object GetValidateInsertParameters();
+        /// <summary>
+        /// Get the parameters to the validate update sql statement
+        /// </summary>
+        /// <returns>Parameters</returns>
+        object GetValidateUpdateParameters();
 
         #endregion
     }

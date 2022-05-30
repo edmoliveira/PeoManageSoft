@@ -219,3 +219,70 @@ BEGIN
 		U.Id = @Id
 END;
 GO
+
+CREATE PROCEDURE sp_validate_insert_user
+	@Login NVARCHAR ( 70 ),
+	@TitleId BIGINT,
+	@DepartmentId BIGINT,
+	@Email NVARCHAR ( 500 )
+AS
+BEGIN 
+	DECLARE @LoginExists AS BIT = 0
+	DECLARE @EmailExists AS BIT = 0
+
+	DECLARE @TableErrors AS TABLE (
+		Message NVARCHAR(MAX) NOT NULL
+	);
+
+	SELECT  @LoginExists = 1 FROM dbo.IUser Where UPPER(trim(Login)) = UPPER(trim(@Login))
+	SELECT  @EmailExists = 1 FROM dbo.IUser Where UPPER(trim(Email)) = UPPER(trim(@Email))
+
+	IF @LoginExists = 1
+		INSERT INTO @TableErrors VALUES('Login already exists!')
+	
+	IF NOT EXISTS(SELECT * FROM dbo.Title Where Id = @TitleId)
+		INSERT INTO @TableErrors VALUES('TitleId does not exist!')
+
+	IF NOT EXISTS(SELECT * FROM dbo.Department Where Id = @DepartmentId)
+		INSERT INTO @TableErrors VALUES('DepartmentId does not exist!')
+
+	IF @EmailExists = 1
+		INSERT INTO @TableErrors VALUES('Email already exists!')
+
+	SELECT Message FROM @TableErrors
+END;
+GO
+
+CREATE PROCEDURE sp_validate_update_user
+	@Id BIGINT,
+	@TitleId BIGINT,
+	@DepartmentId BIGINT,
+	@Email NVARCHAR ( 500 )
+AS
+BEGIN 
+	DECLARE @LoginExists AS BIT = 0
+	DECLARE @TitleIdExists AS BIT = 0
+	DECLARE @DepartmentIdExists AS BIT = 0
+	DECLARE @EmailExists AS BIT = 0
+
+	DECLARE @TableErrors AS TABLE (
+		Message NVARCHAR(MAX) NOT NULL
+	);
+
+	SELECT  @EmailExists = 1 FROM dbo.IUser Where UPPER(trim(Email)) = UPPER(trim(@Email)) AND Id <> @Id
+
+	IF NOT EXISTS(SELECT * FROM dbo.Title Where Id = @TitleId)
+		INSERT INTO @TableErrors VALUES('TitleId does not exist!')
+
+	IF NOT EXISTS(SELECT * FROM dbo.Department Where Id = @DepartmentId)
+		INSERT INTO @TableErrors VALUES('DepartmentId does not exist!')
+
+	IF NOT EXISTS(SELECT * FROM dbo.IUser Where Id = @Id)
+		INSERT INTO @TableErrors VALUES('UserId does not exist!')
+	ELSE
+		IF @EmailExists = 1
+			INSERT INTO @TableErrors VALUES('Email already exists!')
+
+	SELECT Message FROM @TableErrors
+END;
+GO

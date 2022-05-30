@@ -76,6 +76,28 @@ namespace PeoManageSoft.Business.Infrastructure.Repositories.Title
             return (sqlStatement: "sp_update_title", CommandType.StoredProcedure);
         }
 
+        /// <summary>
+        /// Stored procedures "VALIDATE INSERT"
+        /// </summary>
+        /// <returns>
+        /// Returns the sql statement and the command type.
+        /// </returns>
+        public static (string sqlStatement, CommandType commandType) GetValidateInsertSqlStatement()
+        {
+            return (sqlStatement: "sp_validate_insert_title", CommandType.StoredProcedure);
+        }
+
+        /// <summary>
+        /// Stored procedures "VALIDATE UPDATE"
+        /// </summary>
+        /// <returns>
+        /// Returns the sql statement and the command type.
+        /// </returns>
+        public static (string sqlStatement, CommandType commandType) GetValidateUpdateSqlStatement()
+        {
+            return (sqlStatement: "sp_validate_update_title", CommandType.StoredProcedure);
+        }
+
         #endregion
 
         #endregion

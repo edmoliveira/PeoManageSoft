@@ -70,21 +70,14 @@ namespace PeoManageSoft.Business.Domain.Commands.User.Add
 
             _logger.LogBeginInformation(methodName);
 
-            bool titleExists = await _repository.ExistsAsync(scope, request.TitleId).ConfigureAwait(false);
-            bool departmentExists = await _repository.ExistsAsync(scope, request.DepartmentId).ConfigureAwait(false);
-
-            if (!titleExists || !departmentExists)
-            {
-                List<string> messages = new();
-
-                messages
-                    .AddIf(() => !titleExists, "Title not found!")
-                    .AddIf(() => !departmentExists, "Department not found!");
-
-                throw new RequestException(HttpStatusCode.NotFound, messages);
-            }
-
             UserEntity entity = _mapper.Map<UserEntity>(request);
+
+            var validationResult = await _repository.ValidateInsertAsync(scope, entity).ConfigureAwait(false);
+
+            if (validationResult.Any())
+            {
+                throw new RequestException(HttpStatusCode.BadRequest, validationResult.ToList());
+            }
 
             await _repository.InsertAsync(scope, entity).ConfigureAwait(false);
 

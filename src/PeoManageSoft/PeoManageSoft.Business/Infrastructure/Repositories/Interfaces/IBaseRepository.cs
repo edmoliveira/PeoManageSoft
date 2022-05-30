@@ -14,7 +14,7 @@ namespace PeoManageSoft.Business.Infrastructure.Repositories.Interfaces
         /// Creates the record in the <see cref="TEntity"/> table and asynchronously using Task.
         /// </summary>
         /// <param name="scope">Transactional scope</param>
-        /// <param name="entity"><see cref="TEntity"/> entity</param>
+        /// <param name="entity"><see cref="TEntity"/>Entity</param>
         /// <returns>Task: Represents an asynchronous operation.</returns>
         Task InsertAsync(IScope scope, TEntity entity);
         /// <summary>
@@ -58,6 +58,26 @@ namespace PeoManageSoft.Business.Infrastructure.Repositories.Interfaces
         /// Returns an enumerator that iterates through the <see cref="TEntity"/> entity collection.
         /// </returns>
         Task<IEnumerable<TEntity>> SelectAllAsync(IScope scope);
+        /// <summary>
+        /// Validates whether inserting into the <see cref="TEntity"/> table is allowed and asynchronously using Task.
+        /// </summary>
+        /// <param name="scope">Transactional scope</param>
+        ///  <param name="entity"><see cref="TEntity"/> entity</param>
+        /// <returns>
+        /// Task: Represents an asynchronous operation. 
+        /// Returns an enumerator that iterates through the validation collection.
+        /// </returns>
+        Task<IEnumerable<string>> ValidateInsertAsync(IScope scope, TEntity entity);
+        /// <summary>
+        /// Validates whether updating into the <see cref="TEntity"/> table is allowed and asynchronously using Task.
+        /// </summary>
+        /// <param name="scope">Transactional scope</param>
+        ///  <param name="entity"><see cref="TEntity"/> entity</param>
+        /// <returns>
+        /// Task: Represents an asynchronous operation. 
+        /// Returns an enumerator that iterates through the validation collection.
+        /// </returns>
+        Task<IEnumerable<string>> ValidateUpdateAsync(IScope scope, TEntity entity);
 
         #endregion
     }

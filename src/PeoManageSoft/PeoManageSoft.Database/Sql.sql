@@ -107,7 +107,6 @@ GO
 CREATE PROCEDURE sp_update_user
 	@Id BIGINT,
 	@IsActive BIT, 
-	@Password NVARCHAR ( 500 ),
 	@Role INTEGER,
 	@Name NVARCHAR ( 200 ) ,
 	@ShortName NVARCHAR ( 50 ) ,
@@ -284,5 +283,40 @@ BEGIN
 			INSERT INTO @TableErrors VALUES('Email already exists!')
 
 	SELECT Message FROM @TableErrors
+END;
+GO
+
+CREATE PROCEDURE sp_select_auth_user
+	@Username NVARCHAR ( 70 ),
+	@Password NVARCHAR ( 500 )
+AS
+BEGIN 
+	SELECT
+		U.Id,
+		U.IsActive, 
+		U.Login,
+		U.Password,
+		U.Role,
+		U.Name,
+		U.ShortName,		
+		U.Email,
+		U.BussinessPhone,
+		U.MobilePhone,
+		U.Location,
+		U.RequestId,
+		U.CreationUser,
+		U.CreationDate,
+		U.TitleId,
+		T.Id,
+		T.Name,
+		U.DepartmentId,
+		D.Id,
+		D.Name
+	FROM
+		IUser AS U
+			INNER JOIN Title AS T ON U.TitleId = T.Id
+			INNER JOIN Department AS D ON U.DepartmentId = D.Id
+	WHERE
+		U.IsActive = 1 AND U.Login = @Username AND U.Password = @Password
 END;
 GO

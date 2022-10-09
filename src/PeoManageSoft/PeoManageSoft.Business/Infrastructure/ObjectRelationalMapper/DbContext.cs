@@ -256,6 +256,194 @@ namespace PeoManageSoft.Business.Infrastructure.ObjectRelationalMapper
         }
 
         /// <summary>
+        /// Perform a multi-mapping query with 4 input types.
+        /// Executes a query, returning the data typed as TResult.
+        /// </summary>
+        /// <typeparam name="TFirst">The first type in the recordset.</typeparam>
+        /// <typeparam name="TSecond">The second type in the recordset.</typeparam>
+        /// <typeparam name="TThird">The third type in the recordset.</typeparam>
+		/// <typeparam name="TFourth">The fourth type in the recordset.</typeparam>
+        /// <typeparam name="TResult">The combined type to return.</typeparam>
+        /// <param name="connection">The connection to query on.</param>
+        /// <param name="map">The function to map row types to the return type.</param>
+        /// <param name="sqlStatement">The SQL to execute for this query.</param>
+        /// <param name="parameters">The parameters to pass, if any.</param>
+        /// <param name="splitOn">The field we should split and read the second object from (default: "Id").</param>
+        /// <param name="transaction">The transaction to use for this query.</param>
+        /// <param name="commandType">Is it a stored proc or a batch?</param>
+        /// <returns>A sequence of data of the TResult type</returns>
+        public IEnumerable<TResult> Query<TFirst, TSecond, TThird, TFourth, TResult>(IDbConnection connection, Func<TFirst, TSecond, TThird, TFourth, TResult> map, string sqlStatement, object parameters, string splitOn, IDbTransaction transaction = null, CommandType? commandType = null)
+        {
+            return connection.Query(sqlStatement, map, parameters, transaction, true, splitOn, _appConfig.SqlCommandTimeout, commandType);
+        }
+
+        /// <summary>
+        /// Perform a multi-mapping query with 4 input types.
+        /// Executes a query, returning the data typed as TResult and asynchronously using Task.
+        /// </summary>
+        /// <typeparam name="TFirst">The first type in the recordset.</typeparam>
+        /// <typeparam name="TSecond">The second type in the recordset.</typeparam>
+        /// <typeparam name="TThird">The third type in the recordset.</typeparam>
+		/// <typeparam name="TFourth">The fourth type in the recordset.</typeparam>
+        /// <typeparam name="TResult">The combined type to return.</typeparam>
+        /// <param name="connection">The connection to query on.</param>
+        /// <param name="map">The function to map row types to the return type.</param>
+        /// <param name="sqlStatement">The SQL to execute for this query.</param>
+        /// <param name="parameters">The parameters to pass, if any.</param>
+        /// <param name="splitOn">The field we should split and read the second object from (default: "Id").</param>
+        /// <param name="transaction">The transaction to use for this query.</param>
+        /// <param name="commandType">Is it a stored proc or a batch?</param>
+        /// <returns>A sequence of data of the TResult type</returns>
+        public async Task<IEnumerable<TResult>> QueryAsync<TFirst, TSecond, TThird, TFourth, TResult>(IDbConnection connection, Func<TFirst, TSecond, TThird, TFourth, TResult> map, string sqlStatement, object parameters, string splitOn, IDbTransaction transaction = null, CommandType? commandType = null)
+        {
+            return await connection.QueryAsync(sqlStatement, map, parameters, transaction, true, splitOn, _appConfig.SqlCommandTimeout, commandType);
+        }
+
+        /// <summary>
+        /// Perform a multi-mapping query with 5 input types.
+        /// Executes a query, returning the data typed as TResult.
+        /// </summary>
+        /// <typeparam name="TFirst">The first type in the recordset.</typeparam>
+        /// <typeparam name="TSecond">The second type in the recordset.</typeparam>
+        /// <typeparam name="TThird">The third type in the recordset.</typeparam>
+        /// <typeparam name="TFourth">The fourth type in the recordset.</typeparam>
+        /// <typeparam name="TFifth">The fifth type in the recordset.</typeparam>
+        /// <typeparam name="TResult">The combined type to return.</typeparam>
+        /// <param name="connection">The connection to query on.</param>
+        /// <param name="map">The function to map row types to the return type.</param>
+        /// <param name="sqlStatement">The SQL to execute for this query.</param>
+        /// <param name="parameters">The parameters to pass, if any.</param>
+        /// <param name="splitOn">The field we should split and read the second object from (default: "Id").</param>
+        /// <param name="transaction">The transaction to use for this query.</param>
+        /// <param name="commandType">Is it a stored proc or a batch?</param>
+        /// <returns>A sequence of data of the TResult type</returns>
+        public IEnumerable<TResult> Query<TFirst, TSecond, TThird, TFourth, TFifth, TResult>(IDbConnection connection, Func<TFirst, TSecond, TThird, TFourth, TFifth, TResult> map, string sqlStatement, object parameters, string splitOn, IDbTransaction transaction = null, CommandType? commandType = null)
+        {
+            return connection.Query(sqlStatement, map, parameters, transaction, true, splitOn, _appConfig.SqlCommandTimeout, commandType);
+        }
+
+        /// <summary>
+        /// Perform a multi-mapping query with 5 input types.
+        /// Executes a query, returning the data typed as TResult and asynchronously using Task.
+        /// </summary>
+        /// <typeparam name="TFirst">The first type in the recordset.</typeparam>
+        /// <typeparam name="TSecond">The second type in the recordset.</typeparam>
+        /// <typeparam name="TThird">The third type in the recordset.</typeparam>
+		/// <typeparam name="TFourth">The fourth type in the recordset.</typeparam>
+		/// <typeparam name="TFifth">The fifth type in the recordset.</typeparam>
+        /// <typeparam name="TResult">The combined type to return.</typeparam>
+        /// <param name="connection">The connection to query on.</param>
+        /// <param name="map">The function to map row types to the return type.</param>
+        /// <param name="sqlStatement">The SQL to execute for this query.</param>
+        /// <param name="parameters">The parameters to pass, if any.</param>
+        /// <param name="splitOn">The field we should split and read the second object from (default: "Id").</param>
+        /// <param name="transaction">The transaction to use for this query.</param>
+        /// <param name="commandType">Is it a stored proc or a batch?</param>
+        /// <returns>A sequence of data of the TResult type</returns>
+        public async Task<IEnumerable<TResult>> QueryAsync<TFirst, TSecond, TThird, TFourth, TFifth, TResult>(IDbConnection connection, Func<TFirst, TSecond, TThird, TFourth, TFifth, TResult> map, string sqlStatement, object parameters, string splitOn, IDbTransaction transaction = null, CommandType? commandType = null)
+        {
+            return await connection.QueryAsync(sqlStatement, map, parameters, transaction, true, splitOn, _appConfig.SqlCommandTimeout, commandType);
+        }
+
+        /// <summary>
+        /// Perform a multi-mapping query with 6 input types.
+        /// Executes a query, returning the data typed as TResult.
+        /// </summary>
+        /// <typeparam name="TFirst">The first type in the recordset.</typeparam>
+        /// <typeparam name="TSecond">The second type in the recordset.</typeparam>
+        /// <typeparam name="TThird">The third type in the recordset.</typeparam>
+        /// <typeparam name="TFourth">The fourth type in the recordset.</typeparam>
+        /// <typeparam name="TFifth">The fifth type in the recordset.</typeparam>
+        /// <typeparam name="TSixth">The sixth type in the recordset.</typeparam>
+        /// <typeparam name="TResult">The combined type to return.</typeparam>
+        /// <param name="connection">The connection to query on.</param>
+        /// <param name="map">The function to map row types to the return type.</param>
+        /// <param name="sqlStatement">The SQL to execute for this query.</param>
+        /// <param name="parameters">The parameters to pass, if any.</param>
+        /// <param name="splitOn">The field we should split and read the second object from (default: "Id").</param>
+        /// <param name="transaction">The transaction to use for this query.</param>
+        /// <param name="commandType">Is it a stored proc or a batch?</param>
+        /// <returns>A sequence of data of the TResult type</returns>
+        public IEnumerable<TResult> Query<TFirst, TSecond, TThird, TFourth, TFifth, TSixth, TResult>(IDbConnection connection, Func<TFirst, TSecond, TThird, TFourth, TFifth, TSixth, TResult> map, string sqlStatement, object parameters, string splitOn, IDbTransaction transaction = null, CommandType? commandType = null)
+        {
+            return connection.Query(sqlStatement, map, parameters, transaction, true, splitOn, _appConfig.SqlCommandTimeout, commandType);
+        }
+
+        /// <summary>
+        /// Perform a multi-mapping query with 6 input types.
+        /// Executes a query, returning the data typed as TResult and asynchronously using Task.
+        /// </summary>
+        /// <typeparam name="TFirst">The first type in the recordset.</typeparam>
+        /// <typeparam name="TSecond">The second type in the recordset.</typeparam>
+        /// <typeparam name="TThird">The third type in the recordset.</typeparam>
+		/// <typeparam name="TFourth">The fourth type in the recordset.</typeparam>
+		/// <typeparam name="TFifth">The fifth type in the recordset.</typeparam>
+		/// <typeparam name="TSixth">The sixth type in the recordset.</typeparam>
+        /// <typeparam name="TResult">The combined type to return.</typeparam>
+        /// <param name="connection">The connection to query on.</param>
+        /// <param name="map">The function to map row types to the return type.</param>
+        /// <param name="sqlStatement">The SQL to execute for this query.</param>
+        /// <param name="parameters">The parameters to pass, if any.</param>
+        /// <param name="splitOn">The field we should split and read the second object from (default: "Id").</param>
+        /// <param name="transaction">The transaction to use for this query.</param>
+        /// <param name="commandType">Is it a stored proc or a batch?</param>
+        /// <returns>A sequence of data of the TResult type</returns>
+        public async Task<IEnumerable<TResult>> QueryAsync<TFirst, TSecond, TThird, TFourth, TFifth, TSixth, TResult>(IDbConnection connection, Func<TFirst, TSecond, TThird, TFourth, TFifth, TSixth, TResult> map, string sqlStatement, object parameters, string splitOn, IDbTransaction transaction = null, CommandType? commandType = null)
+        {
+            return await connection.QueryAsync(sqlStatement, map, parameters, transaction, true, splitOn, _appConfig.SqlCommandTimeout, commandType);
+        }
+
+        /// <summary>
+        /// Perform a multi-mapping query with 7 input types.
+        /// Executes a query, returning the data typed as TResult.
+        /// </summary>
+        /// <typeparam name="TFirst">The first type in the recordset.</typeparam>
+        /// <typeparam name="TSecond">The second type in the recordset.</typeparam>
+        /// <typeparam name="TThird">The third type in the recordset.</typeparam>
+        /// <typeparam name="TFourth">The fourth type in the recordset.</typeparam>
+        /// <typeparam name="TFifth">The fifth type in the recordset.</typeparam>
+        /// <typeparam name="TSixth">The sixth type in the recordset.</typeparam>
+        /// <typeparam name="TSeventh">The seventh type in the recordset.</typeparam>
+        /// <typeparam name="TResult">The combined type to return.</typeparam>
+        /// <param name="connection">The connection to query on.</param>
+        /// <param name="map">The function to map row types to the return type.</param>
+        /// <param name="sqlStatement">The SQL to execute for this query.</param>
+        /// <param name="parameters">The parameters to pass, if any.</param>
+        /// <param name="splitOn">The field we should split and read the second object from (default: "Id").</param>
+        /// <param name="transaction">The transaction to use for this query.</param>
+        /// <param name="commandType">Is it a stored proc or a batch?</param>
+        /// <returns>A sequence of data of the TResult type</returns>
+        public IEnumerable<TResult> Query<TFirst, TSecond, TThird, TFourth, TFifth, TSixth, TSeventh, TResult>(IDbConnection connection, Func<TFirst, TSecond, TThird, TFourth, TFifth, TSixth, TSeventh, TResult> map, string sqlStatement, object parameters, string splitOn, IDbTransaction transaction = null, CommandType? commandType = null)
+        {
+            return connection.Query(sqlStatement, map, parameters, transaction, true, splitOn, _appConfig.SqlCommandTimeout, commandType);
+        }
+
+        /// <summary>
+        /// Perform a multi-mapping query with 7 input types.
+        /// Executes a query, returning the data typed as TResult and asynchronously using Task.
+        /// </summary>
+        /// <typeparam name="TFirst">The first type in the recordset.</typeparam>
+        /// <typeparam name="TSecond">The second type in the recordset.</typeparam>
+        /// <typeparam name="TThird">The third type in the recordset.</typeparam>
+		/// <typeparam name="TFourth">The fourth type in the recordset.</typeparam>
+		/// <typeparam name="TFifth">The fifth type in the recordset.</typeparam>
+		/// <typeparam name="TSixth">The sixth type in the recordset.</typeparam>
+		/// <typeparam name="TSeventh">The seventh type in the recordset.</typeparam>
+        /// <typeparam name="TResult">The combined type to return.</typeparam>
+        /// <param name="connection">The connection to query on.</param>
+        /// <param name="map">The function to map row types to the return type.</param>
+        /// <param name="sqlStatement">The SQL to execute for this query.</param>
+        /// <param name="parameters">The parameters to pass, if any.</param>
+        /// <param name="splitOn">The field we should split and read the second object from (default: "Id").</param>
+        /// <param name="transaction">The transaction to use for this query.</param>
+        /// <param name="commandType">Is it a stored proc or a batch?</param>
+        /// <returns>A sequence of data of the TResult type</returns>
+        public async Task<IEnumerable<TResult>> QueryAsync<TFirst, TSecond, TThird, TFourth, TFifth, TSixth, TSeventh, TResult>(IDbConnection connection, Func<TFirst, TSecond, TThird, TFourth, TFifth, TSixth, TSeventh, TResult> map, string sqlStatement, object parameters, string splitOn, IDbTransaction transaction = null, CommandType? commandType = null)
+        {
+            return await connection.QueryAsync(sqlStatement, map, parameters, transaction, true, splitOn, _appConfig.SqlCommandTimeout, commandType);
+        }
+
+        /// <summary>
         /// Execute a command that returns multiple result sets, and access each in turn.
         /// </summary>
         /// <param name="connection">The connection to query on.</param>

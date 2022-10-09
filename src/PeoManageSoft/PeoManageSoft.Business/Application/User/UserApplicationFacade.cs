@@ -5,6 +5,7 @@ using PeoManageSoft.Business.Application.User.Read;
 using PeoManageSoft.Business.Application.User.Read.Response;
 using PeoManageSoft.Business.Application.User.ReadAll;
 using PeoManageSoft.Business.Application.User.ReadAll.Response;
+using PeoManageSoft.Business.Application.User.SignIn;
 using PeoManageSoft.Business.Infrastructure.Helpers.Exceptions;
 
 namespace PeoManageSoft.Business.Application.User
@@ -40,6 +41,10 @@ namespace PeoManageSoft.Business.Application.User
         /// Read all user application layer.
         /// </summary>
         private readonly Lazy<IReadAllApplication> _readAllApplication;
+        /// <summary>
+        /// Sign in application layer.
+        /// </summary>
+        private readonly Lazy<ISignInApplication> _signInApplication;
 
         #endregion
 
@@ -58,6 +63,7 @@ namespace PeoManageSoft.Business.Application.User
             _deleteApplication = new Lazy<IDeleteApplication>(() => GetService<IDeleteApplication>());
             _readApplication = new Lazy<IReadApplication>(() => GetService<IReadApplication>());
             _readAllApplication = new Lazy<IReadAllApplication>(() => GetService<IReadAllApplication>());
+            _signInApplication = new Lazy<ISignInApplication>(() => GetService<ISignInApplication>());
         }
 
         #endregion
@@ -122,6 +128,19 @@ namespace PeoManageSoft.Business.Application.User
         public async Task<IEnumerable<ReadAllResponse>> GetAllAsync()
         {
             return await _readAllApplication.Value.HandleAsync();
+        }
+
+        /// <summary>
+        /// Accesses the system through authentication and asynchronously using Task.
+        /// </summary>
+        /// <param name="request">Request data</param>
+        /// <returns>
+        /// Task: Represents an asynchronous operation. 
+        /// Response data.
+        /// </returns>
+        public async Task<SignInResponse> SignInAsync(SignInRequest request)
+        {
+            return await _signInApplication.Value.HandleAsync(request);
         }
 
         #endregion

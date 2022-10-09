@@ -2,7 +2,9 @@
 using Microsoft.Extensions.Logging;
 using PeoManageSoft.Business.Application.User.Read.Response;
 using PeoManageSoft.Business.Domain.Queries.User.Get;
+using PeoManageSoft.Business.Infrastructure.Helpers.Exceptions;
 using PeoManageSoft.Business.Infrastructure.Helpers.Extensions;
+using System.Net;
 
 namespace PeoManageSoft.Business.Application.User.Read
 {
@@ -70,6 +72,11 @@ namespace PeoManageSoft.Business.Application.User.Read
             ReadResponse response = _mapper.Map<ReadResponse>(
                 await _getHandler.HandleAsync(_mapper.Map<GetRequest>(request)).ConfigureAwait(false)
             );
+
+            if (response == null)
+            {
+                throw new RequestException(HttpStatusCode.NotFound, "User not found!");
+            }
 
             _logger.LogEndInformation(methodName);
 

@@ -81,15 +81,6 @@ namespace PeoManageSoft.Business.Infrastructure.Helpers.Filters
                     Role = (UserRole)Enum.Parse(typeof(UserRole), claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value)
                 });
             }
-            else
-            {
-                _applicationContext.SetLoggedUser(new LoggedUser
-                {
-                    Id = 1,
-                    User = "eolivera",
-                    Role = UserRole.Admin
-                });
-            }
 
             _logger.DebugIsEnabled(() => string.Concat("Request.Query: ", JsonConvert.SerializeObject(context?.HttpContext?.Request?.Query)));
         }

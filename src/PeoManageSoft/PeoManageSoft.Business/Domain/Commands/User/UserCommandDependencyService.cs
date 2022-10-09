@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using PeoManageSoft.Business.Domain.Commands.User.Add;
+using PeoManageSoft.Business.Domain.Commands.User.CreateToken;
 using PeoManageSoft.Business.Domain.Commands.User.Remove;
 using PeoManageSoft.Business.Domain.Commands.User.Update;
 
@@ -26,6 +27,8 @@ namespace PeoManageSoft.Business.Domain.Commands.User
             services.AddScoped<IUpdateCommand, UpdateCommand>();
             services.AddScoped<IRemoveHandler, RemoveHandler>();
             services.AddScoped<IRemoveCommand, RemoveCommand>();
+            services.AddScoped<ICreateTokenHandler, CreateTokenHandler>();
+            services.AddScoped<ICreateTokenCommand, CreateTokenCommand>();
         }
 
         #endregion

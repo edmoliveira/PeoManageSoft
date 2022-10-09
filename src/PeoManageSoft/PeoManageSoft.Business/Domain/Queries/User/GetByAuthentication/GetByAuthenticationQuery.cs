@@ -1,16 +1,16 @@
 ﻿using AutoMapper;
 using Microsoft.Extensions.Logging;
-using PeoManageSoft.Business.Domain.Queries.User.Get.Response;
+using PeoManageSoft.Business.Domain.Queries.User.GetByAuthentication.Response;
 using PeoManageSoft.Business.Infrastructure.Helpers.Extensions;
 using PeoManageSoft.Business.Infrastructure.ObjectRelationalMapper;
 using PeoManageSoft.Business.Infrastructure.Repositories.User;
 
-namespace PeoManageSoft.Business.Domain.Queries.User.Get
+namespace PeoManageSoft.Business.Domain.Queries.User.GetByAuthentication
 {
     /// <summary>
-    /// Get user query.
+    /// Get user by authentication query.
     /// </summary>
-    internal class GetQuery : IGetQuery
+    internal class GetByAuthenticationQuery : IGetByAuthenticationQuery
     {
         #region Fields
 
@@ -25,22 +25,22 @@ namespace PeoManageSoft.Business.Domain.Queries.User.Get
         /// <summary>
         /// Log
         /// </summary>
-        private readonly ILogger<GetQuery> _logger;
+        private readonly ILogger<GetByAuthenticationQuery> _logger;
 
         #endregion
 
         #region Constructors
 
         /// <summary>
-        /// Initializes a new instance of the PeoManageSoft.Business.Domain.Queries.User.Get.GetQuery class.
+        /// Initializes a new instance of the PeoManageSoft.Business.Domain.Queries.User.GetByAuthentication.GetByAuthenticationQuery class.
         /// </summary>
         /// <param name="repository">Data Access Layer</param>
         /// <param name="mapper">Data Mapper </param>
         /// <param name="logger">Log</param>
-        public GetQuery(
+        public GetByAuthenticationQuery(
                 IUserRepository repository,
                 IMapper mapper,
-                ILogger<GetQuery> logger
+                ILogger<GetByAuthenticationQuery> logger
             )
         {
             _repository = repository;
@@ -63,14 +63,14 @@ namespace PeoManageSoft.Business.Domain.Queries.User.Get
         /// Task: Represents an asynchronous operation. 
         /// The return value
         /// </returns>
-        public async Task<GetResponse> ExecuteAsync(IScope scope, GetRequest request)
+        public async Task<GetByAuthenticationResponse> ExecuteAsync(IScope scope, GetByAuthenticationRequest request)
         {
             string methodName = nameof(ExecuteAsync);
 
             _logger.LogBeginInformation(methodName);
 
-            GetResponse response = _mapper.Map<GetResponse>(
-                await _repository.SelectByIdAsync(scope, request.Id).ConfigureAwait(false)
+            GetByAuthenticationResponse response = _mapper.Map<GetByAuthenticationResponse>(
+                await _repository.SelectUserAsync(scope, request.Login, request.Password).ConfigureAwait(false)
             );
 
             _logger.LogEndInformation(methodName);

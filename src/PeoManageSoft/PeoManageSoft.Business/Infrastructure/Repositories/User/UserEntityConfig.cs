@@ -105,9 +105,9 @@ namespace PeoManageSoft.Business.Infrastructure.Repositories.User
         /// <param name="username">Username</param>
         /// <param name="password">User password</param>
         /// <returns>Returns the sql statement, the parameters and the command type</returns>
-        public static (string sqlStatement, object parameters, CommandType commandType) GetSelectUserSqlStatement(string username, string password)
+        public static (string sqlStatement, object parameters, string splitOn, CommandType commandType) GetSelectUserSqlStatement(string username, string password)
         {
-            return (sqlStatement: "sp_select_auth_user", parameters: new { Username = username, Password = password }, CommandType.StoredProcedure);
+            return (sqlStatement: "sp_select_auth_user", parameters: new { Username = username, Password = password }, splitOn: "TitleId,DepartmentId", CommandType.StoredProcedure);
         }
 
         /// <summary>

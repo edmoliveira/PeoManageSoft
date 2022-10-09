@@ -8,6 +8,8 @@ using PeoManageSoft.Business.Application.User.New;
 using PeoManageSoft.Business.Application.User.Read;
 using PeoManageSoft.Business.Application.User.Read.Response;
 using PeoManageSoft.Business.Application.User.ReadAll.Response;
+using PeoManageSoft.Business.Infrastructure;
+using PeoManageSoft.Business.Infrastructure.Helpers.Attributes;
 using PeoManageSoft.Business.Infrastructure.Helpers.Controllers;
 using PeoManageSoft.Business.Infrastructure.Helpers.Extensions;
 using PeoManageSoft.Business.Infrastructure.Helpers.Filters;
@@ -24,7 +26,7 @@ namespace PeoManageSoft.Api.Controllers.Users
     [Produces("application/json")]
     [Route("api/users")]
     [SerialNumberAuthorizationFilter]
-    //[AuthorizeRoles(UserRole.Admin)]
+    [AuthorizeRoles(UserRole.Admin)]
     public sealed class UsersController : CustomControllerBase
     {
         #region Fields private

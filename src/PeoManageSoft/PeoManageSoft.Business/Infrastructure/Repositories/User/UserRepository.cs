@@ -231,20 +231,23 @@ namespace PeoManageSoft.Business.Infrastructure.Repositories.User
 
             IContentScope contentScope = (IContentScope)scope;
             (string sqlStatement,
-             object parameters,
+             object parameterId,
+             string splitOn,
              CommandType commandType) = UserEntityConfig.GetSelectUserSqlStatement(username, password);
 
-            UserEntity result = await _dbContext.QueryFirstOrDefaultAsync<UserEntity>(
+            IEnumerable<UserEntity> result = await _dbContext.QueryAsync<UserEntity, TitleEntity, DepartmentEntity, UserEntity>(
                 contentScope.Connection,
+                SetRelationships,
                 sqlStatement,
-                parameters,
+                parameterId,
+                splitOn,
                 contentScope.DbTransaction,
                 commandType
             ).ConfigureAwait(false);
 
             _logger.LogEndInformation(methodName);
 
-            return result;
+            return result.FirstOrDefault();
         }
 
         /// <summary>

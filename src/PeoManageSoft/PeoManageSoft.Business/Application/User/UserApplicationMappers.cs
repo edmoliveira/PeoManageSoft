@@ -4,6 +4,7 @@ using PeoManageSoft.Business.Application.User.Delete;
 using PeoManageSoft.Business.Application.User.New;
 using PeoManageSoft.Business.Application.User.Read;
 using PeoManageSoft.Business.Application.User.ReadAll;
+using PeoManageSoft.Business.Application.User.SignIn;
 
 namespace PeoManageSoft.Business.Application.User
 {
@@ -27,6 +28,7 @@ namespace PeoManageSoft.Business.Application.User
             configuration.AddProfile<DeleteMapper>();
             configuration.AddProfile<ReadMapper>();
             configuration.AddProfile<ReadAllMapper>();
+            configuration.AddProfile<SignInMapper>();
         }
 
         #endregion

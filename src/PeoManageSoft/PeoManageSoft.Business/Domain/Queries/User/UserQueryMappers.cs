@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using PeoManageSoft.Business.Domain.Queries.User.Get;
 using PeoManageSoft.Business.Domain.Queries.User.GetAll;
+using PeoManageSoft.Business.Domain.Queries.User.GetByAuthentication;
 
 namespace PeoManageSoft.Business.Domain.Queries.User
 {
@@ -21,6 +22,7 @@ namespace PeoManageSoft.Business.Domain.Queries.User
         {
             configuration.AddProfile<GetMapper>();
             configuration.AddProfile<GetAllMapper>();
+            configuration.AddProfile<GetByAuthenticationMapper>();
         }
 
         #endregion

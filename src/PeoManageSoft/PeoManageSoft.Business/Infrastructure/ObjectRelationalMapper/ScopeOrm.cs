@@ -1,11 +1,12 @@
 ﻿using System.Data;
+using PeoManageSoft.Business.Infrastructure.ObjectRelationalMapper.Interfaces;
 
 namespace PeoManageSoft.Business.Infrastructure.ObjectRelationalMapper
 {
     /// <summary>
     /// Transactional scope
     /// </summary>
-    public sealed class ScopeOrm : IContentScope, IIScope
+    internal sealed class ScopeOrm : IContentScope, IIScope
     {
         #region Properties
 

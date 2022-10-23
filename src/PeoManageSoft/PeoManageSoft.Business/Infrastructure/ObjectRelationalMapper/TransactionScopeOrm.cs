@@ -1,4 +1,5 @@
 ﻿using PeoManageSoft.Business.Infrastructure.Helpers.Exceptions;
+using PeoManageSoft.Business.Infrastructure.ObjectRelationalMapper.Interfaces;
 using System.Data;
 using System.Data.Common;
 
@@ -7,7 +8,7 @@ namespace PeoManageSoft.Business.Infrastructure.ObjectRelationalMapper
     /// <summary>
     /// Makes a code block transactional. 
     /// </summary>
-    public sealed class TransactionScopeOrm : ITransactionScope
+    internal sealed class TransactionScopeOrm : ITransactionScope
     {
         #region Fields
 

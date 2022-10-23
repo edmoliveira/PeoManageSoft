@@ -2,7 +2,7 @@
 using Microsoft.Extensions.Logging;
 using PeoManageSoft.Business.Infrastructure.Helpers.Exceptions;
 using PeoManageSoft.Business.Infrastructure.Helpers.Extensions;
-using PeoManageSoft.Business.Infrastructure.ObjectRelationalMapper;
+using PeoManageSoft.Business.Infrastructure.ObjectRelationalMapper.Interfaces;
 using PeoManageSoft.Business.Infrastructure.Repositories.User;
 using System.Net;
 

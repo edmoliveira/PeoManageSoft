@@ -1,6 +1,7 @@
 ﻿using MySql.Data.MySqlClient;
 using Npgsql;
 using PeoManageSoft.Business.Infrastructure.Helpers.Interfaces;
+using PeoManageSoft.Business.Infrastructure.ObjectRelationalMapper.Interfaces;
 using System.Data.Common;
 using System.Data.SqlClient;
 
@@ -9,7 +10,7 @@ namespace PeoManageSoft.Business.Infrastructure.ObjectRelationalMapper
     /// <summary>
     /// Represents a connection to a database.
     /// </summary>
-    public sealed class Connection : IConnection
+    internal sealed class Connection : IConnection
     {
         #region Fields private
 

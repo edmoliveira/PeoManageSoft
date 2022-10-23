@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using PeoManageSoft.Business.Infrastructure.Helpers.Extensions;
 using PeoManageSoft.Business.Infrastructure.Helpers.Interfaces;
-using PeoManageSoft.Business.Infrastructure.ObjectRelationalMapper;
+using PeoManageSoft.Business.Infrastructure.ObjectRelationalMapper.Interfaces;
 using PeoManageSoft.Business.Infrastructure.Repositories.Department;
 using PeoManageSoft.Business.Infrastructure.Repositories.Interfaces;
 using PeoManageSoft.Business.Infrastructure.Repositories.Title;
@@ -12,25 +12,8 @@ namespace PeoManageSoft.Business.Infrastructure.Repositories.User
     /// <summary>
     /// User encapsulation of logic to access data sources.
     /// </summary>
-    internal sealed class UserRepository : IUserRepository
+    internal sealed class UserRepository : BaseRepository, IUserRepository
     {
-        #region Fields
-
-        /// <summary>
-        /// Represents a session with the underlying database using which you can perform CRUD (Create, Read, Update, Delete) operations.
-        /// </summary>
-        private readonly IDbContext _dbContext;
-        /// <summary>
-        /// Class to be used on one instance throughout the application per request
-        /// </summary>
-        private readonly IApplicationContext _applicationContext;
-        /// <summary>
-        /// Log
-        /// </summary>
-        private readonly ILogger<UserRepository> _logger;
-
-        #endregion
-
         #region Constructors
 
         /// <summary>
@@ -38,12 +21,15 @@ namespace PeoManageSoft.Business.Infrastructure.Repositories.User
         /// </summary>
         /// <param name="dbContext">Represents a session with the underlying database using which you can perform CRUD (Create, Read, Update, Delete) operations.</param>
         /// <param name="applicationContext">Class to be used on one instance throughout the application per request</param>
+        /// <param name="provider">Defines a mechanism for retrieving a service object; that is, an object that provides custom support to other objects.</param>
         /// <param name="logger">Log</param>
-        public UserRepository(IDbContext dbContext, IApplicationContext applicationContext, ILogger<UserRepository> logger)
+        public UserRepository(
+            IDbContext dbContext, 
+            IApplicationContext applicationContext,
+            IServiceProvider provider,
+            ILogger<UserRepository> logger)
+            :base(dbContext, applicationContext, provider, logger)
         {
-            _dbContext = dbContext;
-            _applicationContext = applicationContext;
-            _logger = logger;
         }
 
         #endregion
@@ -62,14 +48,14 @@ namespace PeoManageSoft.Business.Infrastructure.Repositories.User
         {
             string methodName = nameof(DeleteAsync);
 
-            _logger.LogBeginInformation(methodName);
+            Logger.LogBeginInformation(methodName);
 
             IContentScope contentScope = (IContentScope)scope;
             (string sqlStatement,
              object parameterId,
              CommandType commandType) = UserEntityConfig.GetDeleteSqlStatement(id);
 
-            _ = await _dbContext.ExecuteAsync(
+            _ = await DbContext.ExecuteAsync(
                 contentScope.Connection,
                 sqlStatement,
                 parameterId,
@@ -77,7 +63,7 @@ namespace PeoManageSoft.Business.Infrastructure.Repositories.User
                 commandType
             ).ConfigureAwait(false);
 
-            _logger.LogEndInformation(methodName);
+            Logger.LogEndInformation(methodName);
         }
 
         /// Determines whether the specified user table contains the record that match the id
@@ -92,14 +78,14 @@ namespace PeoManageSoft.Business.Infrastructure.Repositories.User
         {
             string methodName = nameof(SelectByIdAsync);
 
-            _logger.LogBeginInformation(methodName);
+            Logger.LogBeginInformation(methodName);
 
             IContentScope contentScope = (IContentScope)scope;
             (string sqlStatement,
              object parameterId,
              CommandType commandType) = UserEntityConfig.GetExistsByIdSqlStatement(id);
 
-            bool result = await _dbContext.ExecuteScalarAsync<object, bool>(
+            bool result = await DbContext.ExecuteScalarAsync<object, bool>(
                 contentScope.Connection,
                 sqlStatement,
                 parameterId,
@@ -107,7 +93,7 @@ namespace PeoManageSoft.Business.Infrastructure.Repositories.User
                 commandType
             ).ConfigureAwait(false);
 
-            _logger.LogEndInformation(methodName);
+            Logger.LogEndInformation(methodName);
 
             return result;
         }
@@ -122,25 +108,29 @@ namespace PeoManageSoft.Business.Infrastructure.Repositories.User
         {
             string methodName = nameof(InsertAsync);
 
-            _logger.LogBeginInformation(methodName);
+            Logger.LogBeginInformation(methodName);
 
             IContentScope contentScope = (IContentScope)scope;
             (string sqlStatement,
-             CommandType commandType) = UserEntityConfig.GetInsertSqlStatement();
+             object parameters,
+             CommandType commandType) = UserEntityConfig.GetInsertSqlStatement(
+                 Provider,
+                 entity,
+                 ApplicationContext);
 
             IEntity ientity = entity;
 
-            long id = await _dbContext.ExecuteScalarAsync<object, long>(
+            long id = await DbContext.ExecuteScalarAsync<object, long>(
                 contentScope.Connection,
                 sqlStatement,
-                ientity.GetInsertParameters(_applicationContext),
+                parameters,
                 contentScope.DbTransaction,
                 commandType
             ).ConfigureAwait(false);
 
             ientity.SetId(id);
 
-            _logger.LogEndInformation(methodName);
+            Logger.LogEndInformation(methodName);
         }
 
         /// <summary>
@@ -155,14 +145,14 @@ namespace PeoManageSoft.Business.Infrastructure.Repositories.User
         {
             string methodName = nameof(SelectAllAsync);
 
-            _logger.LogBeginInformation(methodName);
+            Logger.LogBeginInformation(methodName);
 
             IContentScope contentScope = (IContentScope)scope;
             (string sqlStatement,
              string splitOn,
              CommandType commandType) = UserEntityConfig.GetSelectSqlStatement();
 
-            IEnumerable<UserEntity> result = await _dbContext.QueryAsync<UserEntity, TitleEntity, DepartmentEntity, UserEntity>(
+            IEnumerable<UserEntity> result = await DbContext.QueryAsync<UserEntity, TitleEntity, DepartmentEntity, UserEntity>(
                 contentScope.Connection,
                 SetRelationships,
                 sqlStatement,
@@ -172,7 +162,7 @@ namespace PeoManageSoft.Business.Infrastructure.Repositories.User
                 commandType
             ).ConfigureAwait(false);
 
-            _logger.LogEndInformation(methodName);
+            Logger.LogEndInformation(methodName);
 
             return result;
         }
@@ -190,7 +180,7 @@ namespace PeoManageSoft.Business.Infrastructure.Repositories.User
         {
             string methodName = nameof(SelectByIdAsync);
 
-            _logger.LogBeginInformation(methodName);
+            Logger.LogBeginInformation(methodName);
 
             IContentScope contentScope = (IContentScope)scope;
             (string sqlStatement,
@@ -198,7 +188,7 @@ namespace PeoManageSoft.Business.Infrastructure.Repositories.User
              string splitOn,
              CommandType commandType) = UserEntityConfig.GetSelectByIdSqlStatement(id);
 
-            IEnumerable<UserEntity> result = await _dbContext.QueryAsync<UserEntity, TitleEntity, DepartmentEntity, UserEntity>(
+            IEnumerable<UserEntity> result = await DbContext.QueryAsync<UserEntity, TitleEntity, DepartmentEntity, UserEntity>(
                 contentScope.Connection,
                 SetRelationships,
                 sqlStatement,
@@ -208,7 +198,7 @@ namespace PeoManageSoft.Business.Infrastructure.Repositories.User
                 commandType
             ).ConfigureAwait(false);
 
-            _logger.LogEndInformation(methodName);
+            Logger.LogEndInformation(methodName);
 
             return result.FirstOrDefault();
         }
@@ -227,7 +217,7 @@ namespace PeoManageSoft.Business.Infrastructure.Repositories.User
         {
             string methodName = nameof(SelectUserAsync);
 
-            _logger.LogBeginInformation(methodName);
+            Logger.LogBeginInformation(methodName);
 
             IContentScope contentScope = (IContentScope)scope;
             (string sqlStatement,
@@ -235,7 +225,7 @@ namespace PeoManageSoft.Business.Infrastructure.Repositories.User
              string splitOn,
              CommandType commandType) = UserEntityConfig.GetSelectUserSqlStatement(username, password);
 
-            IEnumerable<UserEntity> result = await _dbContext.QueryAsync<UserEntity, TitleEntity, DepartmentEntity, UserEntity>(
+            IEnumerable<UserEntity> result = await DbContext.QueryAsync<UserEntity, TitleEntity, DepartmentEntity, UserEntity>(
                 contentScope.Connection,
                 SetRelationships,
                 sqlStatement,
@@ -245,7 +235,7 @@ namespace PeoManageSoft.Business.Infrastructure.Repositories.User
                 commandType
             ).ConfigureAwait(false);
 
-            _logger.LogEndInformation(methodName);
+            Logger.LogEndInformation(methodName);
 
             return result.FirstOrDefault();
         }
@@ -260,23 +250,27 @@ namespace PeoManageSoft.Business.Infrastructure.Repositories.User
         {
             string methodName = nameof(UpdateAsync);
 
-            _logger.LogBeginInformation(methodName);
+            Logger.LogBeginInformation(methodName);
 
             IContentScope contentScope = (IContentScope)scope;
             (string sqlStatement,
-             CommandType commandType) = UserEntityConfig.GetUpdateSqlStatement();
+             object parameters,
+             CommandType commandType) = UserEntityConfig.GetUpdateSqlStatement(
+                 Provider,
+                 entity,
+                 ApplicationContext);
 
             IEntity ientity = entity;
 
-            _ = await _dbContext.ExecuteAsync(
+            _ = await DbContext.ExecuteAsync(
                 contentScope.Connection,
                 sqlStatement,
-                ientity.GetUpdateParameters(_applicationContext),
+                parameters,
                 contentScope.DbTransaction,
                 commandType
             ).ConfigureAwait(false);
 
-            _logger.LogEndInformation(methodName);
+            Logger.LogEndInformation(methodName);
         }
 
         /// <summary>
@@ -291,14 +285,16 @@ namespace PeoManageSoft.Business.Infrastructure.Repositories.User
         {
             string methodName = nameof(ChangePasswordAsync);
 
-            _logger.LogBeginInformation(methodName);
+            Logger.LogBeginInformation(methodName);
 
             IContentScope contentScope = (IContentScope)scope;
             (string sqlStatement,
              object parameters,
-             CommandType commandType) = UserEntityConfig.GetUpdateChangePassSqlStatement(username, oldPassword, newPassword, _applicationContext);
+             CommandType commandType) = UserEntityConfig.GetUpdateChangePassSqlStatement(
+                 Provider, username, oldPassword, newPassword, ApplicationContext
+             );
 
-            bool wasChanged = await _dbContext.ExecuteScalarAsync<object, bool>(
+            bool wasChanged = await DbContext.ExecuteScalarAsync<object, bool>(
                 contentScope.Connection,
                 sqlStatement,
                 parameters,
@@ -306,7 +302,7 @@ namespace PeoManageSoft.Business.Infrastructure.Repositories.User
                 commandType
             ).ConfigureAwait(false);
 
-            _logger.LogEndInformation(methodName);
+            Logger.LogEndInformation(methodName);
 
             return wasChanged;
         }
@@ -324,23 +320,26 @@ namespace PeoManageSoft.Business.Infrastructure.Repositories.User
         {
             string methodName = nameof(ValidateInsertAsync);
 
-            _logger.LogBeginInformation(methodName);
+            Logger.LogBeginInformation(methodName);
 
             IContentScope contentScope = (IContentScope)scope;
             (string sqlStatement,
-             CommandType commandType) = UserEntityConfig.GetValidateInsertSqlStatement();
+             object parameters,
+             CommandType commandType) = UserEntityConfig.GetValidateInsertSqlStatement(
+                 Provider,
+                 entity);
 
             IEntity ientity = entity;
 
-            IEnumerable<string> result = await _dbContext.QueryAsync<string>(
+            IEnumerable<string> result = await DbContext.QueryAsync<string>(
                 contentScope.Connection,
                 sqlStatement,
-                ientity.GetValidateInsertParameters(),
+                parameters,
                 contentScope.DbTransaction,
                 commandType
             ).ConfigureAwait(false);
 
-            _logger.LogEndInformation(methodName);
+            Logger.LogEndInformation(methodName);
 
             return result;
         }
@@ -358,23 +357,26 @@ namespace PeoManageSoft.Business.Infrastructure.Repositories.User
         {
             string methodName = nameof(ValidateUpdateAsync);
 
-            _logger.LogBeginInformation(methodName);
+            Logger.LogBeginInformation(methodName);
 
             IContentScope contentScope = (IContentScope)scope;
             (string sqlStatement,
-             CommandType commandType) = UserEntityConfig.GetValidateUpdateSqlStatement();
+             object parameters,
+             CommandType commandType) = UserEntityConfig.GetValidateUpdateSqlStatement(
+                Provider,
+                entity);
 
             IEntity ientity = entity;
 
-            IEnumerable<string> result = await _dbContext.QueryAsync<string>(
+            IEnumerable<string> result = await DbContext.QueryAsync<string>(
                 contentScope.Connection,
                 sqlStatement,
-                ientity.GetValidateUpdateParameters(),
+                parameters,
                 contentScope.DbTransaction,
                 commandType
             ).ConfigureAwait(false);
 
-            _logger.LogEndInformation(methodName);
+            Logger.LogEndInformation(methodName);
 
             return result;
         }

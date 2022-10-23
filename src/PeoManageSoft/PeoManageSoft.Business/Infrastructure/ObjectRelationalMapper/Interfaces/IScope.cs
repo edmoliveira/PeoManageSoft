@@ -1,6 +1,6 @@
 ﻿using System.Data;
 
-namespace PeoManageSoft.Business.Infrastructure.ObjectRelationalMapper
+namespace PeoManageSoft.Business.Infrastructure.ObjectRelationalMapper.Interfaces
 {
     /// <summary>
     /// Transactional scope

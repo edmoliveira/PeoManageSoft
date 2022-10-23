@@ -18,6 +18,7 @@ using PeoManageSoft.Business.Infrastructure.Helpers.Extensions;
 using PeoManageSoft.Business.Infrastructure.Helpers.Filters;
 using PeoManageSoft.Business.Infrastructure.Helpers.Interfaces;
 using PeoManageSoft.Business.Infrastructure.ObjectRelationalMapper;
+using PeoManageSoft.Business.Infrastructure.ObjectRelationalMapper.Interfaces;
 using PeoManageSoft.Business.Infrastructure.Tokens;
 
 namespace PeoManageSoft.Business.Infrastructure.Helpers

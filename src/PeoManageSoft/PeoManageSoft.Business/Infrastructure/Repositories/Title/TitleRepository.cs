@@ -1,8 +1,9 @@
 ﻿using Microsoft.Extensions.Logging;
 using PeoManageSoft.Business.Infrastructure.Helpers.Extensions;
 using PeoManageSoft.Business.Infrastructure.Helpers.Interfaces;
-using PeoManageSoft.Business.Infrastructure.ObjectRelationalMapper;
+using PeoManageSoft.Business.Infrastructure.ObjectRelationalMapper.Interfaces;
 using PeoManageSoft.Business.Infrastructure.Repositories.Interfaces;
+using PeoManageSoft.Business.Infrastructure.Repositories.User;
 using System.Data;
 
 namespace PeoManageSoft.Business.Infrastructure.Repositories.Title
@@ -10,25 +11,8 @@ namespace PeoManageSoft.Business.Infrastructure.Repositories.Title
     /// <summary>
     /// Title encapsulation of logic to access data sources.
     /// </summary>
-    internal sealed class TitleRepository : ITitleRepository
+    internal sealed class TitleRepository : BaseRepository, ITitleRepository
     {
-        #region Fields
-
-        /// <summary>
-        /// Represents a session with the underlying database using which you can perform CRUD (Create, Read, Update, Delete) operations.
-        /// </summary>
-        private readonly IDbContext _dbContext;
-        /// <summary>
-        /// Class to be used on one instance throughout the application per request
-        /// </summary>
-        private readonly IApplicationContext _applicationContext;
-        /// <summary>
-        /// Log
-        /// </summary>
-        private readonly ILogger<TitleRepository> _logger;
-
-        #endregion
-
         #region Constructors
 
         /// <summary>
@@ -36,12 +20,15 @@ namespace PeoManageSoft.Business.Infrastructure.Repositories.Title
         /// </summary>
         /// <param name="dbContext">Represents a session with the underlying database using which you can perform CRUD (Create, Read, Update, Delete) operations.</param>
         /// <param name="applicationContext">Class to be used on one instance throughout the application per request</param>
+        /// <param name="provider">Defines a mechanism for retrieving a service object; that is, an object that provides custom support to other objects.</param>
         /// <param name="logger">Log</param>
-        public TitleRepository(IDbContext dbContext, IApplicationContext applicationContext, ILogger<TitleRepository> logger)
+        public TitleRepository(
+            IDbContext dbContext,
+            IApplicationContext applicationContext,
+            IServiceProvider provider,
+            ILogger<UserRepository> logger)
+            : base(dbContext, applicationContext, provider, logger)
         {
-            _dbContext = dbContext;
-            _applicationContext = applicationContext;
-            _logger = logger;
         }
 
         #endregion

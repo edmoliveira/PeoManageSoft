@@ -1,6 +1,6 @@
 ﻿using System.Data.Common;
 
-namespace PeoManageSoft.Business.Infrastructure.ObjectRelationalMapper
+namespace PeoManageSoft.Business.Infrastructure.ObjectRelationalMapper.Interfaces
 {
     /// <summary>
     /// Represents a connection to a database.

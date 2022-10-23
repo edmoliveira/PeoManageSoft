@@ -1,7 +1,7 @@
 ﻿using System.Data;
 using static Dapper.SqlMapper;
 
-namespace PeoManageSoft.Business.Infrastructure.ObjectRelationalMapper
+namespace PeoManageSoft.Business.Infrastructure.ObjectRelationalMapper.Interfaces
 {
     /// <summary>
     /// Represents a session with the underlying database using which you can perform CRUD (Create, Read, Update, Delete) operations.

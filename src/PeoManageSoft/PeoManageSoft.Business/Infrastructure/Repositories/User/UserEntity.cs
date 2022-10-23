@@ -1,5 +1,4 @@
-﻿using PeoManageSoft.Business.Infrastructure.Helpers.Interfaces;
-using PeoManageSoft.Business.Infrastructure.Repositories.Department;
+﻿using PeoManageSoft.Business.Infrastructure.Repositories.Department;
 using PeoManageSoft.Business.Infrastructure.Repositories.Interfaces;
 using PeoManageSoft.Business.Infrastructure.Repositories.Title;
 
@@ -28,6 +27,10 @@ namespace PeoManageSoft.Business.Infrastructure.Repositories.User
         /// User password
         /// </summary>
         public string Password { get; private set; }
+        /// <summary>
+        /// Token to change the user password.
+        /// </summary>
+        public string PasswordToken { get; private set; }
         /// <summary>
         /// Set of permissions for actions available in application
         /// </summary>
@@ -148,96 +151,6 @@ namespace PeoManageSoft.Business.Infrastructure.Repositories.User
         void IEntity.SetId(long id)
         {
             this.Id = id;
-        }
-
-        /// <summary>
-        /// Get the parameters to the insert sql statement
-        /// </summary>
-        /// <param name="applicationContext"></param>
-        /// <returns>Parameters</returns>
-        object IEntity.GetInsertParameters(IApplicationContext applicationContext)
-        {
-            RequestId = applicationContext.RequestId;
-            CreationUser = applicationContext.LoggedUser.User;
-            CreationDate = DateTime.Now;
-
-            return new
-            {
-                IsActive,
-                Login,
-                Password,
-                Role,
-                Name,
-                ShortName,
-                TitleId,
-                DepartmentId,
-                Email,
-                BussinessPhone,
-                MobilePhone,
-                Location,
-                RequestId,
-                CreationUser,
-                CreationDate
-            };
-        }
-
-        /// <summary>
-        /// Get the parameters to the update sql statement
-        /// </summary>
-        ///  <param name="applicationContext"></param>
-        /// <returns>Parameters</returns>
-        object IEntity.GetUpdateParameters(IApplicationContext applicationContext)
-        {
-            RequestId = applicationContext.RequestId;
-            UpdatedUser = applicationContext.LoggedUser.User;
-            UpdatedDate = DateTime.Now;
-
-            return new
-            {
-                Id,
-                IsActive,
-                Role,
-                Name,
-                ShortName,
-                TitleId,
-                DepartmentId,
-                Email,
-                BussinessPhone,
-                MobilePhone,
-                RequestId,
-                UpdatedUser,
-                UpdatedDate
-            };
-        }
-
-        /// <summary>
-        /// Get the parameters to the validate insert sql statement
-        /// </summary>
-        /// <returns>Parameters</returns>
-        object IEntity.GetValidateInsertParameters()
-        {
-            return new
-            {
-                Login,
-                TitleId,
-                DepartmentId,
-                Email
-            };
-        }
-
-        /// <summary>
-        /// Get the parameters to the validate update sql statement
-        /// </summary>
-        /// <returns>Parameters</returns>
-        object IEntity.GetValidateUpdateParameters()
-        {
-            return new
-            {
-                Id,
-                TitleId,
-                DepartmentId,
-                Email
-            };
         }
 
         #endregion

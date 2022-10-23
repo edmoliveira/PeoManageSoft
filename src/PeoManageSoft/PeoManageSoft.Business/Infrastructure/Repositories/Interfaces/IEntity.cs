@@ -1,6 +1,4 @@
-﻿using PeoManageSoft.Business.Infrastructure.Helpers.Interfaces;
-
-namespace PeoManageSoft.Business.Infrastructure.Repositories.Interfaces
+﻿namespace PeoManageSoft.Business.Infrastructure.Repositories.Interfaces
 {
     /// <summary>
     /// Mapping to a database table
@@ -43,28 +41,6 @@ namespace PeoManageSoft.Business.Infrastructure.Repositories.Interfaces
         /// </summary>
         /// <param name="id">The unique identifier</param>
         void SetId(long id);
-        /// <summary>
-        /// Get the parameters to the insert sql statement
-        /// </summary>
-        /// <param name="applicationContext"></param>
-        /// <returns>Parameters</returns>
-        object GetInsertParameters(IApplicationContext applicationContext);
-        /// <summary>
-        /// Get the parameters to the update sql statement
-        /// </summary>
-        ///  <param name="applicationContext"></param>
-        /// <returns>Parameters</returns>
-        object GetUpdateParameters(IApplicationContext applicationContext);
-        /// <summary>
-        /// Get the parameters to the validate insert sql statement
-        /// </summary>
-        /// <returns>Parameters</returns>
-        object GetValidateInsertParameters();
-        /// <summary>
-        /// Get the parameters to the validate update sql statement
-        /// </summary>
-        /// <returns>Parameters</returns>
-        object GetValidateUpdateParameters();
 
         #endregion
     }

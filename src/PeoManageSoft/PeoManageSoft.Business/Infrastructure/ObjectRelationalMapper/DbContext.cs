@@ -1,5 +1,6 @@
 ﻿using Dapper;
 using PeoManageSoft.Business.Infrastructure.Helpers.Interfaces;
+using PeoManageSoft.Business.Infrastructure.ObjectRelationalMapper.Interfaces;
 using System.Data;
 using static Dapper.SqlMapper;
 
@@ -8,7 +9,7 @@ namespace PeoManageSoft.Business.Infrastructure.ObjectRelationalMapper
     /// <summary>
     /// Represents a session with the underlying database using which you can perform CRUD (Create, Read, Update, Delete) operations.
     /// </summary>
-    public sealed class DbContext : IDbContext
+    internal sealed class DbContext : IDbContext
     {
         #region Fields
 

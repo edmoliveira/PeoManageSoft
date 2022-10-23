@@ -1,4 +1,4 @@
-﻿namespace PeoManageSoft.Business.Infrastructure.ObjectRelationalMapper
+﻿namespace PeoManageSoft.Business.Infrastructure.ObjectRelationalMapper.Interfaces
 {
     /// <summary>
     /// Makes a code block transactional. 

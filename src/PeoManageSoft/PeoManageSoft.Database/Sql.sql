@@ -27,6 +27,7 @@ CREATE TABLE IUser (
 	IsActive BIT NOT NULL, 
 	Login NVARCHAR ( 70 ) NOT NULL UNIQUE,
 	Password NVARCHAR ( 500 ) NOT NULL,
+	PasswordToken NVARCHAR ( MAX ) NULL,
 	Role INTEGER NOT NULL,
 	Name NVARCHAR ( 200 ) NOT NULL,
 	ShortName NVARCHAR ( 50 ) NOT NULL,
@@ -130,6 +131,24 @@ BEGIN
 		  ,Email = @Email
 		  ,BussinessPhone = @BussinessPhone
 		  ,MobilePhone = @MobilePhone
+		  ,RequestId = @RequestId
+		  ,UpdatedUser = @UpdatedUser
+		  ,UpdatedDate = @UpdatedDate
+	 WHERE 
+		Id = @Id
+END;
+GO
+
+CREATE PROCEDURE sp_update_location_user
+	@Id BIGINT,
+	@Location NVARCHAR ( 50 ),
+	@RequestId NVARCHAR ( 500 ),
+	@UpdatedUser NVARCHAR ( 70 ),
+	@UpdatedDate DATETIME
+AS
+BEGIN 
+	UPDATE dbo.IUser
+	   SET Location = @Location
 		  ,RequestId = @RequestId
 		  ,UpdatedUser = @UpdatedUser
 		  ,UpdatedDate = @UpdatedDate

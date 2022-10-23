@@ -1,4 +1,4 @@
-﻿using PeoManageSoft.Business.Infrastructure.ObjectRelationalMapper;
+﻿using PeoManageSoft.Business.Infrastructure.ObjectRelationalMapper.Interfaces;
 
 namespace PeoManageSoft.Business.Domain.Commands
 {

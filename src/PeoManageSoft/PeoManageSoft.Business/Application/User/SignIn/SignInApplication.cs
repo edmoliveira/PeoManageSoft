@@ -1,13 +1,16 @@
 ﻿using AutoMapper;
 using Microsoft.Extensions.Logging;
-using PeoManageSoft.Business.Domain.Commands.User.CreateToken;
-using PeoManageSoft.Business.Domain.Queries.User.GetByAuthentication;
-using PeoManageSoft.Business.Domain.Queries.User.GetByAuthentication.Response;
+using PeoManageSoft.Business.Domain.Services.Commands.User.CreateToken;
+using PeoManageSoft.Business.Domain.Services.Commands.User.Patch;
+using PeoManageSoft.Business.Domain.Services.Queries.User.GetByAuthentication;
+using PeoManageSoft.Business.Domain.Services.Queries.User.GetByAuthentication.Response;
 using PeoManageSoft.Business.Infrastructure.Helpers;
 using PeoManageSoft.Business.Infrastructure.Helpers.Exceptions;
 using PeoManageSoft.Business.Infrastructure.Helpers.Extensions;
 using PeoManageSoft.Business.Infrastructure.Helpers.Interfaces;
+using PeoManageSoft.Business.Infrastructure.ObjectRelationalMapper;
 using System.Net;
+using static PeoManageSoft.Business.Infrastructure.Repositories.User.UserEntityConfig;
 
 namespace PeoManageSoft.Business.Application.User.SignIn
 {
@@ -26,6 +29,10 @@ namespace PeoManageSoft.Business.Application.User.SignIn
         ///  Handles all commands to create the token.
         /// </summary>
         private readonly ICreateTokenHandler _createTokenHandler;
+        /// <summary>
+        ///  Handles all commands to patch the user.
+        /// </summary>
+        private readonly IPatchHandler _patchHandler;
         /// <summary>
         /// Application Configuration
         /// </summary>
@@ -48,12 +55,14 @@ namespace PeoManageSoft.Business.Application.User.SignIn
         /// </summary>
         /// <param name="getByAuthenticationHandler">Handles all queries to get the user by authentication.</param>
         /// <param name="createTokenHandler">Handles all commands to create the token.</param>
+        /// <param name="patchHandler">Handles all commands to patch the user.</param>
         /// <param name="appConfig">Application Configuration</param>
         /// <param name="mapper">Data Mapper </param>
         /// <param name="logger">Log</param>
         public SignInApplication(
                 IGetByAuthenticationHandler getByAuthenticationHandler,
                 ICreateTokenHandler createTokenHandler,
+                IPatchHandler patchHandler,
                 IAppConfig appConfig,
                 IMapper mapper,
                 ILogger<SignInApplication> logger
@@ -61,6 +70,7 @@ namespace PeoManageSoft.Business.Application.User.SignIn
         {
             _getByAuthenticationHandler = getByAuthenticationHandler;
             _createTokenHandler = createTokenHandler;
+            _patchHandler = patchHandler;
             _appConfig = appConfig;
             _mapper = mapper;
             _logger = logger;
@@ -96,6 +106,15 @@ namespace PeoManageSoft.Business.Application.User.SignIn
             {
                 throw new RequestException(HttpStatusCode.Unauthorized, "Not authorized!");
             }
+
+            await _patchHandler.HandleAsync(new PatchRequest
+            {
+                Id = authResponse.Id,
+                Fields = new List<Field<EntityField>>
+                {
+                    new Field<EntityField>{ Type = EntityField.Location, Value = request.Location }
+                }
+            }).ConfigureAwait(false);
 
             CreateTokenResponse tokenResponse = await _createTokenHandler.HandleAsync(new CreateTokenRequest
             {

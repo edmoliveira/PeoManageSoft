@@ -5,42 +5,56 @@ namespace PeoManageSoft.Business.Infrastructure.ObjectRelationalMapper
     /// <summary>
     /// The Parameter configuration.
     /// </summary>
-    internal class ParameterConfig
+    internal sealed class ParameterConfig
     {
         #region Properties
 
         /// <summary>
-        /// Gets or sets the value that indicates whether the parameter is a unique identifier
+        /// Gets the table object
+        /// </summary>
+        public Table Table { get; }
+        /// <summary>
+        /// Gets the value that indicates whether the parameter is a unique identifier
         /// </summary>
         public bool IsUniqueIdentifier { get; }
         /// <summary>
-        /// Gets or sets the type of the parameter.
+        /// Gets the type of the parameter.
         /// </summary>
         public DbType DbType { get; }
         /// <summary>
-        /// Gets or sets the value that indicates whether the parameter accepts null values.
+        /// Gets the value that indicates whether the parameter accepts null values.
         /// </summary>
         public bool IsNullable { get; }
         /// <summary>
-        /// Gets or sets the maximum number of digits used to represent the Value  property.
+        /// Gets the maximum number of digits used to represent the Value  property.
         /// </summary>
         public byte Precision { get; }
         /// <summary>
-        /// Gets or sets the number of decimal places to which Value is resolved.
+        /// Gets the number of decimal places to which Value is resolved.
         /// </summary>
         public byte Scale { get; }
         /// <summary>
-        /// Gets or sets the maximum size, in bytes, of the data within the column.
+        /// Gets the maximum size, in bytes, of the data within the column.
         /// </summary>
         public int Size { get; }
         /// <summary>
-        /// Gets or sets the name of the parameter.
+        /// Gets the name of the parameter.
         /// </summary>
         public string ParameterName { get; }
         /// <summary>
-        /// The name of the source column mapped to the database. The default is an empty string.
+        /// The name of the source column mapped to the database.
         /// </summary>
         public string SourceColumn { get; }
+        /// <summary>
+        /// The name of the source column mapped to the database with alias.
+        /// </summary>
+        public string SourceColumnAlias
+        {
+            get
+            {
+                return $"{Table.Name}_{SourceColumn}";
+            }
+        }
 
         #endregion
 
@@ -63,7 +77,8 @@ namespace PeoManageSoft.Business.Infrastructure.ObjectRelationalMapper
             bool isNullable = false,
             bool isUniqueIdentifier = false,
             byte precision = 0,
-            byte scale = 0)
+            byte scale = 0,
+            Table table = default)
         {
             ParameterName = sourceColumn;
             SourceColumn = sourceColumn;
@@ -73,6 +88,7 @@ namespace PeoManageSoft.Business.Infrastructure.ObjectRelationalMapper
             IsUniqueIdentifier = isUniqueIdentifier;
             Precision = precision;
             Scale = scale;
+            Table = table;
         }
 
         #endregion

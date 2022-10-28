@@ -1,10 +1,12 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using AutoMapper;
+using Microsoft.Extensions.Logging;
 using PeoManageSoft.Business.Infrastructure.Helpers.Extensions;
 using PeoManageSoft.Business.Infrastructure.Helpers.Interfaces;
+using PeoManageSoft.Business.Infrastructure.ObjectRelationalMapper;
 using PeoManageSoft.Business.Infrastructure.ObjectRelationalMapper.Interfaces;
 using PeoManageSoft.Business.Infrastructure.Repositories.Interfaces;
-using PeoManageSoft.Business.Infrastructure.Repositories.User;
 using System.Data;
+using static PeoManageSoft.Business.Infrastructure.Repositories.Title.TitleEntityConfig;
 
 namespace PeoManageSoft.Business.Infrastructure.Repositories.Title
 {
@@ -21,13 +23,15 @@ namespace PeoManageSoft.Business.Infrastructure.Repositories.Title
         /// <param name="dbContext">Represents a session with the underlying database using which you can perform CRUD (Create, Read, Update, Delete) operations.</param>
         /// <param name="applicationContext">Class to be used on one instance throughout the application per request</param>
         /// <param name="provider">Defines a mechanism for retrieving a service object; that is, an object that provides custom support to other objects.</param>
+        /// <param name="mapper">Data Mapper</param>
         /// <param name="logger">Log</param>
         public TitleRepository(
             IDbContext dbContext,
             IApplicationContext applicationContext,
             IServiceProvider provider,
-            ILogger<UserRepository> logger)
-            : base(dbContext, applicationContext, provider, logger)
+            IMapper mapper,
+            ILogger<TitleRepository> logger)
+            : base(dbContext, applicationContext, provider, mapper, logger)
         {
         }
 
@@ -47,22 +51,14 @@ namespace PeoManageSoft.Business.Infrastructure.Repositories.Title
         {
             string methodName = nameof(DeleteAsync);
 
-            _logger.LogBeginInformation(methodName);
+            Logger.LogBeginInformation(methodName);
 
-            IContentScope contentScope = (IContentScope)scope;
-            (string sqlStatement,
-             object parameterId,
-             CommandType commandType) = TitleEntityConfig.GetDeleteSqlStatement(id);
-
-            _ = await _dbContext.ExecuteAsync(
-                contentScope.Connection,
-                sqlStatement,
-                parameterId,
-                contentScope.DbTransaction,
-                commandType
+            _ = await ExecuteAsync(
+                scope, () =>
+                GetDeleteSqlStatement(id)
             ).ConfigureAwait(false);
 
-            _logger.LogEndInformation(methodName);
+            Logger.LogEndInformation(methodName);
         }
 
         /// Determines whether the specified title table contains the record that match the id
@@ -75,24 +71,16 @@ namespace PeoManageSoft.Business.Infrastructure.Repositories.Title
         /// </returns>
         public async Task<bool> ExistsAsync(IScope scope, long id)
         {
-            string methodName = nameof(SelectByIdAsync);
+            string methodName = nameof(ExistsAsync);
 
-            _logger.LogBeginInformation(methodName);
+            Logger.LogBeginInformation(methodName);
 
-            IContentScope contentScope = (IContentScope)scope;
-            (string sqlStatement,
-             object parameterId,
-             CommandType commandType) = TitleEntityConfig.GetExistsByIdSqlStatement(id);
-
-            bool result = await _dbContext.ExecuteScalarAsync<object, bool>(
-                contentScope.Connection,
-                sqlStatement,
-                parameterId,
-                contentScope.DbTransaction,
-                commandType
+            bool result = await ExecuteScalarAsync<bool>(
+                scope, () =>
+                GetExistsByIdSqlStatement(id)
             ).ConfigureAwait(false);
 
-            _logger.LogEndInformation(methodName);
+            Logger.LogEndInformation(methodName);
 
             return result;
         }
@@ -107,89 +95,95 @@ namespace PeoManageSoft.Business.Infrastructure.Repositories.Title
         {
             string methodName = nameof(InsertAsync);
 
-            _logger.LogBeginInformation(methodName);
-
-            IContentScope contentScope = (IContentScope)scope;
-            (string sqlStatement,
-             CommandType commandType) = TitleEntityConfig.GetInsertSqlStatement();
+            Logger.LogBeginInformation(methodName);
 
             IEntity ientity = entity;
 
-            long id = await _dbContext.ExecuteScalarAsync<object, long>(
-                contentScope.Connection,
-                sqlStatement,
-                ientity.GetInsertParameters(_applicationContext),
-                contentScope.DbTransaction,
-                commandType
+            long id = await ExecuteScalarAsync<long>(
+                scope, () =>
+                GetInsertSqlStatement(Provider, entity, ApplicationContext)
             ).ConfigureAwait(false);
 
             ientity.SetId(id);
 
-            _logger.LogEndInformation(methodName);
+            Logger.LogEndInformation(methodName);
         }
 
         /// <summary>
-        /// Query records in the Title table and asynchronously using Task.
+        /// Query records in the title table and asynchronously using Task.
         /// </summary>
         /// <param name="scope">Transactional scope</param>
         /// <returns>
         /// Task: Represents an asynchronous operation. 
-        /// Returns an enumerator that iterates through the Title entity collection.
+        /// Returns an enumerator that iterates through the user entity collection.
         /// </returns>
         public async Task<IEnumerable<TitleEntity>> SelectAllAsync(IScope scope)
         {
             string methodName = nameof(SelectAllAsync);
 
-            _logger.LogBeginInformation(methodName);
+            Logger.LogBeginInformation(methodName);
 
-            IContentScope contentScope = (IContentScope)scope;
-            (string sqlStatement,
-             CommandType commandType) = TitleEntityConfig.GetSelectSqlStatement();
+            var collection = new List<TitleEntity>();
 
-            IEnumerable<TitleEntity> result = await _dbContext.QueryAsync<TitleEntity>(
-                contentScope.Connection,
-                sqlStatement,
-                null,
-                contentScope.DbTransaction,
-                commandType
-            ).ConfigureAwait(false);
+            await ExecuteReaderAsync(dataReader =>
+            {
+                collection.Add(SetEntity(dataReader));
+            }, scope, () => GetSelectAllSqlStatement()).ConfigureAwait(false);
 
-            _logger.LogEndInformation(methodName);
+            Logger.LogEndInformation(methodName);
 
-            return result;
+            return collection;
         }
 
         /// <summary>
-        /// Query the record in the Title table and asynchronously using Task.
+        /// Query the record in the title table by id and asynchronously using Task.
         /// </summary>
         /// <param name="scope">Transactional scope</param>
-        /// <param name="id">Title identifier</param>
+        /// <param name="id">User identifier</param>
         /// <returns>
         /// Task: Represents an asynchronous operation. 
-        /// Returns the Title entity.
+        /// Returns the user entity.
         /// </returns>
         public async Task<TitleEntity> SelectByIdAsync(IScope scope, long id)
         {
             string methodName = nameof(SelectByIdAsync);
 
-            _logger.LogBeginInformation(methodName);
+            Logger.LogBeginInformation(methodName);
 
-            IContentScope contentScope = (IContentScope)scope;
-            (string sqlStatement,
-             object parameterId,
-             CommandType commandType) = TitleEntityConfig.GetSelectByIdSqlStatement(id);
+            TitleEntity entity = null;
 
-            TitleEntity result = await _dbContext.QueryFirstOrDefaultAsync<TitleEntity>(
-                contentScope.Connection,
-                sqlStatement,
-                parameterId,
-                contentScope.DbTransaction,
-                commandType
-            ).ConfigureAwait(false);
+            await ExecuteReaderAsync(dataReader =>
+            {
+                entity = SetEntity(dataReader);
+            }, scope, () => GetSelectByIdSqlStatement(Provider, id)).ConfigureAwait(false);
 
-            _logger.LogEndInformation(methodName);
+            Logger.LogEndInformation(methodName);
 
-            return result;
+            return entity;
+        }
+
+        /// <summary>
+        /// Query the record in the user table by rules and asynchronously using Task.
+        /// </summary>
+        /// <param name="scope">Transactional scope</param>
+        /// <param name="rule">Rules to filter the data.</param>
+        /// <returns>IEnumerable[TEntity]</returns>
+        public async Task<IEnumerable<TitleEntity>> SelectByRulesAsync(IScope scope, IRule<EntityField> rule)
+        {
+            string methodName = nameof(SelectByRulesAsync);
+
+            Logger.LogBeginInformation(methodName);
+
+            var collection = new List<TitleEntity>();
+
+            await ExecuteReaderAsync(dataReader =>
+            {
+                collection.Add(SetEntity(dataReader));
+            }, scope, () => GetSelectByRulesSqlStatement(Provider, rule)).ConfigureAwait(false);
+
+            Logger.LogEndInformation(methodName);
+
+            return collection;
         }
 
         /// <summary>
@@ -202,91 +196,49 @@ namespace PeoManageSoft.Business.Infrastructure.Repositories.Title
         {
             string methodName = nameof(UpdateAsync);
 
-            _logger.LogBeginInformation(methodName);
+            Logger.LogBeginInformation(methodName);
 
-            IContentScope contentScope = (IContentScope)scope;
-            (string sqlStatement,
-             CommandType commandType) = TitleEntityConfig.GetUpdateSqlStatement();
-
-            IEntity ientity = entity;
-
-            _ = await _dbContext.ExecuteAsync(
-                contentScope.Connection,
-                sqlStatement,
-                ientity.GetUpdateParameters(_applicationContext),
-                contentScope.DbTransaction,
-                commandType
+            _ = await ExecuteAsync(
+                scope, () =>
+                TitleEntityConfig.GetUpdateSqlStatement(Provider, entity, ApplicationContext)
             ).ConfigureAwait(false);
 
-            _logger.LogEndInformation(methodName);
+            Logger.LogEndInformation(methodName);
         }
 
         /// <summary>
-        /// Validates whether inserting into the title table is allowed and asynchronously using Task.
+        /// Modifies partial data that must be updated without modifying the entire data and asynchronously using Task.
         /// </summary>
         /// <param name="scope">Transactional scope</param>
-        ///  <param name="entity">Title Entity</param>
-        /// <returns>
-        /// Task: Represents an asynchronous operation. 
-        /// Returns an enumerator that iterates through the validation collection.
-        /// </returns>
-        public async Task<IEnumerable<string>> ValidateInsertAsync(IScope scope, TitleEntity entity)
+        /// <param name="fields">Fields that will be updated</param>
+        /// <param name="id">Identifier value</param>
+        /// <returns>Task: Represents an asynchronous operation.</returns>
+        public async Task PatchAsync(IScope scope, IEnumerable<Field<EntityField>> fields, long id)
         {
-            string methodName = nameof(ValidateInsertAsync);
+            string methodName = nameof(PatchAsync);
 
-            _logger.LogBeginInformation(methodName);
+            Logger.LogBeginInformation(methodName);
 
-            IContentScope contentScope = (IContentScope)scope;
-            (string sqlStatement,
-             CommandType commandType) = TitleEntityConfig.GetValidateInsertSqlStatement();
-
-            IEntity ientity = entity;
-
-            IEnumerable<string> result = await _dbContext.QueryAsync<string>(
-                contentScope.Connection,
-                sqlStatement,
-                ientity.GetValidateInsertParameters(),
-                contentScope.DbTransaction,
-                commandType
+            _ = await ExecuteAsync(
+                scope, () =>
+                GetPatchSqlStatement(Provider, fields, id, ApplicationContext)
             ).ConfigureAwait(false);
 
-            _logger.LogEndInformation(methodName);
-
-            return result;
+            Logger.LogEndInformation(methodName);
         }
 
+        #endregion
+
+        #region private
+
         /// <summary>
-        /// Validates whether updating into the title table is allowed and asynchronously using Task.
+        /// Sets the entity
         /// </summary>
-        /// <param name="scope">Transactional scope</param>
-        ///  <param name="entity">Title entity</param>
-        /// <returns>
-        /// Task: Represents an asynchronous operation. 
-        /// Returns an enumerator that iterates through the validation collection.
-        /// </returns>
-        public async Task<IEnumerable<string>> ValidateUpdateAsync(IScope scope, TitleEntity entity)
+        /// <param name="dataReader">An data reader that can be used to iterate over the results of the SQL query.</param>
+        /// <returns>Entity</returns>
+        private TitleEntity SetEntity(IDataReader dataReader)
         {
-            string methodName = nameof(ValidateUpdateAsync);
-
-            _logger.LogBeginInformation(methodName);
-
-            IContentScope contentScope = (IContentScope)scope;
-            (string sqlStatement,
-             CommandType commandType) = TitleEntityConfig.GetValidateUpdateSqlStatement();
-
-            IEntity ientity = entity;
-
-            IEnumerable<string> result = await _dbContext.QueryAsync<string>(
-                contentScope.Connection,
-                sqlStatement,
-                ientity.GetValidateUpdateParameters(),
-                contentScope.DbTransaction,
-                commandType
-            ).ConfigureAwait(false);
-
-            _logger.LogEndInformation(methodName);
-
-            return result;
+            return Mapper.Map<TitleEntity>(dataReader);
         }
 
         #endregion

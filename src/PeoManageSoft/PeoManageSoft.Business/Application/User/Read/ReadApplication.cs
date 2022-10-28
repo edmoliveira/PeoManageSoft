@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.Extensions.Logging;
 using PeoManageSoft.Business.Application.User.Read.Response;
-using PeoManageSoft.Business.Domain.Queries.User.Get;
+using PeoManageSoft.Business.Domain.Services.Queries.User.Get;
 using PeoManageSoft.Business.Infrastructure.Helpers.Exceptions;
 using PeoManageSoft.Business.Infrastructure.Helpers.Extensions;
 using System.Net;

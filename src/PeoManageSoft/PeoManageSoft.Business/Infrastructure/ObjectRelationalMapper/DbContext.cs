@@ -172,6 +172,37 @@ namespace PeoManageSoft.Business.Infrastructure.ObjectRelationalMapper
         }
 
         /// <summary>
+        /// Execute parameterized SQL and return an <see cref="IDataReader"/>.
+        /// </summary>
+        /// <param name="action">An <see cref="IDataReader"/> that can be used to iterate over the results of the SQL query.</param>
+        /// <param name="connection">The connection to query on.</param>
+        /// <param name="sqlStatement">The SQL to execute for this query.</param>
+        /// <param name="parameters">The parameters to pass, if any.</param>
+        /// <param name="transaction">The transaction to use for this query.</param>
+        /// <param name="commandType">Is it a stored proc or a batch?</param>
+        public void ExecuteReader(Action<IDataReader> action, IDbConnection connection, string sqlStatement, object parameters, IDbTransaction transaction = null, CommandType? commandType = null)
+        {
+            using var reader = connection.ExecuteReader(sqlStatement, parameters, transaction, _appConfig.SqlCommandTimeout, commandType);
+            action(reader);
+        }
+
+        /// <summary>
+        /// Execute parameterized SQL and return an <see cref="IDataReader"/>  and asynchronously using Task.
+        /// </summary>
+        /// <param name="action">An <see cref="IDataReader"/> that can be used to iterate over the results of the SQL query.</param>
+        /// <param name="connection">The connection to query on.</param>
+        /// <param name="sqlStatement">The SQL to execute for this query.</param>
+        /// <param name="parameters">The parameters to pass, if any.</param>
+        /// <param name="transaction">The transaction to use for this query.</param>
+        /// <param name="commandType">Is it a stored proc or a batch?</param>
+        /// <returns>Represents an asynchronous operation.</returns>
+        public async Task ExecuteReaderAsync(Action<IDataReader> action, IDbConnection connection, string sqlStatement, object parameters, IDbTransaction transaction = null, CommandType? commandType = null)
+        {
+            using var reader = await connection.ExecuteReaderAsync(sqlStatement, parameters, transaction, _appConfig.SqlCommandTimeout, commandType).ConfigureAwait(false);
+            action(reader);
+        }
+
+        /// <summary>
         /// Perform a multi-mapping query with 2 input types.
         /// Executes a query, returning the data typed as TResult.
         /// </summary>

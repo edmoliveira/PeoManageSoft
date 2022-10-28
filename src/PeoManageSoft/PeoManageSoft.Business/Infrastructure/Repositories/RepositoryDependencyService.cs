@@ -1,7 +1,9 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using PeoManageSoft.Business.Infrastructure.Repositories.Department;
+using PeoManageSoft.Business.Infrastructure.Repositories.Title;
 using PeoManageSoft.Business.Infrastructure.Repositories.User;
 
-namespace PeoManageSoft.Business.Domain.Commands.User
+namespace PeoManageSoft.Business.Infrastructure.Repositories
 {
     /// <summary>
     /// Extension methods for adding repository services
@@ -19,6 +21,8 @@ namespace PeoManageSoft.Business.Domain.Commands.User
         public static void AddRepositoryDependencies(this IServiceCollection services)
         {
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<ITitleRepository, TitleRepository>();
+            services.AddScoped<IDepartmentRepository, DepartmentRepository>();
         }
 
         #endregion

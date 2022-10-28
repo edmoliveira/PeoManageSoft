@@ -11,14 +11,16 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
 using PeoManageSoft.Business.Application.User;
-using PeoManageSoft.Business.Domain.Commands.User;
-using PeoManageSoft.Business.Domain.Queries.User;
+using PeoManageSoft.Business.Domain.Services.Commands.User;
+using PeoManageSoft.Business.Domain.Services.Factories;
+using PeoManageSoft.Business.Domain.Services.Queries.User;
 using PeoManageSoft.Business.Infrastructure.Helpers.Exceptions;
 using PeoManageSoft.Business.Infrastructure.Helpers.Extensions;
 using PeoManageSoft.Business.Infrastructure.Helpers.Filters;
 using PeoManageSoft.Business.Infrastructure.Helpers.Interfaces;
 using PeoManageSoft.Business.Infrastructure.ObjectRelationalMapper;
 using PeoManageSoft.Business.Infrastructure.ObjectRelationalMapper.Interfaces;
+using PeoManageSoft.Business.Infrastructure.Repositories;
 using PeoManageSoft.Business.Infrastructure.Tokens;
 
 namespace PeoManageSoft.Business.Infrastructure.Helpers
@@ -60,7 +62,8 @@ namespace PeoManageSoft.Business.Infrastructure.Helpers
                 options.ImplicitlyValidateRootCollectionElements = true;
             });
 
-            services.AddScoped<IDbContext, DbContext>();
+            services.AddTransient<IDbContext, DbContext>();
+            services.AddScoped<IParameter, Parameter>();
             services.AddScoped<IContentScope, ScopeOrm>();
             services.AddScoped<IConnection, Connection>();
             services.AddScoped<ITransactionScope, TransactionScopeOrm>();
@@ -68,6 +71,7 @@ namespace PeoManageSoft.Business.Infrastructure.Helpers
             services.AddSingleton<IAppConfig>(c => appConfig);
 
             services.AddRepositoryDependencies();
+            services.AddFactoryDependencies();
 
             AddApplicationServices(services);
             AddCommandServices(services);
@@ -262,11 +266,14 @@ namespace PeoManageSoft.Business.Infrastructure.Helpers
                 //Commmands
                 c.AddUserCommandProfiles();
 
-                //Commmands
+                //Queries
                 c.AddUserQueryProfiles();
 
                 //Applications
                 c.AddUserApplicationProfiles();
+
+                //Repositories
+                c.AddRepositoryProfiles();
             });
 
             configuration.CreateMapper();

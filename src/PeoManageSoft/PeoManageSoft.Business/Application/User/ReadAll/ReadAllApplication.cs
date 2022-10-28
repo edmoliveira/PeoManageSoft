@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.Extensions.Logging;
 using PeoManageSoft.Business.Application.User.ReadAll.Response;
-using PeoManageSoft.Business.Domain.Queries.User.GetAll;
+using PeoManageSoft.Business.Domain.Services.Queries.User.GetAll;
 using PeoManageSoft.Business.Infrastructure.Helpers.Extensions;
 
 namespace PeoManageSoft.Business.Application.User.ReadAll

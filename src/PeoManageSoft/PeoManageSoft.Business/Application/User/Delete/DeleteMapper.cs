@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using PeoManageSoft.Business.Domain.Commands.User.Remove;
+using PeoManageSoft.Business.Domain.Services.Commands.User.Remove;
 
 namespace PeoManageSoft.Business.Application.User.Delete
 {

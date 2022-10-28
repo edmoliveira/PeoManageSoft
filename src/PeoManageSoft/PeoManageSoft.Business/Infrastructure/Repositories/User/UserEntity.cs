@@ -120,6 +120,19 @@ namespace PeoManageSoft.Business.Infrastructure.Repositories.User
 
         #endregion
 
+        #region IEntity Members
+
+        /// <summary>
+        /// Sets the unique identifier
+        /// </summary>
+        /// <param name="id">The unique identifier</param>
+        void IEntity.SetId(long id)
+        {
+            this.Id = id;
+        }
+
+        #endregion
+
         #region IUser Members
 
         /// <summary>
@@ -142,18 +155,6 @@ namespace PeoManageSoft.Business.Infrastructure.Repositories.User
 
         #endregion
 
-        #region IEntity Members
-
-        /// <summary>
-        /// Sets the unique identifier
-        /// </summary>
-        /// <param name="id">The unique identifier</param>
-        void IEntity.SetId(long id)
-        {
-            this.Id = id;
-        }
-
-        #endregion
 
         #endregion
     }

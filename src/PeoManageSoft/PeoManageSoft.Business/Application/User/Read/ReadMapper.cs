@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using PeoManageSoft.Business.Application.User.Read.Response;
-using PeoManageSoft.Business.Domain.Queries.User.Get;
-using PeoManageSoft.Business.Domain.Queries.User.Get.Response;
+using PeoManageSoft.Business.Domain.Services.Queries.User.Get;
+using PeoManageSoft.Business.Domain.Services.Queries.User.Get.Response;
 
 namespace PeoManageSoft.Business.Application.User.Read
 {

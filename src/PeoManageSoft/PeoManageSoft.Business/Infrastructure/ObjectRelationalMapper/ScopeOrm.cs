@@ -1,5 +1,5 @@
-﻿using System.Data;
-using PeoManageSoft.Business.Infrastructure.ObjectRelationalMapper.Interfaces;
+﻿using PeoManageSoft.Business.Infrastructure.ObjectRelationalMapper.Interfaces;
+using System.Data;
 
 namespace PeoManageSoft.Business.Infrastructure.ObjectRelationalMapper
 {

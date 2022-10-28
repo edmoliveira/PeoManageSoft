@@ -1,5 +1,4 @@
-﻿using PeoManageSoft.Business.Infrastructure.Helpers.Interfaces;
-using PeoManageSoft.Business.Infrastructure.Repositories.Interfaces;
+﻿using PeoManageSoft.Business.Infrastructure.Repositories.Interfaces;
 
 namespace PeoManageSoft.Business.Infrastructure.Repositories.Department
 {
@@ -76,74 +75,6 @@ namespace PeoManageSoft.Business.Infrastructure.Repositories.Department
         void IEntity.SetId(long id)
         {
             this.Id = id;
-        }
-
-        /// <summary>
-        /// Get the parameters to the insert sql statement
-        /// </summary>
-        /// <param name="applicationContext"></param>
-        /// <returns>Parameters</returns>
-        object IEntity.GetInsertParameters(IApplicationContext applicationContext)
-        {
-            RequestId = applicationContext.RequestId;
-            CreationUser = applicationContext.LoggedUser.User;
-            CreationDate = DateTime.Now;
-
-            return new
-            {
-                IsActive,
-                Name,
-                RequestId,
-                CreationUser,
-                CreationDate.Value
-            };
-        }
-
-        /// <summary>
-        /// Get the parameters to the update sql statement
-        /// </summary>
-        ///  <param name="applicationContext"></param>
-        /// <returns>Parameters</returns>
-        object IEntity.GetUpdateParameters(IApplicationContext applicationContext)
-        {
-            RequestId = applicationContext.RequestId;
-            UpdatedUser = applicationContext.LoggedUser.User;
-            UpdatedDate = DateTime.Now;
-
-            return new
-            {
-                Id,
-                IsActive,
-                Name,
-                RequestId,
-                UpdatedUser,
-                UpdatedDate.Value
-            };
-        }
-
-        /// <summary>
-        /// Get the parameters to the validate insert sql statement
-        /// </summary>
-        /// <returns>Parameters</returns>
-        object IEntity.GetValidateInsertParameters()
-        {
-            return new
-            {
-                Name
-            };
-        }
-
-        /// <summary>
-        /// Get the parameters to the validate update sql statement
-        /// </summary>
-        /// <returns>Parameters</returns>
-        object IEntity.GetValidateUpdateParameters()
-        {
-            return new
-            {
-                Id,
-                Name
-            };
         }
 
         #endregion

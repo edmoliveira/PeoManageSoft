@@ -1,4 +1,5 @@
-﻿using PeoManageSoft.Business.Infrastructure.ObjectRelationalMapper.Interfaces;
+﻿using PeoManageSoft.Business.Infrastructure.ObjectRelationalMapper;
+using PeoManageSoft.Business.Infrastructure.ObjectRelationalMapper.Interfaces;
 
 namespace PeoManageSoft.Business.Infrastructure.Repositories.Interfaces
 {
@@ -6,7 +7,8 @@ namespace PeoManageSoft.Business.Infrastructure.Repositories.Interfaces
     /// Base encapsulation of logic to access data sources.
     /// </summary>
     /// <typeparam name="TEntity">Entity type</typeparam>
-    internal interface IBaseRepository<TEntity>
+    /// <typeparam name="TEntityField">Entity fields types</typeparam>
+    internal interface IBaseRepository<TEntity, TEntityField>
     {
         #region Methods
 
@@ -24,6 +26,14 @@ namespace PeoManageSoft.Business.Infrastructure.Repositories.Interfaces
         /// <param name="entity"><see cref="TEntity"/> entity</param>
         /// <returns>Task: Represents an asynchronous operation.</returns>
         Task UpdateAsync(IScope scope, TEntity entity);
+        /// <summary>
+        /// Modifies partial data that must be updated without modifying the entire data and asynchronously using Task.
+        /// </summary>
+        /// <param name="scope">Transactional scope</param>
+        /// <param name="fields"><see cref="TEntityField"/> Fields that will be updated</param>
+        /// <param name="id">Identifier value</param>
+        /// <returns>Task: Represents an asynchronous operation.</returns>
+        Task PatchAsync(IScope scope, IEnumerable<Field<TEntityField>> fields, long id);
         /// Deteles the record from the <see cref="TEntity"/> table and asynchronously using Task.
         /// </summary>
         /// <param name="scope">Transactional scope</param>
@@ -40,7 +50,7 @@ namespace PeoManageSoft.Business.Infrastructure.Repositories.Interfaces
         /// </returns>
         Task<bool> ExistsAsync(IScope scope, long id);
         /// <summary>
-        /// Query the record in the <see cref="TEntity"/> table and asynchronously using Task.
+        /// Query the record in the <see cref="TEntity"/> table by id and asynchronously using Task.
         /// </summary>
         /// <param name="scope">Transactional scope</param>
         /// <param name="id"><see cref="TEntity"/> identifier</param>
@@ -59,25 +69,12 @@ namespace PeoManageSoft.Business.Infrastructure.Repositories.Interfaces
         /// </returns>
         Task<IEnumerable<TEntity>> SelectAllAsync(IScope scope);
         /// <summary>
-        /// Validates whether inserting into the <see cref="TEntity"/> table is allowed and asynchronously using Task.
+        /// Query the record in the <see cref="TEntity"/> table by rules and asynchronously using Task.
         /// </summary>
         /// <param name="scope">Transactional scope</param>
-        ///  <param name="entity"><see cref="TEntity"/> entity</param>
-        /// <returns>
-        /// Task: Represents an asynchronous operation. 
-        /// Returns an enumerator that iterates through the validation collection.
-        /// </returns>
-        Task<IEnumerable<string>> ValidateInsertAsync(IScope scope, TEntity entity);
-        /// <summary>
-        /// Validates whether updating into the <see cref="TEntity"/> table is allowed and asynchronously using Task.
-        /// </summary>
-        /// <param name="scope">Transactional scope</param>
-        ///  <param name="entity"><see cref="TEntity"/> entity</param>
-        /// <returns>
-        /// Task: Represents an asynchronous operation. 
-        /// Returns an enumerator that iterates through the validation collection.
-        /// </returns>
-        Task<IEnumerable<string>> ValidateUpdateAsync(IScope scope, TEntity entity);
+        /// <param name="rule">Rules to filter the data.</param>
+        /// <returns>IEnumerable[TEntity]</returns>
+        Task<IEnumerable<TEntity>> SelectByRulesAsync(IScope scope, IRule<TEntityField> rule);
 
         #endregion
     }

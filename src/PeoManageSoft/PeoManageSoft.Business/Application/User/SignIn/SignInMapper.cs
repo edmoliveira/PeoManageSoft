@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using PeoManageSoft.Business.Domain.Queries.User.GetByAuthentication;
+using PeoManageSoft.Business.Domain.Services.Queries.User.GetByAuthentication;
 
 namespace PeoManageSoft.Business.Application.User.SignIn
 {

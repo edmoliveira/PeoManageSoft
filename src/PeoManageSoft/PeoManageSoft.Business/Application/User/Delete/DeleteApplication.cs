@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.Extensions.Logging;
-using PeoManageSoft.Business.Domain.Commands.User.Remove;
+using PeoManageSoft.Business.Domain.Services.Commands.User.Remove;
 using PeoManageSoft.Business.Infrastructure.Helpers.Extensions;
 
 namespace PeoManageSoft.Business.Application.User.Delete

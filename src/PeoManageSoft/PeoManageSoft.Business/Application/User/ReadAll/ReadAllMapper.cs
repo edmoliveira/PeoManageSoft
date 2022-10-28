@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using PeoManageSoft.Business.Application.User.ReadAll.Response;
-using PeoManageSoft.Business.Domain.Queries.User.GetAll.Response;
+using PeoManageSoft.Business.Domain.Services.Queries.User.GetAll.Response;
 
 namespace PeoManageSoft.Business.Application.User.ReadAll
 {

@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using PeoManageSoft.Business.Domain.Commands.User.Update;
+using PeoManageSoft.Business.Domain.Services.Commands.User.Update;
 
 namespace PeoManageSoft.Business.Application.User.Change
 {

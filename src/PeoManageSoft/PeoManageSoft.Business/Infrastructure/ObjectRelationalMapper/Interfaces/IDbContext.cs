@@ -121,6 +121,29 @@ namespace PeoManageSoft.Business.Infrastructure.ObjectRelationalMapper.Interface
         Task<IEnumerable<TResult>> QueryAsync<TResult>(IDbConnection connection, string sqlStatement, object parameters, IDbTransaction transaction = null, CommandType? commandType = null);
 
         /// <summary>
+        /// Execute parameterized SQL and return an <see cref="IDataReader"/>.
+        /// </summary>
+        /// <param name="action">An <see cref="IDataReader"/> that can be used to iterate over the results of the SQL query.</param>
+        /// <param name="connection">The connection to query on.</param>
+        /// <param name="sqlStatement">The SQL to execute for this query.</param>
+        /// <param name="parameters">The parameters to pass, if any.</param>
+        /// <param name="transaction">The transaction to use for this query.</param>
+        /// <param name="commandType">Is it a stored proc or a batch?</param>
+        void ExecuteReader(Action<IDataReader> action, IDbConnection connection, string sqlStatement, object parameters, IDbTransaction transaction = null, CommandType? commandType = null);
+
+        /// <summary>
+        /// Execute parameterized SQL and return an <see cref="IDataReader"/>  and asynchronously using Task.
+        /// </summary>
+        /// <param name="action">An <see cref="IDataReader"/> that can be used to iterate over the results of the SQL query.</param>
+        /// <param name="connection">The connection to query on.</param>
+        /// <param name="sqlStatement">The SQL to execute for this query.</param>
+        /// <param name="parameters">The parameters to pass, if any.</param>
+        /// <param name="transaction">The transaction to use for this query.</param>
+        /// <param name="commandType">Is it a stored proc or a batch?</param>
+        /// <returns>Represents an asynchronous operation.</returns>
+        Task ExecuteReaderAsync(Action<IDataReader> action, IDbConnection connection, string sqlStatement, object parameters, IDbTransaction transaction = null, CommandType? commandType = null);
+
+        /// <summary>
         /// Perform a multi-mapping query with 2 input types.
         /// Executes a query, returning the data typed as TResult.
         /// </summary>

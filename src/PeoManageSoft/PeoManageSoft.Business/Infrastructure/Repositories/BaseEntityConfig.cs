@@ -3,6 +3,7 @@ using PeoManageSoft.Business.Infrastructure.Helpers.Interfaces;
 using PeoManageSoft.Business.Infrastructure.ObjectRelationalMapper;
 using PeoManageSoft.Business.Infrastructure.ObjectRelationalMapper.Interfaces;
 using System.Data;
+using System.Text;
 
 namespace PeoManageSoft.Business.Infrastructure.Repositories
 {
@@ -16,25 +17,74 @@ namespace PeoManageSoft.Business.Infrastructure.Repositories
         #region public
 
         /// <summary>
-        /// Gets update command of the entity.
+        /// Gets select by id command of the entity.
         /// </summary>
-        /// <param name="tableName">Table name.</param>
+        /// <param name="view">View object.</param>
+        /// <param name="parameterId">Identifier Parameter configuration.</param>
+        /// <returns>SQL statement</returns>
+        public static string GetSelectByIdSqlStatement(View view, ParameterConfig parameterId)
+        {
+            return GetSelectSqlStatement(view, parameterId);
+        }
+
+        /// <summary>
+        /// Gets select all command of the entity.
+        /// </summary>
+        /// <param name="view">View object.</param>
+        /// <returns>SQL statement</returns>
+        public static string GetSelectAllSqlStatement(View view)
+        {
+            return GetSelectSqlStatement(view, null);
+        }
+
+        /// <summary>
+        /// Gets select by rules command of the entity.
+        /// </summary>
+        /// <typeparam name="TEntityField">Entity fields types</typeparam>
+        /// <param name="provider">Defines a mechanism for retrieving a service object; that is, an object that provides custom support to other objects.</param>
+        /// <param name="view">View object.</param>
+        /// <param name="rule">Rules to filter the data</param>
+        /// <param name="searchParameter">Search for parameter in entity configuration</param>
         /// <param name="parameters">Parameter list to a command object.</param>
         /// <returns>SQL statement</returns>
-        public static string GetUpdateSqlStatement(string tableName, IEnumerable<IParameter> parameters)
+        public static string GetSelectByRulesSqlStatement<TEntityField>(
+            IServiceProvider provider,
+            View view,
+            IRule<TEntityField> rule,
+            Func<TEntityField, ParameterConfig> searchParameter,
+            out IEnumerable<IParameter> parameters
+            )
         {
-            if (tableName is null) { throw new ArgumentException($"The Argument '{nameof(tableName)}' is null"); }
+            var paramList = new List<IParameter>();
+
+            var sqlStatement = GetSelectSqlStatement(view, null);
+
+            sqlStatement += $"WHERE {GetRules(provider, rule, paramList, searchParameter)}";
+
+            parameters = paramList;
+
+            return sqlStatement;
+        }
+
+        /// <summary>
+        /// Gets update command of the entity.
+        /// </summary>
+        /// <param name="table">Table object.</param>
+        /// <param name="parameters">Parameter list to a command object.</param>
+        /// <returns>SQL statement</returns>
+        public static string GetUpdateSqlStatement(Table table, IEnumerable<IParameter> parameters)
+        {
+            if (table is null) { throw new ArgumentException($"The Argument '{nameof(table)}' is null"); }
             if (parameters is null) { throw new ArgumentException($"The Argument '{nameof(parameters)}' is null"); }
 
             IParameter parameterId = parameters.Where(c => c.IsUniqueIdentifier).FirstOrDefault();
 
             if (parameterId is null) { throw new EntityIdNotFoundException(); }
 
-            return "UPDATE @TABLE SET @FIELDS_VALUES WHERE @ID = @ID_VALUE"
-                    .Replace("@TABLE", tableName)
-                    .Replace("@FIELDS_VALUES", GetFieldsAndParameters(parameters, false))
-                    .Replace("@ID", parameterId.SourceColumn)
-                    .Replace("@ID_VALUE", parameterId.ParameterName);
+            return $@"
+                UPDATE {table.Name} SET {GetFieldsAndParameters(parameters, false)} 
+                WHERE {parameterId.SourceColumn} = {parameterId.ParameterName}
+            ";
         }
 
         /// <summary>
@@ -105,6 +155,175 @@ namespace PeoManageSoft.Business.Infrastructure.Repositories
         #endregion
 
         #region private
+
+        /// <summary>
+        /// Gets rules to filter the data
+        /// </summary>
+        /// <typeparam name="TEntityField">Entity fields types</typeparam>
+        /// <param name="provider">Defines a mechanism for retrieving a service object; that is, an object that provides custom support to other objects.</param>
+        /// <param name="rule">Rules to filter the data</param>
+        /// <param name="parameters">Parameter list to a command object</param>
+        /// <param name="searchParameter">Search for parameter in entity configuration</param>
+        /// <param name="canSqlOperator">Indicates whether it can put the sql operator.</param>
+        /// <returns>Rules Ex: Field1 = '1' or Field2 <> '45'</returns>
+        private static string GetRules<TEntityField>(
+            IServiceProvider provider,
+            IRule<TEntityField> rule,
+            IList<IParameter> parameters,
+            Func<TEntityField, ParameterConfig> searchParameter,
+            bool canSqlOperator = true)
+        {
+            StringBuilder builder = new();
+
+            builder.Append('(');
+
+            if (canSqlOperator)
+            {
+                SearchSqlOperator(rule, sqlOperator =>
+                {
+                    builder.Append(' ');
+                    builder.Append(sqlOperator);
+                    builder.Append(' ');
+                });
+            }
+
+            if (rule.Rules?.Count > 0)
+            {
+                foreach (var childRule in rule.Rules)
+                {
+                    SearchSqlOperator(childRule, sqlOperator =>
+                    {
+                        builder.Append(' ');
+                        builder.Append(sqlOperator);
+                        builder.Append(' ');
+                    });
+
+                    ParameterConfig parameterConfig = searchParameter(childRule.EntityField);
+
+                    if (parameterConfig is not null)
+                    {
+                        var comparisonOperator = SearchSqlComparisonOperators(childRule);
+
+                        if (childRule.ComparisonOperator == SqlComparisonOperator.In)
+                        {
+                            if (childRule.Value is not System.Collections.IEnumerable enumerable)
+                            {
+                                throw new ArrayTypeMismatchException("Value is not array.");
+                            }
+
+                            builder.Append(parameterConfig.SourceColumnAlias);
+                            builder.Append(' ');
+                            builder.Append(comparisonOperator);
+                            builder.Append('(');
+
+                            ushort countIn = 1;
+
+                            foreach (object value in enumerable)
+                            {
+                                IParameter parameterIn = CreateParameter(provider, parameterConfig);
+
+                                parameterIn.ParameterName = string.Concat(parameterIn.ParameterName, countIn);
+
+                                if (countIn > 1)
+                                {
+                                    builder.Append(',');
+                                }
+
+                                builder.Append(parameterIn.ParameterName);
+
+                                parameterIn.Value = childRule.Value;
+                                parameters.Add(parameterIn);
+
+                                countIn++;
+                            }
+
+                            builder.Append(')');
+                        }
+                        else
+                        {
+                            builder.Append(parameterConfig.SourceColumnAlias);
+                            builder.Append(' ');
+                            builder.Append(comparisonOperator);
+                            builder.Append(' ');
+                            builder.Append(parameterConfig.ParameterName);
+                            builder.Append(' ');
+
+                            parameters.Add(CreateParameter(provider, parameterConfig, childRule.Value));
+                        }
+                    }
+
+                    if (childRule.Rules?.Count > 0)
+                    {
+                        builder.Append(GetRules(provider, childRule, parameters, searchParameter, false));
+                    }
+                }
+            }
+
+            builder.Append(')');
+
+            return builder.ToString();
+        }
+
+        /// <summary>
+        /// Search the sql comparison operator.
+        /// </summary>
+        /// <typeparam name="TEntityField">Entity fields types</typeparam>
+        /// <param name="rule"></param>
+        /// <returns>Returns the SqlComparisonOperator content.</returns>
+        private static string SearchSqlComparisonOperators<TEntityField>(IRule<TEntityField> rule)
+        {
+            return rule.ComparisonOperator switch
+            {
+                SqlComparisonOperator.EqualTo => "=",
+                SqlComparisonOperator.GreaterThan => ">",
+                SqlComparisonOperator.LessThan => "<",
+                SqlComparisonOperator.GreaterThanOrEqualTo => ">=",
+                SqlComparisonOperator.LessThanOrEqualTo => "<=",
+                SqlComparisonOperator.NotEqualTo => "<>",
+                _ => "In"
+            };
+        }
+
+        /// <summary>
+        /// Search the sql operator.
+        /// </summary>
+        /// <typeparam name="TEntityField">Entity fields types</typeparam>
+        /// <param name="rule"></param>
+        /// <param name="action">If SqlOperator is not null then trigger the action.</param>
+        private static void SearchSqlOperator<TEntityField>(IRule<TEntityField> rule, Action<string> action)
+        {
+            if (rule.SqlOperator.HasValue)
+            {
+                var sqlOperator = rule.SqlOperator.Value switch
+                {
+                    SqlOperator.And => "And",
+                    SqlOperator.Or => "Or",
+                    _ => "Not"
+                };
+
+                action(sqlOperator);
+            }
+        }
+
+        /// <summary>
+        /// Gets select command of the entity.
+        /// </summary>
+        /// <param name="view">View object.</param>
+        /// <param name="parameterId">Identifier Parameter configuration.</param>
+        /// <returns>SQL statement</returns>
+        private static string GetSelectSqlStatement(View view, ParameterConfig parameterId = null)
+        {
+            if (view is null) { throw new ArgumentException($"The Argument '{nameof(view)}' is null"); }
+
+            var sqlStatement = $"SELECT * FROM {view.Name} ";
+
+            if (parameterId is not null)
+            {
+                sqlStatement += $"WHERE {parameterId.SourceColumnAlias} = {parameterId.ParameterName}";
+            }
+
+            return sqlStatement;
+        }
 
         /// <summary>
         /// Gets entity fields and parameters

@@ -24,7 +24,7 @@ namespace PeoManageSoft.Business.Application.User
         public static void AddUserApplicationValidation(this IServiceCollection services)
         {
             services.AddScoped<IValidator<NewRequest>, NewValidator>();
-            services.AddScoped<IValidator<ChangeRequest>, ChangeValidator> ();
+            services.AddScoped<IValidator<ChangeRequest>, ChangeValidator>();
             services.AddScoped<IValidator<DeleteRequest>, DeleteValidator>();
             services.AddScoped<IValidator<ReadRequest>, ReadValidator>();
             services.AddScoped<IValidator<SignInRequest>, SignInValidator>();

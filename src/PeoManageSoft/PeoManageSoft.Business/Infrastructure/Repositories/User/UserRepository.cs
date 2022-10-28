@@ -1,11 +1,14 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using AutoMapper;
+using Microsoft.Extensions.Logging;
 using PeoManageSoft.Business.Infrastructure.Helpers.Extensions;
 using PeoManageSoft.Business.Infrastructure.Helpers.Interfaces;
+using PeoManageSoft.Business.Infrastructure.ObjectRelationalMapper;
 using PeoManageSoft.Business.Infrastructure.ObjectRelationalMapper.Interfaces;
 using PeoManageSoft.Business.Infrastructure.Repositories.Department;
 using PeoManageSoft.Business.Infrastructure.Repositories.Interfaces;
 using PeoManageSoft.Business.Infrastructure.Repositories.Title;
 using System.Data;
+using static PeoManageSoft.Business.Infrastructure.Repositories.User.UserEntityConfig;
 
 namespace PeoManageSoft.Business.Infrastructure.Repositories.User
 {
@@ -22,13 +25,15 @@ namespace PeoManageSoft.Business.Infrastructure.Repositories.User
         /// <param name="dbContext">Represents a session with the underlying database using which you can perform CRUD (Create, Read, Update, Delete) operations.</param>
         /// <param name="applicationContext">Class to be used on one instance throughout the application per request</param>
         /// <param name="provider">Defines a mechanism for retrieving a service object; that is, an object that provides custom support to other objects.</param>
+        /// <param name="mapper">Data Mapper</param>
         /// <param name="logger">Log</param>
         public UserRepository(
-            IDbContext dbContext, 
+            IDbContext dbContext,
             IApplicationContext applicationContext,
             IServiceProvider provider,
+            IMapper mapper,
             ILogger<UserRepository> logger)
-            :base(dbContext, applicationContext, provider, logger)
+            : base(dbContext, applicationContext, provider, mapper, logger)
         {
         }
 
@@ -50,17 +55,9 @@ namespace PeoManageSoft.Business.Infrastructure.Repositories.User
 
             Logger.LogBeginInformation(methodName);
 
-            IContentScope contentScope = (IContentScope)scope;
-            (string sqlStatement,
-             object parameterId,
-             CommandType commandType) = UserEntityConfig.GetDeleteSqlStatement(id);
-
-            _ = await DbContext.ExecuteAsync(
-                contentScope.Connection,
-                sqlStatement,
-                parameterId,
-                contentScope.DbTransaction,
-                commandType
+            _ = await ExecuteAsync(
+                scope, () =>
+                GetDeleteSqlStatement(id)
             ).ConfigureAwait(false);
 
             Logger.LogEndInformation(methodName);
@@ -76,21 +73,13 @@ namespace PeoManageSoft.Business.Infrastructure.Repositories.User
         /// </returns>
         public async Task<bool> ExistsAsync(IScope scope, long id)
         {
-            string methodName = nameof(SelectByIdAsync);
+            string methodName = nameof(ExistsAsync);
 
             Logger.LogBeginInformation(methodName);
 
-            IContentScope contentScope = (IContentScope)scope;
-            (string sqlStatement,
-             object parameterId,
-             CommandType commandType) = UserEntityConfig.GetExistsByIdSqlStatement(id);
-
-            bool result = await DbContext.ExecuteScalarAsync<object, bool>(
-                contentScope.Connection,
-                sqlStatement,
-                parameterId,
-                contentScope.DbTransaction,
-                commandType
+            bool result = await ExecuteScalarAsync<bool>(
+                scope, () =>
+                GetExistsByIdSqlStatement(id)
             ).ConfigureAwait(false);
 
             Logger.LogEndInformation(methodName);
@@ -110,22 +99,11 @@ namespace PeoManageSoft.Business.Infrastructure.Repositories.User
 
             Logger.LogBeginInformation(methodName);
 
-            IContentScope contentScope = (IContentScope)scope;
-            (string sqlStatement,
-             object parameters,
-             CommandType commandType) = UserEntityConfig.GetInsertSqlStatement(
-                 Provider,
-                 entity,
-                 ApplicationContext);
-
             IEntity ientity = entity;
 
-            long id = await DbContext.ExecuteScalarAsync<object, long>(
-                contentScope.Connection,
-                sqlStatement,
-                parameters,
-                contentScope.DbTransaction,
-                commandType
+            long id = await ExecuteScalarAsync<long>(
+                scope, () =>
+                GetInsertSqlStatement(Provider, entity, ApplicationContext)
             ).ConfigureAwait(false);
 
             ientity.SetId(id);
@@ -147,24 +125,16 @@ namespace PeoManageSoft.Business.Infrastructure.Repositories.User
 
             Logger.LogBeginInformation(methodName);
 
-            IContentScope contentScope = (IContentScope)scope;
-            (string sqlStatement,
-             string splitOn,
-             CommandType commandType) = UserEntityConfig.GetSelectSqlStatement();
+            var collection = new List<UserEntity>();
 
-            IEnumerable<UserEntity> result = await DbContext.QueryAsync<UserEntity, TitleEntity, DepartmentEntity, UserEntity>(
-                contentScope.Connection,
-                SetRelationships,
-                sqlStatement,
-                null,
-                splitOn,
-                contentScope.DbTransaction,
-                commandType
-            ).ConfigureAwait(false);
+            await ExecuteReaderAsync(dataReader =>
+            {
+                collection.Add(SetEntity(dataReader));
+            }, scope, () => GetSelectAllSqlStatement()).ConfigureAwait(false);
 
             Logger.LogEndInformation(methodName);
 
-            return result;
+            return collection;
         }
 
         /// <summary>
@@ -182,62 +152,40 @@ namespace PeoManageSoft.Business.Infrastructure.Repositories.User
 
             Logger.LogBeginInformation(methodName);
 
-            IContentScope contentScope = (IContentScope)scope;
-            (string sqlStatement,
-             object parameterId,
-             string splitOn,
-             CommandType commandType) = UserEntityConfig.GetSelectByIdSqlStatement(id);
+            UserEntity entity = null;
 
-            IEnumerable<UserEntity> result = await DbContext.QueryAsync<UserEntity, TitleEntity, DepartmentEntity, UserEntity>(
-                contentScope.Connection,
-                SetRelationships,
-                sqlStatement,
-                parameterId,
-                splitOn,
-                contentScope.DbTransaction,
-                commandType
-            ).ConfigureAwait(false);
+            await ExecuteReaderAsync(dataReader =>
+            {
+                entity = SetEntity(dataReader);
+            }, scope, () => GetSelectByIdSqlStatement(Provider, id)).ConfigureAwait(false);
 
             Logger.LogEndInformation(methodName);
 
-            return result.FirstOrDefault();
+            return entity;
         }
 
         /// <summary>
-        /// Query the record in the user table by username/password and asynchronously using Task.
+        /// Query the record in the user table by rules and asynchronously using Task.
         /// </summary>
         /// <param name="scope">Transactional scope</param>
-        /// <param name="username">Username</param>
-        /// <param name="password">User password</param>
-        /// <returns>
-        /// Task: Represents an asynchronous operation. 
-        /// Returns the user entity.
-        /// </returns>
-        public async Task<UserEntity> SelectUserAsync(IScope scope, string username, string password)
+        /// <param name="rule">Rules to filter the data.</param>
+        /// <returns>IEnumerable[TEntity]</returns>
+        public async Task<IEnumerable<UserEntity>> SelectByRulesAsync(IScope scope, IRule<EntityField> rule)
         {
-            string methodName = nameof(SelectUserAsync);
+            string methodName = nameof(SelectByRulesAsync);
 
             Logger.LogBeginInformation(methodName);
 
-            IContentScope contentScope = (IContentScope)scope;
-            (string sqlStatement,
-             object parameterId,
-             string splitOn,
-             CommandType commandType) = UserEntityConfig.GetSelectUserSqlStatement(username, password);
+            var collection = new List<UserEntity>();
 
-            IEnumerable<UserEntity> result = await DbContext.QueryAsync<UserEntity, TitleEntity, DepartmentEntity, UserEntity>(
-                contentScope.Connection,
-                SetRelationships,
-                sqlStatement,
-                parameterId,
-                splitOn,
-                contentScope.DbTransaction,
-                commandType
-            ).ConfigureAwait(false);
+            await ExecuteReaderAsync(dataReader =>
+            {
+                collection.Add(SetEntity(dataReader));
+            }, scope, () => GetSelectByRulesSqlStatement(Provider, rule)).ConfigureAwait(false);
 
             Logger.LogEndInformation(methodName);
 
-            return result.FirstOrDefault();
+            return collection;
         }
 
         /// <summary>
@@ -252,133 +200,33 @@ namespace PeoManageSoft.Business.Infrastructure.Repositories.User
 
             Logger.LogBeginInformation(methodName);
 
-            IContentScope contentScope = (IContentScope)scope;
-            (string sqlStatement,
-             object parameters,
-             CommandType commandType) = UserEntityConfig.GetUpdateSqlStatement(
-                 Provider,
-                 entity,
-                 ApplicationContext);
-
-            IEntity ientity = entity;
-
-            _ = await DbContext.ExecuteAsync(
-                contentScope.Connection,
-                sqlStatement,
-                parameters,
-                contentScope.DbTransaction,
-                commandType
+            _ = await ExecuteAsync(
+                scope, () =>
+                GetUpdateSqlStatement(Provider, entity, ApplicationContext)
             ).ConfigureAwait(false);
 
             Logger.LogEndInformation(methodName);
         }
 
         /// <summary>
-        /// Change the user password in the user table and asynchronously using Task.
+        /// Modifies partial data that must be updated without modifying the entire data and asynchronously using Task.
         /// </summary>
         /// <param name="scope">Transactional scope</param>
-        /// <param name="username">Username</param>
-        /// <param name="oldPassword">User old password</param>
-        /// <param name="newPassword">User new password</param>
-        /// <returns>Returns true if the password has been changed.</returns>
-        public async Task<bool> ChangePasswordAsync(IScope scope, string username, string oldPassword, string newPassword)
+        /// <param name="fields">Fields that will be updated</param>
+        /// <param name="id">Identifier value</param>
+        /// <returns>Task: Represents an asynchronous operation.</returns>
+        public async Task PatchAsync(IScope scope, IEnumerable<Field<EntityField>> fields, long id)
         {
-            string methodName = nameof(ChangePasswordAsync);
+            string methodName = nameof(PatchAsync);
 
             Logger.LogBeginInformation(methodName);
 
-            IContentScope contentScope = (IContentScope)scope;
-            (string sqlStatement,
-             object parameters,
-             CommandType commandType) = UserEntityConfig.GetUpdateChangePassSqlStatement(
-                 Provider, username, oldPassword, newPassword, ApplicationContext
-             );
-
-            bool wasChanged = await DbContext.ExecuteScalarAsync<object, bool>(
-                contentScope.Connection,
-                sqlStatement,
-                parameters,
-                contentScope.DbTransaction,
-                commandType
+            _ = await ExecuteAsync(
+                scope, () =>
+                GetPatchSqlStatement(Provider, fields, id, ApplicationContext)
             ).ConfigureAwait(false);
 
             Logger.LogEndInformation(methodName);
-
-            return wasChanged;
-        }
-
-        /// <summary>
-        /// Validates whether inserting into the user table is allowed and asynchronously using Task.
-        /// </summary>
-        /// <param name="scope">Transactional scope</param>
-        ///  <param name="entity">User Entity</param>
-        /// <returns>
-        /// Task: Represents an asynchronous operation. 
-        /// Returns an enumerator that iterates through the validation collection.
-        /// </returns>
-        public async Task<IEnumerable<string>> ValidateInsertAsync(IScope scope, UserEntity entity)
-        {
-            string methodName = nameof(ValidateInsertAsync);
-
-            Logger.LogBeginInformation(methodName);
-
-            IContentScope contentScope = (IContentScope)scope;
-            (string sqlStatement,
-             object parameters,
-             CommandType commandType) = UserEntityConfig.GetValidateInsertSqlStatement(
-                 Provider,
-                 entity);
-
-            IEntity ientity = entity;
-
-            IEnumerable<string> result = await DbContext.QueryAsync<string>(
-                contentScope.Connection,
-                sqlStatement,
-                parameters,
-                contentScope.DbTransaction,
-                commandType
-            ).ConfigureAwait(false);
-
-            Logger.LogEndInformation(methodName);
-
-            return result;
-        }
-
-        /// <summary>
-        /// Validates whether updating into the user table is allowed and asynchronously using Task.
-        /// </summary>
-        /// <param name="scope">Transactional scope</param>
-        ///  <param name="entity">User entity</param>
-        /// <returns>
-        /// Task: Represents an asynchronous operation. 
-        /// Returns an enumerator that iterates through the validation collection.
-        /// </returns>
-        public async Task<IEnumerable<string>> ValidateUpdateAsync(IScope scope, UserEntity entity)
-        {
-            string methodName = nameof(ValidateUpdateAsync);
-
-            Logger.LogBeginInformation(methodName);
-
-            IContentScope contentScope = (IContentScope)scope;
-            (string sqlStatement,
-             object parameters,
-             CommandType commandType) = UserEntityConfig.GetValidateUpdateSqlStatement(
-                Provider,
-                entity);
-
-            IEntity ientity = entity;
-
-            IEnumerable<string> result = await DbContext.QueryAsync<string>(
-                contentScope.Connection,
-                sqlStatement,
-                parameters,
-                contentScope.DbTransaction,
-                commandType
-            ).ConfigureAwait(false);
-
-            Logger.LogEndInformation(methodName);
-
-            return result;
         }
 
         #endregion
@@ -386,14 +234,16 @@ namespace PeoManageSoft.Business.Infrastructure.Repositories.User
         #region private 
 
         /// <summary>
-        /// Defines user entity relationships
+        /// Sets the entity
         /// </summary>
-        /// <param name="userEntity">User entity</param>
-        /// <param name="titleEntity">Title entity</param>
-        /// <param name="departmentEntity">Department entity</param>
-        /// <returns></returns>
-        private static UserEntity SetRelationships(UserEntity userEntity, TitleEntity titleEntity, DepartmentEntity departmentEntity)
+        /// <param name="dataReader">An data reader that can be used to iterate over the results of the SQL query.</param>
+        /// <returns>Entity</returns>
+        private UserEntity SetEntity(IDataReader dataReader)
         {
+            var userEntity = Mapper.Map<UserEntity>(dataReader);
+            var titleEntity = Mapper.Map<TitleEntity>(dataReader);
+            var departmentEntity = Mapper.Map<DepartmentEntity>(dataReader);
+
             IUser user = userEntity;
 
             user.SetTitle(titleEntity);

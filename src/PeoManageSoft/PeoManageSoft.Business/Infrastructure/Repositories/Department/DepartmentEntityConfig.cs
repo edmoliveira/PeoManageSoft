@@ -5,34 +5,34 @@ using System.Data;
 
 namespace PeoManageSoft.Business.Infrastructure.Repositories.Department
 {
+    #region Enums 
+
     /// <summary>
-    /// Department entity stored procedures
+    /// Department Entity field
     /// </summary>
-    static class DepartmentEntityConfig
+    public enum DepartmentEntityField
     {
-        #region Enums 
-
         /// <summary>
-        /// Entity field
+        /// Readonly
         /// </summary>
-        public enum EntityField
-        {
-            /// <summary>
-            /// Readonly
-            /// </summary>
-            Id_Readonly,
-            /// <summary>
-            /// Read and Write
-            /// </summary>
-            IsActive,
-            /// <summary>
-            /// Read and Write
-            /// </summary>
-            Name
-        }
+        Id_Readonly,
+        /// <summary>
+        /// Read and Write
+        /// </summary>
+        IsActive,
+        /// <summary>
+        /// Read and Write
+        /// </summary>
+        Name
+    }
 
-        #endregion
+    #endregion
 
+    /// <summary>
+    /// Department entity configuration
+    /// </summary>
+    sealed class DepartmentEntityConfig : BaseEntityConfig<DepartmentEntity, DepartmentEntityField>
+    {
         #region Fields
 
         /// <summary>
@@ -40,229 +40,75 @@ namespace PeoManageSoft.Business.Infrastructure.Repositories.Department
         /// </summary>
         private static readonly Table _oTable = new("Department");
         /// <summary>
-        /// View object.
-        /// </summary>
-        private static readonly View _oView = new("DepartmentView");
-        /// <summary>
         /// Id parameter configuration.
         /// </summary>
-        private static readonly ParameterConfig _idConfig = new("Id", DbType.Int64, 0, false, true, table: _oTable);
+        private readonly ParameterConfig _idConfig = new("Id", DbType.Int64, 0, false, true, table: _oTable);
         /// <summary>
         /// IsActive parameter configuration.
         /// </summary>
-        private static readonly ParameterConfig _isActiveConfig = new("IsActive", DbType.Boolean, table: _oTable);
+        private readonly ParameterConfig _isActiveConfig = new("IsActive", DbType.Boolean, table: _oTable);
         /// <summary>
         /// Name parameter configuration.
         /// </summary>
-        private static readonly ParameterConfig _nameConfig = new("Name", DbType.String, 200, table: _oTable);
+        private readonly ParameterConfig _nameConfig = new("Name", DbType.String, 200, table: _oTable);
+
+        #endregion
+
+        #region Constructors
+
+        /// <summary>
+        /// Initializes a new instance of the PeoManageSoft.Business.Infrastructure.Repositories.Department.DepartmentEntityConfig class.
+        /// </summary>
+        /// <param name="provider">Defines a mechanism for retrieving a service object; that is, an object that provides custom support to other objects.</param>
+        /// <param name="applicationContext">Class to be used on one instance throughout the application per request</param>
+        public DepartmentEntityConfig(IServiceProvider provider, IApplicationContext applicationContext)
+            : base(_oTable, new View("DepartmentView"),
+                 new Procedure("sp_insert_department"),
+                 new Procedure("sp_update_department"),
+                 new Procedure("sp_delete_department"), provider, applicationContext)
+        {
+        }
 
         #endregion
 
         #region Methods
 
-        #region public
+        #region protected
 
-        /// <summary>
-        /// Gets a function to look up the entity property value.
-        /// </summary>
-        /// <returns>Func<EntityField, IDataReader, object></returns>
-        public static Func<EntityField, IDataReader, object> GetFuncSearchValue()
+        protected override Dictionary<DepartmentEntityField, ParameterConfig> GetParametersConfig()
         {
-            var searchArray = GetParametersConfigAndReadonly();
-
-            return (entityField, dataReader) =>
+            return new()
             {
-                ParameterConfig parameterConfig = searchArray.Where(p => p.Key == entityField).First().Value;
-
-                return dataReader.GetValue(dataReader.GetOrdinal(parameterConfig.SourceColumnAlias));
+                {  DepartmentEntityField.IsActive, _isActiveConfig },
+                {  DepartmentEntityField.Name, _nameConfig },
             };
         }
 
-        /// <summary>
-        /// Stored procedures "DELETE"
-        /// </summary>
-        /// <param name="id">Department identifier value</param>
-        /// <returns>
-        /// Returns the sql statement, the parameter id and the command type.
-        /// </returns>
-        public static (string sqlStatement, object parameterId, CommandType commandType) GetDeleteSqlStatement(long id)
-        {
-            return (sqlStatement: "sp_delete_department", parameterId: new { Id = id }, CommandType.StoredProcedure);
-        }
-
-        /// <summary>
-        /// Stored procedures "EXISTS BY ID"
-        /// </summary>
-        /// <param name="id">Department identifier value</param>
-        /// <returns>
-        /// Returns the sql statement and the command type.
-        /// </returns>
-        public static (string sqlStatement, object parameterId, CommandType commandType) GetExistsByIdSqlStatement(long id)
-        {
-            return (sqlStatement: "sp_exists_by_id_department", parameterId: new { Id = id }, CommandType.StoredProcedure);
-        }
-
-        /// <summary>
-        /// Stored procedures "INSERT"
-        /// </summary>
-        /// <param name="provider">Defines a mechanism for retrieving a service object; that is, an object that provides custom support to other objects.</param>
-        /// <param name="entity">Entity user.</param>
-        /// <param name="applicationContext">Class to be used on one instance throughout the application per request</param>
-        /// <returns>
-        /// Returns the sql statement and the command type.
-        /// </returns>
-        public static (string sqlStatement, object parameters, CommandType commandType)
-            GetInsertSqlStatement(
-            IServiceProvider provider,
-            DepartmentEntity entity,
-            IApplicationContext applicationContext)
-        {
-            var parameterList = BaseEntityConfig.GetInsertParameters(provider, applicationContext);
-
-            parameterList.Add(BaseEntityConfig.CreateParameter(provider, _isActiveConfig, entity.IsActive));
-            parameterList.Add(BaseEntityConfig.CreateParameter(provider, _nameConfig, entity.Name));
-
-            return (sqlStatement: "sp_insert_department", parameters: parameterList, CommandType.StoredProcedure);
-        }
-
-        /// <summary>
-        /// Gets select command of the entity by id.
-        /// </summary>
-        /// <param name="provider">Defines a mechanism for retrieving a service object; that is, an object that provides custom support to other objects.</param>
-        /// <param name="id">User identifier value</param>
-        /// <returns>
-        /// Returns the sql statement, parameterId and the command type.
-        /// </returns>
-        public static (string sqlStatement, object parameterId, CommandType commandType)
-            GetSelectByIdSqlStatement(
-            IServiceProvider provider,
-            long id)
-        {
-            var sql = BaseEntityConfig.GetSelectByIdSqlStatement(_oView, _idConfig);
-
-            return (sqlStatement: sql,
-                parameterId: BaseEntityConfig.CreateParameter(provider, _idConfig, id),
-                CommandType.Text);
-        }
-
-        /// <summary>
-        /// Gets select command of the entity by rules.
-        /// </summary>
-        /// <param name="provider">Defines a mechanism for retrieving a service object; that is, an object that provides custom support to other objects.</param>
-        /// <param name="rule"></param>
-        /// <returns>
-        /// Returns the sql statement, parameters and the command type.
-        /// </returns>
-        public static (string sqlStatement, object parameters, CommandType commandType)
-            GetSelectByRulesSqlStatement(
-            IServiceProvider provider,
-            IRule<EntityField> rule)
-        {
-            var parametersConfig = GetParametersConfigAndReadonly();
-
-            var sql = BaseEntityConfig.GetSelectByRulesSqlStatement(
-                provider,
-                _oView,
-                rule,
-                entityField => parametersConfig[entityField],
-                out var parameterList);
-
-            return (sqlStatement: sql,
-                parameters: parameterList,
-                CommandType.Text);
-        }
-
-        /// <summary>
-        ///  Gets select all command of the entity.
-        /// </summary>
-        /// <returns>Returns the sql statement, splitOn and the command type.</returns>
-        public static (string sqlStatement, object parameters, CommandType commandType) GetSelectAllSqlStatement()
-        {
-            var sql = BaseEntityConfig.GetSelectAllSqlStatement(_oView);
-
-            return (sqlStatement: sql, parameters: null, CommandType.Text);
-        }
-
-        /// <summary>
-        /// Stored procedures "UPDATE"
-        /// </summary>
-        /// <param name="provider">Defines a mechanism for retrieving a service object; that is, an object that provides custom support to other objects.</param>
-        /// <param name="entity">Entity user.</param>
-        /// <param name="applicationContext">Class to be used on one instance throughout the application per request</param>
-        /// <returns>Returns the sql statement and the command type.</returns>
-        public static (string sqlStatement, object parameters, CommandType commandType)
-            GetUpdateSqlStatement(
-            IServiceProvider provider,
-            DepartmentEntity entity,
-            IApplicationContext applicationContext)
-        {
-            var parameterList = BaseEntityConfig.GetInsertParameters(provider, applicationContext);
-
-            parameterList.Add(BaseEntityConfig.CreateParameter(provider, _idConfig, entity.Id));
-            parameterList.Add(BaseEntityConfig.CreateParameter(provider, _isActiveConfig, entity.IsActive));
-            parameterList.Add(BaseEntityConfig.CreateParameter(provider, _nameConfig, entity.Name));
-
-            return (sqlStatement: "sp_update_department", parameters: parameterList, CommandType.StoredProcedure);
-        }
-
-        /// <summary>
-        /// The sql statement to update the fields
-        /// </summary>
-        /// <param name="provider">Defines a mechanism for retrieving a service object; that is, an object that provides custom support to other objects.</param>
-        /// <param name="fields">Fields that will be updated</param>
-        /// <param name="id">Identifier value</param>
-        /// <param name="applicationContext">Class to be used on one instance throughout the application per request</param>
-        /// <returns>Returns the sql statement, the parameters and the command type</returns>
-        public static (string sqlStatement, object parameters, CommandType commandType)
-            GetPatchSqlStatement(
-            IServiceProvider provider,
-            IEnumerable<Field<EntityField>> fields,
-            long id,
-            IApplicationContext applicationContext)
-        {
-            var parametersConfig = GetParametersConfig();
-
-            var parameterList = BaseEntityConfig.GetUpdateParameters(provider, applicationContext);
-
-            parameterList.Add(BaseEntityConfig.CreateParameter(provider, _idConfig, id));
-
-            foreach (var field in fields)
-            {
-                parameterList.Add(BaseEntityConfig.CreateParameter(provider, parametersConfig[field.Type], field.Value));
-            }
-
-            var sql = BaseEntityConfig.GetUpdateSqlStatement(_oTable, parameterList);
-
-            return (sqlStatement: sql, parameters: parameterList, CommandType.Text);
-        }
-
-        #endregion
-
-        #region private
-
-        /// <summary>
-        /// Gets parameter setting based on field type and readonly.
-        /// </summary>
-        /// <returns>Returns a Dictionary with field type and parameter configuration.</returns>
-        private static Dictionary<EntityField, ParameterConfig> GetParametersConfigAndReadonly()
+        protected override Dictionary<DepartmentEntityField, ParameterConfig> GetParametersConfigAndReadonly()
         {
             var dictionary = GetParametersConfig();
 
-            dictionary.Add(EntityField.Id_Readonly, _idConfig);
+            dictionary.Add(DepartmentEntityField.Id_Readonly, _idConfig);
 
             return dictionary;
         }
 
-        /// <summary>
-        /// Gets parameter setting based on field type.
-        /// </summary>
-        /// <returns>Returns a Dictionary with field type and parameter configuration.</returns>
-        private static Dictionary<EntityField, ParameterConfig> GetParametersConfig()
+        protected override IEnumerable<IParameter> GetParametersToInsert(DepartmentEntity entity)
         {
-            return new()
+            return new List<IParameter>
             {
-                {  EntityField.IsActive, _isActiveConfig },
-                {  EntityField.Name, _nameConfig }
+                CreateParameter(_isActiveConfig, entity.IsActive),
+                CreateParameter(_nameConfig, entity.Name)
+            };
+        }
+
+        protected override IEnumerable<IParameter> GetParametersToUpdate(DepartmentEntity entity)
+        {
+            return new List<IParameter>
+            {
+                CreateParameter(_idConfig, entity.Id),
+                CreateParameter(_isActiveConfig, entity.IsActive),
+                CreateParameter(_nameConfig, entity.Name)
             };
         }
 

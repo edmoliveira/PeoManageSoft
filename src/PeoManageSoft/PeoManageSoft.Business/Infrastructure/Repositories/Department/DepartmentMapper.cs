@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
-using System.Data;
-using static PeoManageSoft.Business.Infrastructure.Repositories.Department.DepartmentEntityConfig;
+using PeoManageSoft.Business.Infrastructure.Repositories.Interfaces;
 
 namespace PeoManageSoft.Business.Infrastructure.Repositories.Department
 {
@@ -16,13 +15,10 @@ namespace PeoManageSoft.Business.Infrastructure.Repositories.Department
         /// </summary>
         public DepartmentMapper()
         {
-            var searchValue = GetFuncSearchValue();
-
-            CreateMap<IDataReader, DepartmentEntity>()
-                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => (long)searchValue(EntityField.Id_Readonly, src)))
-                .ForMember(dest => dest.IsActive, opt => opt.MapFrom(src => (bool)searchValue(EntityField.IsActive, src)))
-                .ForMember(dest => dest.Name, opt => opt.MapFrom(src => searchValue(EntityField.Name, src)));
-
+            CreateMap<IDataReaderGetValue, DepartmentEntity>()
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.GetValue<long>(DepartmentEntityField.Id_Readonly)))
+                .ForMember(dest => dest.IsActive, opt => opt.MapFrom(src => src.GetValue<bool>(DepartmentEntityField.IsActive)))
+                .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.GetValue<string>(DepartmentEntityField.Name)));
         }
 
         #endregion

@@ -40,34 +40,32 @@ namespace PeoManageSoft.Business.Infrastructure.ObjectRelationalMapper
         /// <summary>
         /// Execute parameterized SQL.
         /// </summary>
-        /// <typeparam name="T">The type of the entity.</typeparam>
         /// <param name="connection">The connection to query on.</param>
         /// <param name="sqlStatement">The SQL to execute for this query.</param>
-        /// <param name="entity">The entity to use for this query.</param>
+        /// <param name="parameters">The parameters to pass, if any.</param>
         /// <param name="transaction">The transaction to use for this query.</param>
         /// <param name="commandType">Is it a stored proc or a batch?</param>
         /// <returns>The number of rows affected.</returns>
-        public int Execute<T>(IDbConnection connection, string sqlStatement, T entity, IDbTransaction transaction = null, CommandType? commandType = null)
+        public int Execute(IDbConnection connection, string sqlStatement, IEnumerable<IParameter> parameters, IDbTransaction transaction = null, CommandType? commandType = null)
         {
-            return connection.Execute(sqlStatement, entity, transaction, _appConfig.SqlCommandTimeout, commandType);
+            return connection.Execute(sqlStatement, ConvertIParameterToDynamicParameters(parameters), transaction, _appConfig.SqlCommandTimeout, commandType);
         }
 
         /// <summary>
         /// Execute parameterized SQL and asynchronously using Task.
         /// </summary>
-        /// <typeparam name="T">The type of the entity.</typeparam>
         /// <param name="connection">The connection to query on.</param>
         /// <param name="sqlStatement">The SQL to execute for this query.</param>
-        /// <param name="entity">The entity to use for this query.</param>
+        /// <param name="parameters">The parameters to pass, if any.</param>
         /// <param name="transaction">The transaction to use for this query.</param>
         /// <param name="commandType">Is it a stored proc or a batch?</param>
         /// <returns>
         /// Task: Represents an asynchronous operation.
         /// The number of rows affected.
         /// </returns>
-        public async Task<int> ExecuteAsync<T>(IDbConnection connection, string sqlStatement, T entity, IDbTransaction transaction = null, CommandType? commandType = null)
+        public async Task<int> ExecuteAsync(IDbConnection connection, string sqlStatement, IEnumerable<IParameter> parameters, IDbTransaction transaction = null, CommandType? commandType = null)
         {
-            return await connection.ExecuteAsync(sqlStatement, entity, transaction, _appConfig.SqlCommandTimeout, commandType).ConfigureAwait(false);
+            return await connection.ExecuteAsync(sqlStatement, ConvertIParameterToDynamicParameters(parameters), transaction, _appConfig.SqlCommandTimeout, commandType).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -77,13 +75,13 @@ namespace PeoManageSoft.Business.Infrastructure.ObjectRelationalMapper
         /// <typeparam name="TReturn">The type of the return.</typeparam>
         /// <param name="connection">The connection to query on.</param>
         /// <param name="sqlStatement">The SQL to execute for this query.</param>
-        /// <param name="entity">The entity to use for this query.</param>
+        /// <param name="parameters">The parameters to pass, if any.</param>
         /// <param name="transaction">The transaction to use for this query.</param>
         /// <param name="commandType">Is it a stored proc or a batch?</param>
         /// <returns>The first cell selected as TReturn.</returns>
-        public TReturn ExecuteScalar<T, TReturn>(IDbConnection connection, string sqlStatement, T entity, IDbTransaction transaction = null, CommandType? commandType = null)
+        public TReturn ExecuteScalar<TReturn>(IDbConnection connection, string sqlStatement, IEnumerable<IParameter> parameters, IDbTransaction transaction = null, CommandType? commandType = null)
         {
-            return connection.ExecuteScalar<TReturn>(sqlStatement, entity, transaction, _appConfig.SqlCommandTimeout, commandType);
+            return connection.ExecuteScalar<TReturn>(sqlStatement, ConvertIParameterToDynamicParameters(parameters), transaction, _appConfig.SqlCommandTimeout, commandType);
         }
 
         /// <summary>
@@ -93,70 +91,70 @@ namespace PeoManageSoft.Business.Infrastructure.ObjectRelationalMapper
         /// <typeparam name="TReturn">The type of the return.</typeparam>
         /// <param name="connection">The connection to query on.</param>
         /// <param name="sqlStatement">The SQL to execute for this query.</param>
-        /// <param name="entity">The entity to use for this query.</param>
+        /// <param name="parameters">The parameters to pass, if any.</param>
         /// <param name="transaction">The transaction to use for this query.</param>
         /// <param name="commandType">Is it a stored proc or a batch?</param>
         /// <returns>
         /// Task: Represents an asynchronous operation.
         /// The first cell selected as TReturn.
         /// </returns>
-        public async Task<TReturn> ExecuteScalarAsync<T, TReturn>(IDbConnection connection, string sqlStatement, T entity, IDbTransaction transaction = null, CommandType? commandType = null)
+        public async Task<TReturn> ExecuteScalarAsync<TReturn>(IDbConnection connection, string sqlStatement, IEnumerable<IParameter> parameters, IDbTransaction transaction = null, CommandType? commandType = null)
         {
-            return await connection.ExecuteScalarAsync<TReturn>(sqlStatement, entity, transaction, _appConfig.SqlCommandTimeout, commandType).ConfigureAwait(false);
+            return await connection.ExecuteScalarAsync<TReturn>(sqlStatement, ConvertIParameterToDynamicParameters(parameters), transaction, _appConfig.SqlCommandTimeout, commandType).ConfigureAwait(false);
         }
 
         /// <summary>
         /// Return a dynamic object with properties matching the columns.
         /// </summary>
-        /// <typeparam name="TResult">The type of the entity.</typeparam>
+        /// <typeparam name="TReturn">The type of the entity.</typeparam>
         /// <param name="connection">The connection to query on.</param>
         /// <param name="sqlStatement">The SQL to execute for this query.</param>
-        /// <param name="id">The id of the entity.</param>
+        /// <param name="parameters">The parameters to pass, if any.</param>
         /// <param name="transaction">The transaction to use for this query.</param>
         /// <param name="commandType">Is it a stored proc or a batch?</param>
         /// <returns>The first cell selected as TReturn.</returns>
-        public TResult QueryFirstOrDefault<TResult>(IDbConnection connection, string sqlStatement, object id, IDbTransaction transaction = null, CommandType? commandType = null)
+        public TReturn QueryFirstOrDefault<TReturn>(IDbConnection connection, string sqlStatement, IEnumerable<IParameter> parameters, IDbTransaction transaction = null, CommandType? commandType = null)
         {
-            return connection.QueryFirstOrDefault<TResult>(sqlStatement, id, transaction, _appConfig.SqlCommandTimeout, commandType);
+            return connection.QueryFirstOrDefault<TReturn>(sqlStatement, ConvertIParameterToDynamicParameters(parameters), transaction, _appConfig.SqlCommandTimeout, commandType);
         }
 
         /// <summary>
         /// Return a dynamic object with properties matching the columns and asynchronously using Task.
         /// </summary>
-        /// <typeparam name="TResult">The type of the entity.</typeparam>
+        /// <typeparam name="TReturn">The type of the entity.</typeparam>
         /// <param name="connection">The connection to query on.</param>
         /// <param name="sqlStatement">The SQL to execute for this query.</param>
-        /// <param name="id">The id of the entity.</param>
+        /// <param name="parameters">The parameters to pass, if any.</param>
         /// <param name="transaction">The transaction to use for this query.</param>
         /// <param name="commandType">Is it a stored proc or a batch?</param>
         /// <returns>
         /// Task: Represents an asynchronous operation.
         /// The first cell selected as TReturn.
         /// </returns>
-        public async Task<TResult> QueryFirstOrDefaultAsync<TResult>(IDbConnection connection, string sqlStatement, object id, IDbTransaction transaction = null, CommandType? commandType = null)
+        public async Task<TReturn> QueryFirstOrDefaultAsync<TReturn>(IDbConnection connection, string sqlStatement, IEnumerable<IParameter> parameters, IDbTransaction transaction = null, CommandType? commandType = null)
         {
-            return await connection.QueryFirstOrDefaultAsync<TResult>(sqlStatement, id, transaction, _appConfig.SqlCommandTimeout, commandType).ConfigureAwait(false);
+            return await connection.QueryFirstOrDefaultAsync<TReturn>(sqlStatement, ConvertIParameterToDynamicParameters(parameters), transaction, _appConfig.SqlCommandTimeout, commandType).ConfigureAwait(false);
         }
 
         /// <summary>
-        /// Executes a query, returning the data typed as TResult.
+        /// Executes a query, returning the data typed as TReturn.
         /// </summary>
-        /// <typeparam name="TResult">The type of the entity.</typeparam>
+        /// <typeparam name="TReturn">The type of the entity.</typeparam>
         /// <param name="connection">The connection to query on.</param>
         /// <param name="sqlStatement">The SQL to execute for this query.</param>
         /// <param name="parameters">The parameters to pass, if any.</param>
         /// <param name="transaction">The transaction to use for this query.</param>
         /// <param name="commandType">Is it a stored proc or a batch?</param>
-        /// <returns>A sequence of data of the TResult type</returns>
-        public IEnumerable<TResult> Query<TResult>(IDbConnection connection, string sqlStatement, object parameters, IDbTransaction transaction = null, CommandType? commandType = null)
+        /// <returns>A sequence of data of the TReturn type</returns>
+        public IEnumerable<TReturn> Query<TReturn>(IDbConnection connection, string sqlStatement, IEnumerable<IParameter> parameters, IDbTransaction transaction = null, CommandType? commandType = null)
         {
-            return connection.Query<TResult>(sqlStatement, parameters, transaction, true, _appConfig.SqlCommandTimeout, commandType);
+            return connection.Query<TReturn>(sqlStatement, ConvertIParameterToDynamicParameters(parameters), transaction, true, _appConfig.SqlCommandTimeout, commandType);
         }
 
         /// <summary>
-        /// Executes a query, returning the data typed as TResult and asynchronously using Task.
+        /// Executes a query, returning the data typed as TReturn and asynchronously using Task.
         /// </summary>
-        /// <typeparam name="TResult">The type of the entity.</typeparam>
+        /// <typeparam name="TReturn">The type of the entity.</typeparam>
         /// <param name="connection">The connection to query on.</param>
         /// <param name="sqlStatement">The SQL to execute for this query.</param>
         /// <param name="parameters">The parameters to pass, if any.</param>
@@ -164,11 +162,11 @@ namespace PeoManageSoft.Business.Infrastructure.ObjectRelationalMapper
         /// <param name="commandType">Is it a stored proc or a batch?</param>
         /// <returns>
         /// Task: Represents an asynchronous operation.
-        /// A sequence of data of the TResult type.
+        /// A sequence of data of the TReturn type.
         /// </returns>
-        public async Task<IEnumerable<TResult>> QueryAsync<TResult>(IDbConnection connection, string sqlStatement, object parameters, IDbTransaction transaction = null, CommandType? commandType = null)
+        public async Task<IEnumerable<TReturn>> QueryAsync<TReturn>(IDbConnection connection, string sqlStatement, IEnumerable<IParameter> parameters, IDbTransaction transaction = null, CommandType? commandType = null)
         {
-            return await connection.QueryAsync<TResult>(sqlStatement, parameters, transaction, _appConfig.SqlCommandTimeout, commandType).ConfigureAwait(false);
+            return await connection.QueryAsync<TReturn>(sqlStatement, ConvertIParameterToDynamicParameters(parameters), transaction, _appConfig.SqlCommandTimeout, commandType).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -180,10 +178,14 @@ namespace PeoManageSoft.Business.Infrastructure.ObjectRelationalMapper
         /// <param name="parameters">The parameters to pass, if any.</param>
         /// <param name="transaction">The transaction to use for this query.</param>
         /// <param name="commandType">Is it a stored proc or a batch?</param>
-        public void ExecuteReader(Action<IDataReader> action, IDbConnection connection, string sqlStatement, object parameters, IDbTransaction transaction = null, CommandType? commandType = null)
+        public void ExecuteReader(Action<IDataReader> action, IDbConnection connection, string sqlStatement, IEnumerable<IParameter> parameters, IDbTransaction transaction = null, CommandType? commandType = null)
         {
-            using var reader = connection.ExecuteReader(sqlStatement, parameters, transaction, _appConfig.SqlCommandTimeout, commandType);
-            action(reader);
+            using var reader = connection.ExecuteReader(sqlStatement, ConvertIParameterToDynamicParameters(parameters), transaction, _appConfig.SqlCommandTimeout, commandType);
+
+            while (reader.Read())
+            {
+                action(reader);
+            }
         }
 
         /// <summary>
@@ -196,19 +198,23 @@ namespace PeoManageSoft.Business.Infrastructure.ObjectRelationalMapper
         /// <param name="transaction">The transaction to use for this query.</param>
         /// <param name="commandType">Is it a stored proc or a batch?</param>
         /// <returns>Represents an asynchronous operation.</returns>
-        public async Task ExecuteReaderAsync(Action<IDataReader> action, IDbConnection connection, string sqlStatement, object parameters, IDbTransaction transaction = null, CommandType? commandType = null)
+        public async Task ExecuteReaderAsync(Action<IDataReader> action, IDbConnection connection, string sqlStatement, IEnumerable<IParameter> parameters, IDbTransaction transaction = null, CommandType? commandType = null)
         {
-            using var reader = await connection.ExecuteReaderAsync(sqlStatement, parameters, transaction, _appConfig.SqlCommandTimeout, commandType).ConfigureAwait(false);
-            action(reader);
+            using var reader = await connection.ExecuteReaderAsync(sqlStatement, ConvertIParameterToDynamicParameters(parameters), transaction, _appConfig.SqlCommandTimeout, commandType).ConfigureAwait(false);
+
+            while (reader.Read())
+            {
+                action(reader);
+            }
         }
 
         /// <summary>
         /// Perform a multi-mapping query with 2 input types.
-        /// Executes a query, returning the data typed as TResult.
+        /// Executes a query, returning the data typed as TReturn.
         /// </summary>
         /// <typeparam name="TFirst">The first type in the recordset.</typeparam>
         /// <typeparam name="TSecond">The second type in the recordset.</typeparam>
-        /// <typeparam name="TResult">The combined type to return.</typeparam>
+        /// <typeparam name="TReturn">The combined type to return.</typeparam>
         /// <param name="connection">The connection to query on.</param>
         /// <param name="map">The function to map row types to the return type.</param>
         /// <param name="sqlStatement">The SQL to execute for this query.</param>
@@ -216,19 +222,19 @@ namespace PeoManageSoft.Business.Infrastructure.ObjectRelationalMapper
         /// <param name="splitOn">The field we should split and read the second object from (default: "Id").</param>
         /// <param name="transaction">The transaction to use for this query.</param>
         /// <param name="commandType">Is it a stored proc or a batch?</param>
-        /// <returns>A sequence of data of the TResult type</returns>
-        public IEnumerable<TResult> Query<TFirst, TSecond, TResult>(IDbConnection connection, Func<TFirst, TSecond, TResult> map, string sqlStatement, object parameters, string splitOn, IDbTransaction transaction = null, CommandType? commandType = null)
+        /// <returns>A sequence of data of the TReturn type</returns>
+        public IEnumerable<TReturn> Query<TFirst, TSecond, TReturn>(IDbConnection connection, Func<TFirst, TSecond, TReturn> map, string sqlStatement, IEnumerable<IParameter> parameters, string splitOn, IDbTransaction transaction = null, CommandType? commandType = null)
         {
-            return connection.Query(sqlStatement, map, parameters, transaction, true, splitOn, _appConfig.SqlCommandTimeout, commandType);
+            return connection.Query(sqlStatement, map, ConvertIParameterToDynamicParameters(parameters), transaction, true, splitOn, _appConfig.SqlCommandTimeout, commandType);
         }
 
         /// <summary>
         /// Perform a multi-mapping query with 2 input types.
-        /// Executes a query, returning the data typed as TResult and asynchronously using Task.
+        /// Executes a query, returning the data typed as TReturn and asynchronously using Task.
         /// </summary>
         /// <typeparam name="TFirst">The first type in the recordset.</typeparam>
         /// <typeparam name="TSecond">The second type in the recordset.</typeparam>
-        /// <typeparam name="TResult">The combined type to return.</typeparam>
+        /// <typeparam name="TReturn">The combined type to return.</typeparam>
         /// <param name="connection">The connection to query on.</param>
         /// <param name="map">The function to map row types to the return type.</param>
         /// <param name="sqlStatement">The SQL to execute for this query.</param>
@@ -238,21 +244,21 @@ namespace PeoManageSoft.Business.Infrastructure.ObjectRelationalMapper
         /// <param name="commandType">Is it a stored proc or a batch?</param>
         /// <returns>
         /// Task: Represents an asynchronous operation.
-        /// A sequence of data of the TResult type.
+        /// A sequence of data of the TReturn type.
         /// </returns>
-        public async Task<IEnumerable<TResult>> QueryAsync<TFirst, TSecond, TResult>(IDbConnection connection, Func<TFirst, TSecond, TResult> map, string sqlStatement, object parameters, string splitOn, IDbTransaction transaction = null, CommandType? commandType = null)
+        public async Task<IEnumerable<TReturn>> QueryAsync<TFirst, TSecond, TReturn>(IDbConnection connection, Func<TFirst, TSecond, TReturn> map, string sqlStatement, IEnumerable<IParameter> parameters, string splitOn, IDbTransaction transaction = null, CommandType? commandType = null)
         {
-            return await connection.QueryAsync(sqlStatement, map, parameters, transaction, true, splitOn, _appConfig.SqlCommandTimeout, commandType);
+            return await connection.QueryAsync(sqlStatement, map, ConvertIParameterToDynamicParameters(parameters), transaction, true, splitOn, _appConfig.SqlCommandTimeout, commandType);
         }
 
         /// <summary>
         /// Perform a multi-mapping query with 3 input types.
-        /// Executes a query, returning the data typed as TResult.
+        /// Executes a query, returning the data typed as TReturn.
         /// </summary>
         /// <typeparam name="TFirst">The first type in the recordset.</typeparam>
         /// <typeparam name="TSecond">The second type in the recordset.</typeparam>
         /// <typeparam name="TThird">The third type in the recordset.</typeparam>
-        /// <typeparam name="TResult">The combined type to return.</typeparam>
+        /// <typeparam name="TReturn">The combined type to return.</typeparam>
         /// <param name="connection">The connection to query on.</param>
         /// <param name="map">The function to map row types to the return type.</param>
         /// <param name="sqlStatement">The SQL to execute for this query.</param>
@@ -260,20 +266,20 @@ namespace PeoManageSoft.Business.Infrastructure.ObjectRelationalMapper
         /// <param name="splitOn">The field we should split and read the second object from (default: "Id").</param>
         /// <param name="transaction">The transaction to use for this query.</param>
         /// <param name="commandType">Is it a stored proc or a batch?</param>
-        /// <returns>A sequence of data of the TResult type</returns>
-        public IEnumerable<TResult> Query<TFirst, TSecond, TThird, TResult>(IDbConnection connection, Func<TFirst, TSecond, TThird, TResult> map, string sqlStatement, object parameters, string splitOn, IDbTransaction transaction = null, CommandType? commandType = null)
+        /// <returns>A sequence of data of the TReturn type</returns>
+        public IEnumerable<TReturn> Query<TFirst, TSecond, TThird, TReturn>(IDbConnection connection, Func<TFirst, TSecond, TThird, TReturn> map, string sqlStatement, IEnumerable<IParameter> parameters, string splitOn, IDbTransaction transaction = null, CommandType? commandType = null)
         {
-            return connection.Query(sqlStatement, map, parameters, transaction, true, splitOn, _appConfig.SqlCommandTimeout, commandType);
+            return connection.Query(sqlStatement, map, ConvertIParameterToDynamicParameters(parameters), transaction, true, splitOn, _appConfig.SqlCommandTimeout, commandType);
         }
 
         /// <summary>
         /// Perform a multi-mapping query with 3 input types.
-        /// Executes a query, returning the data typed as TResult and asynchronously using Task.
+        /// Executes a query, returning the data typed as TReturn and asynchronously using Task.
         /// </summary>
         /// <typeparam name="TFirst">The first type in the recordset.</typeparam>
         /// <typeparam name="TSecond">The second type in the recordset.</typeparam>
         /// <typeparam name="TThird">The third type in the recordset.</typeparam>
-        /// <typeparam name="TResult">The combined type to return.</typeparam>
+        /// <typeparam name="TReturn">The combined type to return.</typeparam>
         /// <param name="connection">The connection to query on.</param>
         /// <param name="map">The function to map row types to the return type.</param>
         /// <param name="sqlStatement">The SQL to execute for this query.</param>
@@ -281,21 +287,21 @@ namespace PeoManageSoft.Business.Infrastructure.ObjectRelationalMapper
         /// <param name="splitOn">The field we should split and read the second object from (default: "Id").</param>
         /// <param name="transaction">The transaction to use for this query.</param>
         /// <param name="commandType">Is it a stored proc or a batch?</param>
-        /// <returns>A sequence of data of the TResult type</returns>
-        public async Task<IEnumerable<TResult>> QueryAsync<TFirst, TSecond, TThird, TResult>(IDbConnection connection, Func<TFirst, TSecond, TThird, TResult> map, string sqlStatement, object parameters, string splitOn, IDbTransaction transaction = null, CommandType? commandType = null)
+        /// <returns>A sequence of data of the TReturn type</returns>
+        public async Task<IEnumerable<TReturn>> QueryAsync<TFirst, TSecond, TThird, TReturn>(IDbConnection connection, Func<TFirst, TSecond, TThird, TReturn> map, string sqlStatement, IEnumerable<IParameter> parameters, string splitOn, IDbTransaction transaction = null, CommandType? commandType = null)
         {
-            return await connection.QueryAsync(sqlStatement, map, parameters, transaction, true, splitOn, _appConfig.SqlCommandTimeout, commandType);
+            return await connection.QueryAsync(sqlStatement, map, ConvertIParameterToDynamicParameters(parameters), transaction, true, splitOn, _appConfig.SqlCommandTimeout, commandType);
         }
 
         /// <summary>
         /// Perform a multi-mapping query with 4 input types.
-        /// Executes a query, returning the data typed as TResult.
+        /// Executes a query, returning the data typed as TReturn.
         /// </summary>
         /// <typeparam name="TFirst">The first type in the recordset.</typeparam>
         /// <typeparam name="TSecond">The second type in the recordset.</typeparam>
         /// <typeparam name="TThird">The third type in the recordset.</typeparam>
 		/// <typeparam name="TFourth">The fourth type in the recordset.</typeparam>
-        /// <typeparam name="TResult">The combined type to return.</typeparam>
+        /// <typeparam name="TReturn">The combined type to return.</typeparam>
         /// <param name="connection">The connection to query on.</param>
         /// <param name="map">The function to map row types to the return type.</param>
         /// <param name="sqlStatement">The SQL to execute for this query.</param>
@@ -303,21 +309,21 @@ namespace PeoManageSoft.Business.Infrastructure.ObjectRelationalMapper
         /// <param name="splitOn">The field we should split and read the second object from (default: "Id").</param>
         /// <param name="transaction">The transaction to use for this query.</param>
         /// <param name="commandType">Is it a stored proc or a batch?</param>
-        /// <returns>A sequence of data of the TResult type</returns>
-        public IEnumerable<TResult> Query<TFirst, TSecond, TThird, TFourth, TResult>(IDbConnection connection, Func<TFirst, TSecond, TThird, TFourth, TResult> map, string sqlStatement, object parameters, string splitOn, IDbTransaction transaction = null, CommandType? commandType = null)
+        /// <returns>A sequence of data of the TReturn type</returns>
+        public IEnumerable<TReturn> Query<TFirst, TSecond, TThird, TFourth, TReturn>(IDbConnection connection, Func<TFirst, TSecond, TThird, TFourth, TReturn> map, string sqlStatement, IEnumerable<IParameter> parameters, string splitOn, IDbTransaction transaction = null, CommandType? commandType = null)
         {
-            return connection.Query(sqlStatement, map, parameters, transaction, true, splitOn, _appConfig.SqlCommandTimeout, commandType);
+            return connection.Query(sqlStatement, map, ConvertIParameterToDynamicParameters(parameters), transaction, true, splitOn, _appConfig.SqlCommandTimeout, commandType);
         }
 
         /// <summary>
         /// Perform a multi-mapping query with 4 input types.
-        /// Executes a query, returning the data typed as TResult and asynchronously using Task.
+        /// Executes a query, returning the data typed as TReturn and asynchronously using Task.
         /// </summary>
         /// <typeparam name="TFirst">The first type in the recordset.</typeparam>
         /// <typeparam name="TSecond">The second type in the recordset.</typeparam>
         /// <typeparam name="TThird">The third type in the recordset.</typeparam>
 		/// <typeparam name="TFourth">The fourth type in the recordset.</typeparam>
-        /// <typeparam name="TResult">The combined type to return.</typeparam>
+        /// <typeparam name="TReturn">The combined type to return.</typeparam>
         /// <param name="connection">The connection to query on.</param>
         /// <param name="map">The function to map row types to the return type.</param>
         /// <param name="sqlStatement">The SQL to execute for this query.</param>
@@ -325,22 +331,22 @@ namespace PeoManageSoft.Business.Infrastructure.ObjectRelationalMapper
         /// <param name="splitOn">The field we should split and read the second object from (default: "Id").</param>
         /// <param name="transaction">The transaction to use for this query.</param>
         /// <param name="commandType">Is it a stored proc or a batch?</param>
-        /// <returns>A sequence of data of the TResult type</returns>
-        public async Task<IEnumerable<TResult>> QueryAsync<TFirst, TSecond, TThird, TFourth, TResult>(IDbConnection connection, Func<TFirst, TSecond, TThird, TFourth, TResult> map, string sqlStatement, object parameters, string splitOn, IDbTransaction transaction = null, CommandType? commandType = null)
+        /// <returns>A sequence of data of the TReturn type</returns>
+        public async Task<IEnumerable<TReturn>> QueryAsync<TFirst, TSecond, TThird, TFourth, TReturn>(IDbConnection connection, Func<TFirst, TSecond, TThird, TFourth, TReturn> map, string sqlStatement, IEnumerable<IParameter> parameters, string splitOn, IDbTransaction transaction = null, CommandType? commandType = null)
         {
-            return await connection.QueryAsync(sqlStatement, map, parameters, transaction, true, splitOn, _appConfig.SqlCommandTimeout, commandType);
+            return await connection.QueryAsync(sqlStatement, map, ConvertIParameterToDynamicParameters(parameters), transaction, true, splitOn, _appConfig.SqlCommandTimeout, commandType);
         }
 
         /// <summary>
         /// Perform a multi-mapping query with 5 input types.
-        /// Executes a query, returning the data typed as TResult.
+        /// Executes a query, returning the data typed as TReturn.
         /// </summary>
         /// <typeparam name="TFirst">The first type in the recordset.</typeparam>
         /// <typeparam name="TSecond">The second type in the recordset.</typeparam>
         /// <typeparam name="TThird">The third type in the recordset.</typeparam>
         /// <typeparam name="TFourth">The fourth type in the recordset.</typeparam>
         /// <typeparam name="TFifth">The fifth type in the recordset.</typeparam>
-        /// <typeparam name="TResult">The combined type to return.</typeparam>
+        /// <typeparam name="TReturn">The combined type to return.</typeparam>
         /// <param name="connection">The connection to query on.</param>
         /// <param name="map">The function to map row types to the return type.</param>
         /// <param name="sqlStatement">The SQL to execute for this query.</param>
@@ -348,22 +354,22 @@ namespace PeoManageSoft.Business.Infrastructure.ObjectRelationalMapper
         /// <param name="splitOn">The field we should split and read the second object from (default: "Id").</param>
         /// <param name="transaction">The transaction to use for this query.</param>
         /// <param name="commandType">Is it a stored proc or a batch?</param>
-        /// <returns>A sequence of data of the TResult type</returns>
-        public IEnumerable<TResult> Query<TFirst, TSecond, TThird, TFourth, TFifth, TResult>(IDbConnection connection, Func<TFirst, TSecond, TThird, TFourth, TFifth, TResult> map, string sqlStatement, object parameters, string splitOn, IDbTransaction transaction = null, CommandType? commandType = null)
+        /// <returns>A sequence of data of the TReturn type</returns>
+        public IEnumerable<TReturn> Query<TFirst, TSecond, TThird, TFourth, TFifth, TReturn>(IDbConnection connection, Func<TFirst, TSecond, TThird, TFourth, TFifth, TReturn> map, string sqlStatement, IEnumerable<IParameter> parameters, string splitOn, IDbTransaction transaction = null, CommandType? commandType = null)
         {
-            return connection.Query(sqlStatement, map, parameters, transaction, true, splitOn, _appConfig.SqlCommandTimeout, commandType);
+            return connection.Query(sqlStatement, map, ConvertIParameterToDynamicParameters(parameters), transaction, true, splitOn, _appConfig.SqlCommandTimeout, commandType);
         }
 
         /// <summary>
         /// Perform a multi-mapping query with 5 input types.
-        /// Executes a query, returning the data typed as TResult and asynchronously using Task.
+        /// Executes a query, returning the data typed as TReturn and asynchronously using Task.
         /// </summary>
         /// <typeparam name="TFirst">The first type in the recordset.</typeparam>
         /// <typeparam name="TSecond">The second type in the recordset.</typeparam>
         /// <typeparam name="TThird">The third type in the recordset.</typeparam>
 		/// <typeparam name="TFourth">The fourth type in the recordset.</typeparam>
 		/// <typeparam name="TFifth">The fifth type in the recordset.</typeparam>
-        /// <typeparam name="TResult">The combined type to return.</typeparam>
+        /// <typeparam name="TReturn">The combined type to return.</typeparam>
         /// <param name="connection">The connection to query on.</param>
         /// <param name="map">The function to map row types to the return type.</param>
         /// <param name="sqlStatement">The SQL to execute for this query.</param>
@@ -371,15 +377,15 @@ namespace PeoManageSoft.Business.Infrastructure.ObjectRelationalMapper
         /// <param name="splitOn">The field we should split and read the second object from (default: "Id").</param>
         /// <param name="transaction">The transaction to use for this query.</param>
         /// <param name="commandType">Is it a stored proc or a batch?</param>
-        /// <returns>A sequence of data of the TResult type</returns>
-        public async Task<IEnumerable<TResult>> QueryAsync<TFirst, TSecond, TThird, TFourth, TFifth, TResult>(IDbConnection connection, Func<TFirst, TSecond, TThird, TFourth, TFifth, TResult> map, string sqlStatement, object parameters, string splitOn, IDbTransaction transaction = null, CommandType? commandType = null)
+        /// <returns>A sequence of data of the TReturn type</returns>
+        public async Task<IEnumerable<TReturn>> QueryAsync<TFirst, TSecond, TThird, TFourth, TFifth, TReturn>(IDbConnection connection, Func<TFirst, TSecond, TThird, TFourth, TFifth, TReturn> map, string sqlStatement, IEnumerable<IParameter> parameters, string splitOn, IDbTransaction transaction = null, CommandType? commandType = null)
         {
-            return await connection.QueryAsync(sqlStatement, map, parameters, transaction, true, splitOn, _appConfig.SqlCommandTimeout, commandType);
+            return await connection.QueryAsync(sqlStatement, map, ConvertIParameterToDynamicParameters(parameters), transaction, true, splitOn, _appConfig.SqlCommandTimeout, commandType);
         }
 
         /// <summary>
         /// Perform a multi-mapping query with 6 input types.
-        /// Executes a query, returning the data typed as TResult.
+        /// Executes a query, returning the data typed as TReturn.
         /// </summary>
         /// <typeparam name="TFirst">The first type in the recordset.</typeparam>
         /// <typeparam name="TSecond">The second type in the recordset.</typeparam>
@@ -387,7 +393,7 @@ namespace PeoManageSoft.Business.Infrastructure.ObjectRelationalMapper
         /// <typeparam name="TFourth">The fourth type in the recordset.</typeparam>
         /// <typeparam name="TFifth">The fifth type in the recordset.</typeparam>
         /// <typeparam name="TSixth">The sixth type in the recordset.</typeparam>
-        /// <typeparam name="TResult">The combined type to return.</typeparam>
+        /// <typeparam name="TReturn">The combined type to return.</typeparam>
         /// <param name="connection">The connection to query on.</param>
         /// <param name="map">The function to map row types to the return type.</param>
         /// <param name="sqlStatement">The SQL to execute for this query.</param>
@@ -395,15 +401,15 @@ namespace PeoManageSoft.Business.Infrastructure.ObjectRelationalMapper
         /// <param name="splitOn">The field we should split and read the second object from (default: "Id").</param>
         /// <param name="transaction">The transaction to use for this query.</param>
         /// <param name="commandType">Is it a stored proc or a batch?</param>
-        /// <returns>A sequence of data of the TResult type</returns>
-        public IEnumerable<TResult> Query<TFirst, TSecond, TThird, TFourth, TFifth, TSixth, TResult>(IDbConnection connection, Func<TFirst, TSecond, TThird, TFourth, TFifth, TSixth, TResult> map, string sqlStatement, object parameters, string splitOn, IDbTransaction transaction = null, CommandType? commandType = null)
+        /// <returns>A sequence of data of the TReturn type</returns>
+        public IEnumerable<TReturn> Query<TFirst, TSecond, TThird, TFourth, TFifth, TSixth, TReturn>(IDbConnection connection, Func<TFirst, TSecond, TThird, TFourth, TFifth, TSixth, TReturn> map, string sqlStatement, IEnumerable<IParameter> parameters, string splitOn, IDbTransaction transaction = null, CommandType? commandType = null)
         {
-            return connection.Query(sqlStatement, map, parameters, transaction, true, splitOn, _appConfig.SqlCommandTimeout, commandType);
+            return connection.Query(sqlStatement, map, ConvertIParameterToDynamicParameters(parameters), transaction, true, splitOn, _appConfig.SqlCommandTimeout, commandType);
         }
 
         /// <summary>
         /// Perform a multi-mapping query with 6 input types.
-        /// Executes a query, returning the data typed as TResult and asynchronously using Task.
+        /// Executes a query, returning the data typed as TReturn and asynchronously using Task.
         /// </summary>
         /// <typeparam name="TFirst">The first type in the recordset.</typeparam>
         /// <typeparam name="TSecond">The second type in the recordset.</typeparam>
@@ -411,7 +417,7 @@ namespace PeoManageSoft.Business.Infrastructure.ObjectRelationalMapper
 		/// <typeparam name="TFourth">The fourth type in the recordset.</typeparam>
 		/// <typeparam name="TFifth">The fifth type in the recordset.</typeparam>
 		/// <typeparam name="TSixth">The sixth type in the recordset.</typeparam>
-        /// <typeparam name="TResult">The combined type to return.</typeparam>
+        /// <typeparam name="TReturn">The combined type to return.</typeparam>
         /// <param name="connection">The connection to query on.</param>
         /// <param name="map">The function to map row types to the return type.</param>
         /// <param name="sqlStatement">The SQL to execute for this query.</param>
@@ -419,15 +425,15 @@ namespace PeoManageSoft.Business.Infrastructure.ObjectRelationalMapper
         /// <param name="splitOn">The field we should split and read the second object from (default: "Id").</param>
         /// <param name="transaction">The transaction to use for this query.</param>
         /// <param name="commandType">Is it a stored proc or a batch?</param>
-        /// <returns>A sequence of data of the TResult type</returns>
-        public async Task<IEnumerable<TResult>> QueryAsync<TFirst, TSecond, TThird, TFourth, TFifth, TSixth, TResult>(IDbConnection connection, Func<TFirst, TSecond, TThird, TFourth, TFifth, TSixth, TResult> map, string sqlStatement, object parameters, string splitOn, IDbTransaction transaction = null, CommandType? commandType = null)
+        /// <returns>A sequence of data of the TReturn type</returns>
+        public async Task<IEnumerable<TReturn>> QueryAsync<TFirst, TSecond, TThird, TFourth, TFifth, TSixth, TReturn>(IDbConnection connection, Func<TFirst, TSecond, TThird, TFourth, TFifth, TSixth, TReturn> map, string sqlStatement, IEnumerable<IParameter> parameters, string splitOn, IDbTransaction transaction = null, CommandType? commandType = null)
         {
-            return await connection.QueryAsync(sqlStatement, map, parameters, transaction, true, splitOn, _appConfig.SqlCommandTimeout, commandType);
+            return await connection.QueryAsync(sqlStatement, map, ConvertIParameterToDynamicParameters(parameters), transaction, true, splitOn, _appConfig.SqlCommandTimeout, commandType);
         }
 
         /// <summary>
         /// Perform a multi-mapping query with 7 input types.
-        /// Executes a query, returning the data typed as TResult.
+        /// Executes a query, returning the data typed as TReturn.
         /// </summary>
         /// <typeparam name="TFirst">The first type in the recordset.</typeparam>
         /// <typeparam name="TSecond">The second type in the recordset.</typeparam>
@@ -436,7 +442,7 @@ namespace PeoManageSoft.Business.Infrastructure.ObjectRelationalMapper
         /// <typeparam name="TFifth">The fifth type in the recordset.</typeparam>
         /// <typeparam name="TSixth">The sixth type in the recordset.</typeparam>
         /// <typeparam name="TSeventh">The seventh type in the recordset.</typeparam>
-        /// <typeparam name="TResult">The combined type to return.</typeparam>
+        /// <typeparam name="TReturn">The combined type to return.</typeparam>
         /// <param name="connection">The connection to query on.</param>
         /// <param name="map">The function to map row types to the return type.</param>
         /// <param name="sqlStatement">The SQL to execute for this query.</param>
@@ -444,15 +450,15 @@ namespace PeoManageSoft.Business.Infrastructure.ObjectRelationalMapper
         /// <param name="splitOn">The field we should split and read the second object from (default: "Id").</param>
         /// <param name="transaction">The transaction to use for this query.</param>
         /// <param name="commandType">Is it a stored proc or a batch?</param>
-        /// <returns>A sequence of data of the TResult type</returns>
-        public IEnumerable<TResult> Query<TFirst, TSecond, TThird, TFourth, TFifth, TSixth, TSeventh, TResult>(IDbConnection connection, Func<TFirst, TSecond, TThird, TFourth, TFifth, TSixth, TSeventh, TResult> map, string sqlStatement, object parameters, string splitOn, IDbTransaction transaction = null, CommandType? commandType = null)
+        /// <returns>A sequence of data of the TReturn type</returns>
+        public IEnumerable<TReturn> Query<TFirst, TSecond, TThird, TFourth, TFifth, TSixth, TSeventh, TReturn>(IDbConnection connection, Func<TFirst, TSecond, TThird, TFourth, TFifth, TSixth, TSeventh, TReturn> map, string sqlStatement, IEnumerable<IParameter> parameters, string splitOn, IDbTransaction transaction = null, CommandType? commandType = null)
         {
-            return connection.Query(sqlStatement, map, parameters, transaction, true, splitOn, _appConfig.SqlCommandTimeout, commandType);
+            return connection.Query(sqlStatement, map, ConvertIParameterToDynamicParameters(parameters), transaction, true, splitOn, _appConfig.SqlCommandTimeout, commandType);
         }
 
         /// <summary>
         /// Perform a multi-mapping query with 7 input types.
-        /// Executes a query, returning the data typed as TResult and asynchronously using Task.
+        /// Executes a query, returning the data typed as TReturn and asynchronously using Task.
         /// </summary>
         /// <typeparam name="TFirst">The first type in the recordset.</typeparam>
         /// <typeparam name="TSecond">The second type in the recordset.</typeparam>
@@ -461,7 +467,7 @@ namespace PeoManageSoft.Business.Infrastructure.ObjectRelationalMapper
 		/// <typeparam name="TFifth">The fifth type in the recordset.</typeparam>
 		/// <typeparam name="TSixth">The sixth type in the recordset.</typeparam>
 		/// <typeparam name="TSeventh">The seventh type in the recordset.</typeparam>
-        /// <typeparam name="TResult">The combined type to return.</typeparam>
+        /// <typeparam name="TReturn">The combined type to return.</typeparam>
         /// <param name="connection">The connection to query on.</param>
         /// <param name="map">The function to map row types to the return type.</param>
         /// <param name="sqlStatement">The SQL to execute for this query.</param>
@@ -469,10 +475,10 @@ namespace PeoManageSoft.Business.Infrastructure.ObjectRelationalMapper
         /// <param name="splitOn">The field we should split and read the second object from (default: "Id").</param>
         /// <param name="transaction">The transaction to use for this query.</param>
         /// <param name="commandType">Is it a stored proc or a batch?</param>
-        /// <returns>A sequence of data of the TResult type</returns>
-        public async Task<IEnumerable<TResult>> QueryAsync<TFirst, TSecond, TThird, TFourth, TFifth, TSixth, TSeventh, TResult>(IDbConnection connection, Func<TFirst, TSecond, TThird, TFourth, TFifth, TSixth, TSeventh, TResult> map, string sqlStatement, object parameters, string splitOn, IDbTransaction transaction = null, CommandType? commandType = null)
+        /// <returns>A sequence of data of the TReturn type</returns>
+        public async Task<IEnumerable<TReturn>> QueryAsync<TFirst, TSecond, TThird, TFourth, TFifth, TSixth, TSeventh, TReturn>(IDbConnection connection, Func<TFirst, TSecond, TThird, TFourth, TFifth, TSixth, TSeventh, TReturn> map, string sqlStatement, IEnumerable<IParameter> parameters, string splitOn, IDbTransaction transaction = null, CommandType? commandType = null)
         {
-            return await connection.QueryAsync(sqlStatement, map, parameters, transaction, true, splitOn, _appConfig.SqlCommandTimeout, commandType);
+            return await connection.QueryAsync(sqlStatement, map, ConvertIParameterToDynamicParameters(parameters), transaction, true, splitOn, _appConfig.SqlCommandTimeout, commandType);
         }
 
         /// <summary>
@@ -488,9 +494,9 @@ namespace PeoManageSoft.Business.Infrastructure.ObjectRelationalMapper
         /// </param>
         /// <param name="transaction">The transaction to use for this query.</param>
         /// <param name="commandType">Is it a stored proc or a batch?</param>
-        public void QueryMultiple(IDbConnection connection, string sqlStatement, object parameters, Action<GridReader> result, IDbTransaction transaction = null, CommandType? commandType = null)
+        public void QueryMultiple(IDbConnection connection, string sqlStatement, IEnumerable<IParameter> parameters, Action<GridReader> result, IDbTransaction transaction = null, CommandType? commandType = null)
         {
-            using GridReader gridReader = connection.QueryMultiple(sqlStatement, parameters, transaction, _appConfig.SqlCommandTimeout, commandType);
+            using GridReader gridReader = connection.QueryMultiple(sqlStatement, ConvertIParameterToDynamicParameters(parameters), transaction, _appConfig.SqlCommandTimeout, commandType);
             result(gridReader);
         }
 
@@ -501,18 +507,41 @@ namespace PeoManageSoft.Business.Infrastructure.ObjectRelationalMapper
         /// <param name="sqlStatement">The SQL to execute for this query.</param>
         /// <param name="parameters">The parameters to pass, if any.</param>
         /// <param name="result">
-        /// Encapsulates a method that has one parameter and returns a value of the type specified by the TResult parameter.
+        /// Encapsulates a method that has one parameter and returns a value of the type specified by the TReturn parameter.
         /// Parameter: The parameter of the method that this delegate encapsulates.
         /// GridReader: The grid reader provides interfaces for reading multiple result sets from a Dapper query
-        /// TResult: Represents an asynchronous operation.
+        /// TReturn: Represents an asynchronous operation.
         /// </param>
         /// <param name="transaction">The transaction to use for this query.</param>
         /// <param name="commandType">Is it a stored proc or a batch?</param>
         /// <returns>Represents an asynchronous operation.</returns>
-        public async Task QueryMultipleAsync(IDbConnection connection, string sqlStatement, object parameters, Func<GridReader, Task> result, IDbTransaction transaction = null, CommandType? commandType = null)
+        public async Task QueryMultipleAsync(IDbConnection connection, string sqlStatement, IEnumerable<IParameter> parameters, Func<GridReader, Task> result, IDbTransaction transaction = null, CommandType? commandType = null)
         {
-            using GridReader gridReader = connection.QueryMultiple(sqlStatement, parameters, transaction, _appConfig.SqlCommandTimeout, commandType);
+            using GridReader gridReader = connection.QueryMultiple(sqlStatement, ConvertIParameterToDynamicParameters(parameters), transaction, _appConfig.SqlCommandTimeout, commandType);
             await result(gridReader).ConfigureAwait(false);
+        }
+
+        #endregion
+
+        #region private
+
+        /// <summary>
+        /// Converts the parameter object list to a DynamicParameters object.
+        /// </summary>
+        /// <param name="parameters">Parameter list to a command object.</param>
+        /// <returns>Returns a bag of parameters that can be passed to the Dapper Query and Execute methods</returns>
+        private static DynamicParameters ConvertIParameterToDynamicParameters(IEnumerable<IParameter> parameters)
+        {
+            if (parameters is null) { return null; }
+
+            var dynamicParameters = new DynamicParameters();
+
+            foreach (var parameter in parameters)
+            {
+                dynamicParameters.Add(parameter.ParameterName, parameter.Value);
+            }
+
+            return dynamicParameters;
         }
 
         #endregion

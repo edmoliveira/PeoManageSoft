@@ -18,6 +18,10 @@ namespace PeoManageSoft.Business.Infrastructure.ObjectRelationalMapper
         /// </summary>
         public bool IsUniqueIdentifier { get; }
         /// <summary>
+        /// Gets a value indicating whether the parameter is input-only, output-only, bidirectional, or a stored procedure return value parameter.
+        /// </summary>
+        public ParameterDirection Direction { get; set; }
+        /// <summary>
         /// Gets the type of the parameter.
         /// </summary>
         public DbType DbType { get; }
@@ -70,6 +74,8 @@ namespace PeoManageSoft.Business.Infrastructure.ObjectRelationalMapper
         /// <param name="isUniqueIdentifier">The value that indicates whether the parameter is a unique identifier</param>
         /// <param name="precision">The maximum number of digits used to represent the Value  property.</param>
         /// <param name="scale">The number of decimal places to which Value is resolved.</param>
+        /// <param name="table">The table object</param>
+        /// <param name="direction">A value indicating whether the parameter is input-only, output-only, bidirectional, or a stored procedure return value parameter.</param>
         public ParameterConfig(
             string sourceColumn,
             DbType type,
@@ -78,9 +84,10 @@ namespace PeoManageSoft.Business.Infrastructure.ObjectRelationalMapper
             bool isUniqueIdentifier = false,
             byte precision = 0,
             byte scale = 0,
-            Table table = default)
+            Table table = default,
+            ParameterDirection direction = ParameterDirection.Input)
         {
-            ParameterName = sourceColumn;
+            ParameterName = string.Concat("@", sourceColumn);
             SourceColumn = sourceColumn;
             DbType = type;
             Size = size;
@@ -89,6 +96,7 @@ namespace PeoManageSoft.Business.Infrastructure.ObjectRelationalMapper
             Precision = precision;
             Scale = scale;
             Table = table;
+            Direction = direction;
         }
 
         #endregion

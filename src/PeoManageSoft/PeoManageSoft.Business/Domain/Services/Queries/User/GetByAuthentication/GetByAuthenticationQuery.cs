@@ -6,7 +6,6 @@ using PeoManageSoft.Business.Infrastructure;
 using PeoManageSoft.Business.Infrastructure.Helpers.Extensions;
 using PeoManageSoft.Business.Infrastructure.ObjectRelationalMapper.Interfaces;
 using PeoManageSoft.Business.Infrastructure.Repositories.User;
-using static PeoManageSoft.Business.Infrastructure.Repositories.User.UserEntityConfig;
 
 namespace PeoManageSoft.Business.Domain.Services.Queries.User.GetByAuthentication
 {
@@ -79,10 +78,10 @@ namespace PeoManageSoft.Business.Domain.Services.Queries.User.GetByAuthenticatio
 
             _logger.LogBeginInformation(methodName);
 
-            var rules = new IRule<EntityField>[2]
+            var rules = new IRule<UserEntityField>[2]
                 {
-                    _repositoryFactory.CreateRule(EntityField.Login_Readonly, SqlComparisonOperator.EqualTo, request.Login),
-                    _repositoryFactory.CreateRule(EntityField.Password, SqlComparisonOperator.EqualTo, request.Password, SqlOperator.And)
+                    _repositoryFactory.CreateRule(UserEntityField.Login_Readonly, SqlComparisonOperator.EqualTo, request.Login),
+                    _repositoryFactory.CreateRule(UserEntityField.Password, SqlComparisonOperator.EqualTo, request.Password, SqlOperator.And)
                 };
 
             GetByAuthenticationResponse response = _mapper.Map<GetByAuthenticationResponse>(

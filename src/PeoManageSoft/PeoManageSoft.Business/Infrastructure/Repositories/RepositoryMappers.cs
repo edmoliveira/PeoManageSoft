@@ -17,12 +17,12 @@ namespace PeoManageSoft.Business.Infrastructure.Repositories
         /// <summary>
         /// Adds an existing profiles type. Profile will be instantiated and added to the configuration.
         /// </summary>
-        /// <param name="services">Create a MapperConfiguration instance and initialize configuration via the constructor.</param>
+        /// <param name="configuration">Create a MapperConfiguration instance and initialize configuration via the constructor.</param>
         public static void AddRepositoryProfiles(this IMapperConfigurationExpression configuration)
         {
-            configuration.AddProfile<UserMapper>();
-            configuration.AddProfile<TitleMapper>();
-            configuration.AddProfile<DepartmentMapper>();
+            configuration.AddProfile(new UserMapper());
+            configuration.AddProfile(new TitleMapper());
+            configuration.AddProfile(new DepartmentMapper());
         }
 
         #endregion

@@ -147,14 +147,6 @@ BEGIN
 END;
 GO
 
-CREATE PROCEDURE sp_exists_by_id_user
-	@Id BIGINT
-AS
-BEGIN 
-	SELECT CAST(1 AS BIT) FROM IUser WHERE Id = @Id
-END;
-GO
-
 CREATE VIEW UserView
 AS
 	SELECT
@@ -162,6 +154,7 @@ AS
 		U.IsActive AS IUser_IsActive, 
 		U.Login AS IUser_Login,
 		U.Password AS IUser_Password,
+		U.PasswordToken AS IUser_PasswordToken,
 		U.Role AS IUser_Role,
 		U.Name AS IUser_Name,
 		U.ShortName AS IUser_ShortName,		

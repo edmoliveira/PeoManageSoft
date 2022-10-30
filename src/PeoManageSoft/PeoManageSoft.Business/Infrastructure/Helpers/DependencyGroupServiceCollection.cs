@@ -62,11 +62,12 @@ namespace PeoManageSoft.Business.Infrastructure.Helpers
                 options.ImplicitlyValidateRootCollectionElements = true;
             });
 
-            services.AddTransient<IDbContext, DbContext>();
-            services.AddScoped<IParameter, Parameter>();
-            services.AddScoped<IContentScope, ScopeOrm>();
-            services.AddScoped<IConnection, Connection>();
-            services.AddScoped<ITransactionScope, TransactionScopeOrm>();
+            services.AddTransient<IParameter, Parameter>();
+            services.AddTransient<IContentScope, ScopeOrm>();
+            services.AddTransient<IConnection, Connection>();
+            services.AddTransient<ITransactionScope, TransactionScopeOrm>();
+
+            services.AddScoped<IDbContext, DbContext>();
 
             services.AddSingleton<IAppConfig>(c => appConfig);
 
@@ -261,8 +262,6 @@ namespace PeoManageSoft.Business.Infrastructure.Helpers
         {
             var configuration = new MapperConfiguration(c =>
             {
-                //c.AddProfile<EnvironmentMapper>();
-
                 //Commmands
                 c.AddUserCommandProfiles();
 

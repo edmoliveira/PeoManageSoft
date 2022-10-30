@@ -15,6 +15,10 @@ namespace PeoManageSoft.Business.Infrastructure.ObjectRelationalMapper
         /// </summary>
         public bool IsUniqueIdentifier { get; set; }
         /// <summary>
+        /// Gets or sets a value indicating whether the parameter is input-only, output-only, bidirectional, or a stored procedure return value parameter.
+        /// </summary>
+        public ParameterDirection Direction { get; set; }
+        /// <summary>
         /// Gets or sets the type of the parameter.
         /// </summary>
         public DbType DbType { get; set; }

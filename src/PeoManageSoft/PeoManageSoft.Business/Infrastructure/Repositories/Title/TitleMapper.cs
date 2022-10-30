@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
-using System.Data;
-using static PeoManageSoft.Business.Infrastructure.Repositories.Title.TitleEntityConfig;
+using PeoManageSoft.Business.Infrastructure.Repositories.Interfaces;
 
 namespace PeoManageSoft.Business.Infrastructure.Repositories.Title
 {
@@ -16,13 +15,10 @@ namespace PeoManageSoft.Business.Infrastructure.Repositories.Title
         /// </summary>
         public TitleMapper()
         {
-            var searchValue = GetFuncSearchValue();
-
-            CreateMap<IDataReader, TitleEntity>()
-                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => (long)searchValue(EntityField.Id_Readonly, src)))
-                .ForMember(dest => dest.IsActive, opt => opt.MapFrom(src => (bool)searchValue(EntityField.IsActive, src)))
-                .ForMember(dest => dest.Name, opt => opt.MapFrom(src => searchValue(EntityField.Name, src)));
-
+            CreateMap<IDataReaderGetValue, TitleEntity>()
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.GetValue<long>(TitleEntityField.Id_Readonly)))
+                .ForMember(dest => dest.IsActive, opt => opt.MapFrom(src => src.GetValue<bool>(TitleEntityField.IsActive)))
+                .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.GetValue<string>(TitleEntityField.Name)));
         }
 
         #endregion

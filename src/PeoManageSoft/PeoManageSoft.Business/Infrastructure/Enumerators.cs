@@ -9,6 +9,12 @@ namespace PeoManageSoft.Business.Infrastructure
     /// </summary>
     public enum UserRole
     {
+
+        /// <summary>
+        /// Anonymous
+        /// </summary>
+        [Description("Anonymous")]
+        Anonymous = 0,
         /// <summary>
         /// Administrator
         /// </summary>

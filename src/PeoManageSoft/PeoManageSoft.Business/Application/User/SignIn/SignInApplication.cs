@@ -9,8 +9,8 @@ using PeoManageSoft.Business.Infrastructure.Helpers.Exceptions;
 using PeoManageSoft.Business.Infrastructure.Helpers.Extensions;
 using PeoManageSoft.Business.Infrastructure.Helpers.Interfaces;
 using PeoManageSoft.Business.Infrastructure.ObjectRelationalMapper;
+using PeoManageSoft.Business.Infrastructure.Repositories.User;
 using System.Net;
-using static PeoManageSoft.Business.Infrastructure.Repositories.User.UserEntityConfig;
 
 namespace PeoManageSoft.Business.Application.User.SignIn
 {
@@ -110,9 +110,9 @@ namespace PeoManageSoft.Business.Application.User.SignIn
             await _patchHandler.HandleAsync(new PatchRequest
             {
                 Id = authResponse.Id,
-                Fields = new List<Field<EntityField>>
+                Fields = new List<Field<UserEntityField>>
                 {
-                    new Field<EntityField>{ Type = EntityField.Location, Value = request.Location }
+                    new Field<UserEntityField>{ Type = UserEntityField.Location, Value = request.Location }
                 }
             }).ConfigureAwait(false);
 

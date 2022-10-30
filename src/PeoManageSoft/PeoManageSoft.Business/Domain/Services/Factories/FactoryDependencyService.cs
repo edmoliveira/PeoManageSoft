@@ -18,7 +18,7 @@ namespace PeoManageSoft.Business.Domain.Services.Factories
         /// <param name="services">Specifies the contract for a collection of service descriptors.</param>
         public static void AddFactoryDependencies(this IServiceCollection services)
         {
-            services.AddScoped<IRepositoryFactory, RepositoryFactory>();
+            services.AddSingleton<IRepositoryFactory, RepositoryFactory>();
         }
 
         #endregion

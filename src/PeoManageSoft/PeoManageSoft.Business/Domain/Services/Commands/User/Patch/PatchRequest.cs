@@ -1,5 +1,5 @@
 ﻿using PeoManageSoft.Business.Infrastructure.ObjectRelationalMapper;
-using static PeoManageSoft.Business.Infrastructure.Repositories.User.UserEntityConfig;
+using PeoManageSoft.Business.Infrastructure.Repositories.User;
 
 namespace PeoManageSoft.Business.Domain.Services.Commands.User.Patch
 {
@@ -17,7 +17,7 @@ namespace PeoManageSoft.Business.Domain.Services.Commands.User.Patch
         /// <summary>
         /// Fields that will be updated
         /// </summary>
-        public IEnumerable<Field<EntityField>> Fields { get; set; }
+        public IEnumerable<Field<UserEntityField>> Fields { get; set; }
 
         #endregion
     }

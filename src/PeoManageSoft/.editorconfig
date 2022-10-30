@@ -32,3 +32,6 @@ dotnet_diagnostic.CS8625.severity = none
 
 # CS8634: Template should be a static expression
 dotnet_diagnostic.CS8634.severity = none
+
+# CS8714: The type cannot be used as type parameter in the generic type or method. Nullability of type argument doesn't match 'notnull' constraint.
+dotnet_diagnostic.CS8714.severity = none

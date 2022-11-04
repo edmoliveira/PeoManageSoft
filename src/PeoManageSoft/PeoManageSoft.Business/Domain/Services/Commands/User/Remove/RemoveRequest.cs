@@ -3,7 +3,7 @@
     /// <summary>
     /// Request for the remove user command.
     /// </summary>
-    internal class RemoveRequest
+    internal sealed class RemoveRequest
     {
         #region Properties
 

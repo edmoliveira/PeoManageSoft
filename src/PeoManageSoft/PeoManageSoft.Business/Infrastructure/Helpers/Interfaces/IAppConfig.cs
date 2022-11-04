@@ -1,32 +1,46 @@
-﻿namespace PeoManageSoft.Business.Infrastructure.Helpers.Interfaces
+﻿using PeoManageSoft.Business.Infrastructure.Helpers.Resources.Interfaces;
+
+namespace PeoManageSoft.Business.Infrastructure.Helpers.Interfaces
 {
     /// <summary>
     /// Application Configuration
     /// </summary>
-    public interface IAppConfig
+    internal interface IAppConfig
     {
         #region Properties
 
         /// <summary>
+        /// Specifies the name of the application.
+        /// </summary>
+        string ApplicationName { get; set; }
+        /// <summary>
+        /// Specifies the title of the application.
+        /// </summary>
+        string ApplicationTitle { get; set; }
+        /// <summary>
+        /// Specifies the language of the application.
+        /// </summary>
+        ApplicationLanguage ApplicationLanguage { get; set; }
+        /// <summary>
         /// Relational Database Type
         /// </summary>
-        public DatabaseType DatabaseType { get; }
+        DatabaseType DatabaseType { get; }
         /// <summary>
         /// The connection used to open the database
         /// </summary>
-        public string ConnectionString { get; }
+        string ConnectionString { get; }
         /// <summary>
         /// The command timeout (in seconds).
         /// </summary>
-        public int SqlCommandTimeout { get; }
+        int SqlCommandTimeout { get; }
         /// <summary>
         /// Authnetication token cache address.
         /// </summary>
-        public string TokenCacheAddress { get; }
+        string TokenCacheAddress { get; }
         /// <summary>
         /// Authnetication token cache instance.
         /// </summary>
-        public string TokenCacheInstance { get; }
+        string TokenCacheInstance { get; }
         /// <summary>
         /// Array of Allowed Origins
         /// </summary>
@@ -84,11 +98,31 @@
         /// <summary>
         /// Authentication token secrect.
         /// </summary>
-        public string AuthTokenSecrect { get; }
+        string AuthTokenSecrect { get; }
         /// <summary>
         /// Authentication Token expiration in minutes.
         /// </summary>
-        public double AuthTokenExpireSeconds { get; }
+        double AuthTokenExpireSeconds { get; }
+        /// <summary>
+        /// Password token secrect.
+        /// </summary>
+        string PasswordTokenSecrect { get; }
+        /// <summary>
+        /// Password Token expiration hours.
+        /// </summary>
+        double PasswordTokenExpireHours { get; }
+        /// <summary>
+        /// Smtp configuration
+        /// </summary>
+        ISmtpConfiguration SmtpConfig { get; }
+        /// <summary>
+        /// Platform Images catalog.
+        /// </summary>
+        IImagesCatalogResource ImagesCatalog { get; }
+        /// <summary>
+        /// Platform Email Template Catalog.
+        /// </summary>
+        IEmailTemplatesCatalogResource EmailTemplatesCatalog { get; }
 
         #endregion
     }

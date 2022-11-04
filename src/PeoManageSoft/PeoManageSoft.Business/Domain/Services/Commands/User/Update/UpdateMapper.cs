@@ -6,7 +6,7 @@ namespace PeoManageSoft.Business.Domain.Services.Commands.User.Update
     /// <summary>
     /// Configuration for maps.
     /// </summary>
-    internal class UpdateMapper : Profile
+    internal sealed class UpdateMapper : Profile
     {
         #region Constructors
 

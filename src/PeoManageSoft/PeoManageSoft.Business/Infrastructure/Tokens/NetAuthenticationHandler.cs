@@ -11,7 +11,7 @@ namespace PeoManageSoft.Business.Infrastructure.Tokens
     /// <summary>
     /// An opinionated abstraction for implementing IAuthenticationHandler
     /// </summary>
-    public sealed class NetAuthenticationHandler : AuthenticationHandler<NetAuthenticationOptions>
+    internal sealed class NetAuthenticationHandler : AuthenticationHandler<NetAuthenticationOptions>
     {
         #region Constructors
 

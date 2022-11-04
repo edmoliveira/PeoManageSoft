@@ -7,7 +7,7 @@ namespace PeoManageSoft.Business.Domain.Services.Commands.User.Remove
     /// <summary>
     /// Handles all commands to remove the user.
     /// </summary>
-    internal class RemoveHandler : IRemoveHandler
+    internal sealed class RemoveHandler : IRemoveHandler
     {
         #region Fields
 

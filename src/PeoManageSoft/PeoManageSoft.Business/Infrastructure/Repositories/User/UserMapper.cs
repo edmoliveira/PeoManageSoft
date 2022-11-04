@@ -6,7 +6,7 @@ namespace PeoManageSoft.Business.Infrastructure.Repositories.User
     /// <summary>
     /// Configuration for maps.
     /// </summary>
-    internal class UserMapper : Profile
+    internal sealed class UserMapper : Profile
     {
         #region Constructors
 
@@ -28,7 +28,8 @@ namespace PeoManageSoft.Business.Infrastructure.Repositories.User
                 .ForMember(dest => dest.DepartmentId, opt => opt.MapFrom(src => src.GetValue<long>(UserEntityField.DepartmentId)))
                 .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.GetValue<string>(UserEntityField.Email_Readonly)))
                 .ForMember(dest => dest.BussinessPhone, opt => opt.MapFrom(src => src.GetValue<string>(UserEntityField.BussinessPhone)))
-                .ForMember(dest => dest.MobilePhone, opt => opt.MapFrom(src => src.GetValue<string>(UserEntityField.MobilePhone)));
+                .ForMember(dest => dest.MobilePhone, opt => opt.MapFrom(src => src.GetValue<string>(UserEntityField.MobilePhone)))
+                .ForMember(dest => dest.Location, opt => opt.MapFrom(src => src.GetValue<string>(UserEntityField.Location)));
 
         }
 

@@ -3,7 +3,7 @@
     /// <summary>
     /// Logged in user.
     /// </summary>
-    public class LoggedUser
+    public sealed class LoggedUser
     {
         #region Properties
 

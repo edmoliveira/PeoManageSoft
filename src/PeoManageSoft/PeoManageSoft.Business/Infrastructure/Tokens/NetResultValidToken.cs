@@ -5,7 +5,7 @@ namespace PeoManageSoft.Business.Infrastructure.Tokens
     /// <summary>
     /// Token validation result.
     /// </summary>
-    public class NetResultValidToken
+    internal sealed class NetResultValidToken
     {
         #region Properties
 

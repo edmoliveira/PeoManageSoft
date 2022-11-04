@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using PeoManageSoft.Business.Domain.Services.Commands.Messaging.SendEmail;
 using PeoManageSoft.Business.Domain.Services.Commands.User.Add;
 using PeoManageSoft.Business.Domain.Services.Commands.User.CreateToken;
 using PeoManageSoft.Business.Domain.Services.Commands.User.Patch;
@@ -32,6 +33,8 @@ namespace PeoManageSoft.Business.Domain.Services.Commands.User
             services.AddScoped<IRemoveCommand, RemoveCommand>();
             services.AddScoped<ICreateTokenHandler, CreateTokenHandler>();
             services.AddScoped<ICreateTokenCommand, CreateTokenCommand>();
+            services.AddScoped<ISendEmailHandler, SendEmailHandler>();
+            services.AddScoped<ISendEmailCommand, SendEmailCommand>();
         }
 
         #endregion

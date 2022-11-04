@@ -8,7 +8,7 @@ namespace PeoManageSoft.Business.Application.User.Change
     /// <summary>
     /// Change user application layer.
     /// </summary>
-    internal class ChangeApplication : IChangeApplication
+    internal sealed class ChangeApplication : IChangeApplication
     {
         #region Fields
 

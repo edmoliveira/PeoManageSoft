@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.Extensions.Logging;
 using PeoManageSoft.Business.Domain.Services.Commands.User.Add;
-using PeoManageSoft.Business.Infrastructure.Helpers;
 using PeoManageSoft.Business.Infrastructure.Helpers.Extensions;
 using PeoManageSoft.Business.Infrastructure.Helpers.Interfaces;
 
@@ -10,7 +9,7 @@ namespace PeoManageSoft.Business.Application.User.New
     /// <summary>
     /// New user application layer.
     /// </summary>
-    internal class NewApplication : INewApplication
+    internal sealed class NewApplication : INewApplication
     {
         #region Fields
 
@@ -18,6 +17,10 @@ namespace PeoManageSoft.Business.Application.User.New
         ///  Handles all commands to add the user.
         /// </summary>
         private readonly IAddHandler _addHandler;
+        /// <summary>
+        ///  Manages Json Web Token and Cryptography.
+        /// </summary>
+        private readonly ITokenJwt _tokenJwt;
         /// <summary>
         /// Application Configuration
         /// </summary>
@@ -39,17 +42,20 @@ namespace PeoManageSoft.Business.Application.User.New
         /// Initializes a new instance of the PeoManageSoft.Business.Application.User.New.NewApplication class.
         /// </summary>
         /// <param name="addHandler">Handles all commands to add the user.</param>
+        /// <param name="tokenJwt">Manages Json Web Token and Cryptography.</param>
         /// <param name="appConfig">Application Configuration</param>
         /// <param name="mapper">Data Mapper </param>
         /// <param name="logger">Log</param>
         public NewApplication(
                 IAddHandler addHandler,
+                ITokenJwt tokenJwt,
                 IAppConfig appConfig,
                 IMapper mapper,
                 ILogger<NewApplication> logger
             )
         {
             _addHandler = addHandler;
+            _tokenJwt = tokenJwt;
             _appConfig = appConfig;
             _mapper = mapper;
             _logger = logger;
@@ -77,7 +83,7 @@ namespace PeoManageSoft.Business.Application.User.New
 
             AddRequest commandRequest = _mapper.Map<AddRequest>(request);
 
-            commandRequest.Password = Cryptography.Encrypt(request.Password, _appConfig.AuthTokenSecrect);
+            commandRequest.Password = _tokenJwt.EncryptPassword(request.Password);
 
             NewResponse response = _mapper.Map<NewResponse>(
                 await _addHandler.HandleAsync(commandRequest).ConfigureAwait(false)

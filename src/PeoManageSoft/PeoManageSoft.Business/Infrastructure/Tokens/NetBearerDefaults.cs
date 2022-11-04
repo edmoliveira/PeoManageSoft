@@ -3,7 +3,7 @@
     /// <summary>
     /// Default values used by bearer authentication.
     /// </summary>
-    public static class NetBearerDefaults
+    internal static class NetBearerDefaults
     {
         #region Constants
 

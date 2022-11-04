@@ -10,7 +10,7 @@ namespace PeoManageSoft.Business.Domain.Services.Commands.User.Remove
     /// <summary>
     /// Remove user command.
     /// </summary>
-    internal class RemoveCommand : IRemoveCommand
+    internal sealed class RemoveCommand : IRemoveCommand
     {
         #region Fields
 

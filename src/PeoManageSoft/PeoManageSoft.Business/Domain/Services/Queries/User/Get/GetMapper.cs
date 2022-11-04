@@ -10,7 +10,7 @@ namespace PeoManageSoft.Business.Domain.Services.Queries.User.Get
     /// <summary>
     /// Configuration for maps.
     /// </summary>
-    internal class GetMapper : Profile
+    internal sealed class GetMapper : Profile
     {
         #region Constructors
 
@@ -39,11 +39,7 @@ namespace PeoManageSoft.Business.Domain.Services.Queries.User.Get
                 .ForMember(dest => dest.BussinessPhone, opt => opt.MapFrom(src => src.BussinessPhone))
                 .ForMember(dest => dest.MobilePhone, opt => opt.MapFrom(src => src.MobilePhone))
                 .ForMember(dest => dest.Location, opt => opt.MapFrom(src => src.Location))
-                .ForMember(dest => dest.RequestId, opt => opt.MapFrom(src => src.RequestId))
-                .ForMember(dest => dest.CreationUser, opt => opt.MapFrom(src => src.CreationUser))
-                .ForMember(dest => dest.CreationDate, opt => opt.MapFrom(src => src.CreationDate))
-                .ForMember(dest => dest.UpdatedUser, opt => opt.MapFrom(src => src.UpdatedUser))
-                .ForMember(dest => dest.UpdatedDate, opt => opt.MapFrom(src => src.UpdatedDate));
+                .ForMember(dest => dest.PasswordToken, opt => opt.MapFrom(src => src.PasswordToken));
         }
 
         #endregion

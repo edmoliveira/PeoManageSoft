@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using PeoManageSoft.Business.Domain.Services.Queries.User.Get;
 using PeoManageSoft.Business.Domain.Services.Queries.User.GetAll;
-using PeoManageSoft.Business.Domain.Services.Queries.User.GetByAuthentication;
+using PeoManageSoft.Business.Domain.Services.Queries.User.GetByRules;
 
 namespace PeoManageSoft.Business.Domain.Services.Queries.User
 {
@@ -24,8 +24,8 @@ namespace PeoManageSoft.Business.Domain.Services.Queries.User
             services.AddScoped<IGetQuery, GetQuery>();
             services.AddScoped<IGetAllHandler, GetAllHandler>();
             services.AddScoped<IGetAllQuery, GetAllQuery>();
-            services.AddScoped<IGetByAuthenticationHandler, GetByAuthenticationHandler>();
-            services.AddScoped<IGetByAuthenticationQuery, GetByAuthenticationQuery>();
+            services.AddScoped<IGetByRulesHandler, GetByRulesHandler>();
+            services.AddScoped<IGetByRulesQuery, GetByRulesQuery>();
         }
 
         #endregion

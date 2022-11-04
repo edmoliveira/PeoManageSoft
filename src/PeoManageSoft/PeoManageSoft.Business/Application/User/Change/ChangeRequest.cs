@@ -5,7 +5,7 @@ namespace PeoManageSoft.Business.Application.User.Change
     /// <summary>
     /// Request data.
     /// </summary>
-    public class ChangeRequest
+    public sealed class ChangeRequest
     {
         #region Properties
 

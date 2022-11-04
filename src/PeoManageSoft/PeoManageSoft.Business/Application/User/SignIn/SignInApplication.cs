@@ -2,13 +2,14 @@
 using Microsoft.Extensions.Logging;
 using PeoManageSoft.Business.Domain.Services.Commands.User.CreateToken;
 using PeoManageSoft.Business.Domain.Services.Commands.User.Patch;
-using PeoManageSoft.Business.Domain.Services.Queries.User.GetByAuthentication;
-using PeoManageSoft.Business.Domain.Services.Queries.User.GetByAuthentication.Response;
-using PeoManageSoft.Business.Infrastructure.Helpers;
+using PeoManageSoft.Business.Domain.Services.Queries.User.Get.Response;
+using PeoManageSoft.Business.Domain.Services.Queries.User.GetByRules;
+using PeoManageSoft.Business.Infrastructure;
 using PeoManageSoft.Business.Infrastructure.Helpers.Exceptions;
 using PeoManageSoft.Business.Infrastructure.Helpers.Extensions;
 using PeoManageSoft.Business.Infrastructure.Helpers.Interfaces;
 using PeoManageSoft.Business.Infrastructure.ObjectRelationalMapper;
+using PeoManageSoft.Business.Infrastructure.ObjectRelationalMapper.Interfaces;
 using PeoManageSoft.Business.Infrastructure.Repositories.User;
 using System.Net;
 
@@ -17,14 +18,14 @@ namespace PeoManageSoft.Business.Application.User.SignIn
     /// <summary>
     /// Sign in application layer.
     /// </summary>
-    internal class SignInApplication : ISignInApplication
+    internal sealed class SignInApplication : ISignInApplication
     {
         #region Fields
 
         /// <summary>
-        ///  Handles all queries to get the user by authentication.
+        ///  Handles all queries to get the user by rules.
         /// </summary>
-        private readonly IGetByAuthenticationHandler _getByAuthenticationHandler;
+        private readonly IGetByRulesHandler _getByRulesHandler;
         /// <summary>
         ///  Handles all commands to create the token.
         /// </summary>
@@ -33,6 +34,10 @@ namespace PeoManageSoft.Business.Application.User.SignIn
         ///  Handles all commands to patch the user.
         /// </summary>
         private readonly IPatchHandler _patchHandler;
+        /// <summary>
+        ///  Manages Json Web Token and Cryptography.
+        /// </summary>
+        private readonly ITokenJwt _tokenJwt;
         /// <summary>
         /// Application Configuration
         /// </summary>
@@ -53,24 +58,27 @@ namespace PeoManageSoft.Business.Application.User.SignIn
         /// <summary>
         /// Initializes a new instance of the PeoManageSoft.Business.Application.User.SignIn.SignInApplication class.
         /// </summary>
-        /// <param name="getByAuthenticationHandler">Handles all queries to get the user by authentication.</param>
+        /// <param name="getByRulesHandler">Handles all queries to get the user by rules.</param>
         /// <param name="createTokenHandler">Handles all commands to create the token.</param>
         /// <param name="patchHandler">Handles all commands to patch the user.</param>
+        /// <param name="tokenJwt">Manages Json Web Token and Cryptography.</param>
         /// <param name="appConfig">Application Configuration</param>
         /// <param name="mapper">Data Mapper </param>
         /// <param name="logger">Log</param>
         public SignInApplication(
-                IGetByAuthenticationHandler getByAuthenticationHandler,
+                IGetByRulesHandler getByRulesHandler,
                 ICreateTokenHandler createTokenHandler,
                 IPatchHandler patchHandler,
+                ITokenJwt tokenJwt,
                 IAppConfig appConfig,
                 IMapper mapper,
                 ILogger<SignInApplication> logger
             )
         {
-            _getByAuthenticationHandler = getByAuthenticationHandler;
+            _getByRulesHandler = getByRulesHandler;
             _createTokenHandler = createTokenHandler;
             _patchHandler = patchHandler;
+            _tokenJwt = tokenJwt;
             _appConfig = appConfig;
             _mapper = mapper;
             _logger = logger;
@@ -96,13 +104,9 @@ namespace PeoManageSoft.Business.Application.User.SignIn
 
             _logger.LogBeginInformation(methodName);
 
-            GetByAuthenticationRequest queryRequest = _mapper.Map<GetByAuthenticationRequest>(request);
+            var authResponse = await GetByAuthentication(request.Login, request.Password).ConfigureAwait(false);
 
-            queryRequest.Password = Cryptography.Encrypt(request.Password, _appConfig.AuthTokenSecrect);
-
-            GetByAuthenticationResponse authResponse = await _getByAuthenticationHandler.HandleAsync(queryRequest).ConfigureAwait(false);
-
-            if (authResponse == null)
+            if (authResponse is null)
             {
                 throw new RequestException(HttpStatusCode.Unauthorized, "Not authorized!");
             }
@@ -112,7 +116,7 @@ namespace PeoManageSoft.Business.Application.User.SignIn
                 Id = authResponse.Id,
                 Fields = new List<Field<UserEntityField>>
                 {
-                    new Field<UserEntityField>{ Type = UserEntityField.Location, Value = request.Location }
+                    new Field<UserEntityField>{ Type = UserEntityField.Location, Value = request.Location.ToString() }
                 }
             }).ConfigureAwait(false);
 
@@ -134,6 +138,31 @@ namespace PeoManageSoft.Business.Application.User.SignIn
                 Name = authResponse.Name,
                 ShortName = authResponse.ShortName
             };
+        }
+
+        #endregion
+
+        #region private
+
+        /// <summary>
+        /// Gets the user by login and password
+        /// </summary>
+        /// <param name="login">User login</param>
+        /// <param name="password">User password</param>
+        /// <returns>User data</returns>
+        private async Task<GetResponse> GetByAuthentication(string login, string password)
+        {
+            var encryptedPassword = _tokenJwt.EncryptPassword(password);
+
+            var rules = new IRule<UserEntityField>[2]
+                {
+                    _getByRulesHandler.CreateRule(UserEntityField.Login_Readonly, SqlComparisonOperator.EqualTo, login),
+                    _getByRulesHandler.CreateRule(UserEntityField.Password, SqlComparisonOperator.EqualTo, encryptedPassword, SqlOperator.And)
+                };
+
+            var result = await _getByRulesHandler.HandleAsync(_getByRulesHandler.CreateRule(rules)).ConfigureAwait(false);
+
+            return result.FirstOrDefault();
         }
 
         #endregion

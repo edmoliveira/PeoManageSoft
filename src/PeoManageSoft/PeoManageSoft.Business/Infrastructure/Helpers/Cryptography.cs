@@ -8,7 +8,7 @@ namespace PeoManageSoft.Business.Infrastructure.Helpers
     // <summary>
     // Defines a class that provides the mechanisms to cryptography
     // </summary>
-    public static class Cryptography
+    internal static class Cryptography
     {
         #region Constants private
 
@@ -27,14 +27,28 @@ namespace PeoManageSoft.Business.Infrastructure.Helpers
 
         #region Methods public
 
+        /// <summary>
+        /// Encrypts the object with password.
+        /// </summary>
+        /// <typeparam name="T">Object type</typeparam>
+        /// <param name="obj">Object that will be encrypted</param>
+        /// <param name="password">The password used to derive the key.</param>
+        /// <returns>Encrypted object</returns>
         public static string Encrypt<T>(T obj, string password)
         {
             return Encrypt(JsonSerializer.Serialize(obj), password);
         }
 
-        public static T Decrypt<T>(string encryptedValue, string password)
+        /// <summary>
+        /// Decrypts the object with password.
+        /// </summary>
+        /// <typeparam name="T">Object type</typeparam>
+        /// <param name="encryptedObj">Encrypted object</param>
+        /// <param name="password">The password used to derive the key.</param>
+        /// <returns>Object</returns>
+        public static T Decrypt<T>(string encryptedObj, string password)
         {
-            return JsonSerializer.Deserialize<T>(Decrypt(encryptedValue, password));
+            return JsonSerializer.Deserialize<T>(Decrypt(encryptedObj, password));
         }
 
         /// <summary>

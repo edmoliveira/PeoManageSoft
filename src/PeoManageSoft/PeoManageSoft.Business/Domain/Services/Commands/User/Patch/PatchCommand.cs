@@ -9,7 +9,7 @@ namespace PeoManageSoft.Business.Domain.Services.Commands.User.Patch
     /// <summary>
     /// Patch user command.
     /// </summary>
-    internal class PatchCommand : IPatchCommand
+    internal sealed class PatchCommand : IPatchCommand
     {
         #region Fields
 

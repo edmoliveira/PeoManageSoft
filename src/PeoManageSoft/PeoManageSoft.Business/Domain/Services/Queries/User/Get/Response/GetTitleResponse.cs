@@ -1,9 +1,9 @@
 ﻿namespace PeoManageSoft.Business.Domain.Services.Queries.User.Get.Response
 {
     /// <summary>
-    /// Response for the get title query.
+    /// Response for the title.
     /// </summary>
-    internal class GetTitleResponse
+    internal sealed class GetTitleResponse
     {
         #region Properties
 

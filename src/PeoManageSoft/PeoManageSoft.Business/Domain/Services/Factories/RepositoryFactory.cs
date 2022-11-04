@@ -8,7 +8,7 @@ namespace PeoManageSoft.Business.Domain.Services.Factories
     /// <summary>
     /// Create objects from repositories
     /// </summary>
-    internal class RepositoryFactory : IRepositoryFactory
+    internal sealed class RepositoryFactory : IRepositoryFactory
     {
         #region Methods
 

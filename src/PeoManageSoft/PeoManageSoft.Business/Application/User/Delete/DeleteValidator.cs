@@ -5,7 +5,7 @@ namespace PeoManageSoft.Business.Application.User.Delete
     /// <summary>
     /// Object validator
     /// </summary>
-    internal class DeleteValidator : AbstractValidator<DeleteRequest>
+    internal sealed class DeleteValidator : AbstractValidator<DeleteRequest>
     {
         #region Constructors
 

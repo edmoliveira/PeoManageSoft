@@ -5,7 +5,7 @@ namespace PeoManageSoft.Business.Application.User.SignIn
     /// <summary>
     /// Object validator
     /// </summary>
-    internal class SignInValidator : AbstractValidator<SignInRequest>
+    internal sealed class SignInValidator : AbstractValidator<SignInRequest>
     {
         #region Constructors
 

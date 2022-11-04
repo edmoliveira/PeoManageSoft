@@ -3,7 +3,7 @@
     /// <summary>
     /// Request data.
     /// </summary>
-    public class ReadRequest
+    public sealed class ReadRequest
     {
         #region Properties
 

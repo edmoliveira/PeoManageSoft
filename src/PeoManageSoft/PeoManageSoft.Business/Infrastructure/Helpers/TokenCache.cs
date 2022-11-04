@@ -7,7 +7,7 @@ namespace PeoManageSoft.Business.Infrastructure.Helpers
     /// <summary>
     /// Token Cache
     /// </summary>
-    public class TokenCache : ITokenCache
+    internal sealed class TokenCache : ITokenCache
     {
         #region Fields
 

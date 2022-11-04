@@ -5,7 +5,7 @@ namespace PeoManageSoft.Business.Domain.Services.Commands.User.CreateToken
     /// <summary>
     /// Request for the create token command.
     /// </summary>
-    internal class CreateTokenRequest
+    internal sealed class CreateTokenRequest
     {
         #region Properties
 

@@ -1,11 +1,12 @@
 ﻿using PeoManageSoft.Business.Infrastructure;
+using PeoManageSoft.Business.Infrastructure.Helpers.Structs;
 
 namespace PeoManageSoft.Business.Domain.Services.Queries.User.Get.Response
 {
     /// <summary>
-    /// Response for the get user query.
+    /// Response for the user.
     /// </summary>
-    internal class GetResponse
+    internal sealed class GetResponse
     {
         #region Properties
 
@@ -25,6 +26,10 @@ namespace PeoManageSoft.Business.Domain.Services.Queries.User.Get.Response
         /// User login
         /// </summary>
         public string Login { get; set; }
+        /// <summary>
+        /// Token to change the user password.
+        /// </summary>
+        public string PasswordToken { get; set; }
         /// <summary>
         /// Full username
         /// </summary>
@@ -56,27 +61,7 @@ namespace PeoManageSoft.Business.Domain.Services.Queries.User.Get.Response
         /// <summary>
         /// Indicates the last location where the user logged in "Longitude and latitude"
         /// </summary>
-        public string Location { get; set; }
-        /// <summary>
-        /// Request id for all transaction in the platform.
-        /// </summary>
-        public string RequestId { get; set; }
-        /// <summary>
-        /// User who created the record
-        /// </summary>
-        public string CreationUser { get; set; }
-        /// <summary>
-        /// Record creation date and time
-        /// </summary>
-        public DateTime? CreationDate { get; set; }
-        /// <summary>
-        /// User who updated the record
-        /// </summary>
-        public string UpdatedUser { get; set; }
-        /// <summary>
-        /// Record update date and time
-        /// </summary>
-        public DateTime? UpdatedDate { get; set; }
+        public GeoLocation Location { get; set; }
 
         #endregion
     }

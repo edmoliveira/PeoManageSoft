@@ -5,7 +5,7 @@ namespace PeoManageSoft.Business.Infrastructure.Repositories.Title
     /// <summary>
     /// Mapping to the database Title table.
     /// </summary>
-    internal class TitleEntity : IEntity
+    internal sealed class TitleEntity : IEntity
     {
         #region Properties
 

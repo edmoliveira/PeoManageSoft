@@ -3,7 +3,7 @@
     /// <summary>
     /// Provides the metadata about the Open API.
     /// </summary>
-    public interface IConfigurationOpenApiInfo
+    internal interface IConfigurationOpenApiInfo
     {
         #region Properties 
 

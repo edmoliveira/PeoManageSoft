@@ -7,7 +7,7 @@ namespace PeoManageSoft.Business.Domain.Services.Commands.User.Update
     /// <summary>
     /// Handles all commands to update the user.
     /// </summary>
-    internal class UpdateHandler : IUpdateHandler
+    internal sealed class UpdateHandler : IUpdateHandler
     {
         #region Fields
 

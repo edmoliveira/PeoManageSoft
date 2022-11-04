@@ -1,4 +1,6 @@
 ﻿using PeoManageSoft.Business.Infrastructure.Helpers.Interfaces;
+using PeoManageSoft.Business.Infrastructure.Helpers.Resources;
+using PeoManageSoft.Business.Infrastructure.Helpers.Resources.Interfaces;
 
 namespace PeoManageSoft.Business.Infrastructure.Helpers
 {
@@ -9,6 +11,18 @@ namespace PeoManageSoft.Business.Infrastructure.Helpers
     {
         #region Properties
 
+        /// <summary>
+        /// Specifies the name of the application.
+        /// </summary>
+        public string ApplicationName { get; set; }
+        /// <summary>
+        /// Specifies the title of the application.
+        /// </summary>
+        public string ApplicationTitle { get; set; }
+        /// <summary>
+        /// Specifies the language of the application.
+        /// </summary>
+        public ApplicationLanguage ApplicationLanguage { get; set; }
         /// <summary>
         /// Relational Database Type
         /// </summary>
@@ -95,6 +109,38 @@ namespace PeoManageSoft.Business.Infrastructure.Helpers
         /// Authentication Token expiration in minutes.
         /// </summary>
         public double AuthTokenExpireSeconds { get; set; }
+        /// <summary>
+        /// Password token secrect.
+        /// </summary>
+        public string PasswordTokenSecrect { get; set; }
+        /// <summary>
+        /// Password Token expiration hours.
+        /// </summary>
+        public double PasswordTokenExpireHours { get; set; }
+        /// <summary>
+        /// Smtp configuration
+        /// </summary>
+        public SmtpConfiguration SmtpConfig { get; set; }
+        /// <summary>
+        /// Smtp configuration
+        /// </summary>
+        ISmtpConfiguration IAppConfig.SmtpConfig => SmtpConfig;
+        /// <summary>
+        /// Platform Images catalog.
+        /// </summary>
+        ImagesCatalogResource ImagesCatalog { get; set; }
+        /// <summary>
+        /// Platform Images catalog.
+        /// </summary>
+        IImagesCatalogResource IAppConfig.ImagesCatalog => ImagesCatalog;
+        /// <summary>
+        /// Platform Email Template Catalog.
+        /// </summary>
+        EmailTemplatesCatalogResource EmailTemplatesCatalog { get; set; }
+        /// <summary>
+        /// Platform Email Template Catalog.
+        /// </summary>
+        IEmailTemplatesCatalogResource IAppConfig.EmailTemplatesCatalog => EmailTemplatesCatalog;
 
         #endregion
     }

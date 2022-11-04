@@ -6,7 +6,7 @@ namespace PeoManageSoft.Business.Domain.Services.Commands.User.CreateToken
     /// <summary>
     /// Handles all commands to create token.
     /// </summary>
-    internal class CreateTokenHandler : ICreateTokenHandler
+    internal sealed class CreateTokenHandler : ICreateTokenHandler
     {
         #region Fields
 

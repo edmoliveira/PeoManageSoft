@@ -7,7 +7,7 @@ namespace PeoManageSoft.Business.Domain.Services.Commands.User.Add
     /// <summary>
     /// Handles all commands to add the user.
     /// </summary>
-    internal class AddHandler : IAddHandler
+    internal sealed class AddHandler : IAddHandler
     {
         #region Fields
 

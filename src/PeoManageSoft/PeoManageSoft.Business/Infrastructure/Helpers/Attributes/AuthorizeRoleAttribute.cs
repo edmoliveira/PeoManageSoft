@@ -5,7 +5,7 @@ namespace PeoManageSoft.Business.Infrastructure.Helpers.Attributes
     /// <summary>
     /// Specifies that the class or method "Role" that this attribute is applied to requires the specified authorization.
     /// </summary>
-    public class AuthorizeRolesAttribute : AuthorizeAttribute
+    public sealed class AuthorizeRolesAttribute : AuthorizeAttribute
     {
         #region Constructors
 

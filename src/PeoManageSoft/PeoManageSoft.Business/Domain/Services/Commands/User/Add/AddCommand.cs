@@ -9,7 +9,7 @@ namespace PeoManageSoft.Business.Domain.Services.Commands.User.Add
     /// <summary>
     /// Add user command.
     /// </summary>
-    internal class AddCommand : IAddCommand
+    internal sealed class AddCommand : IAddCommand
     {
         #region Fields
 

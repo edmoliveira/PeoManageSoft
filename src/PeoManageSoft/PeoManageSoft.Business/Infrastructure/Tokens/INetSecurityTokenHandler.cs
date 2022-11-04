@@ -3,7 +3,7 @@
     /// <summary>
     ///  A NetSecurityTokenHandler designed for creating and validating Json Web Tokens.
     /// </summary>
-    public interface INetSecurityTokenHandler
+    internal interface INetSecurityTokenHandler
     {
         #region Methods
 

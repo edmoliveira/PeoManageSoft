@@ -6,7 +6,7 @@ namespace PeoManageSoft.Business.Application.User.Change
     /// <summary>
     /// Configuration for maps.
     /// </summary>
-    internal class ChangeMapper : Profile
+    internal sealed class ChangeMapper : Profile
     {
         #region Constructors
 

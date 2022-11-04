@@ -5,7 +5,7 @@ namespace PeoManageSoft.Business.Application.User.Change
     /// <summary>
     /// Object validator
     /// </summary>
-    internal class ChangeValidator : AbstractValidator<ChangeRequest>
+    internal sealed class ChangeValidator : AbstractValidator<ChangeRequest>
     {
         #region Constructors
 

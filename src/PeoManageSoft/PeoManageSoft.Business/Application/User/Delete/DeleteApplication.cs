@@ -8,7 +8,7 @@ namespace PeoManageSoft.Business.Application.User.Delete
     /// <summary>
     /// Delete user application layer.
     /// </summary>
-    internal class DeleteApplication : IDeleteApplication
+    internal sealed class DeleteApplication : IDeleteApplication
     {
         #region Fields
 

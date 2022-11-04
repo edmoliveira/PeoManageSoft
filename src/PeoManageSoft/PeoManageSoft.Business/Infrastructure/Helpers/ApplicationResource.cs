@@ -23,6 +23,26 @@
         ///  SerialNumber Header Key
         /// </summary>
         public static string SerialNumberHeaderKey => "serial-number";
+        /// <summary>
+        /// Application name Variables "{{applicationName}}"
+        /// </summary>
+        public static string ApplicationNameVariable => "{{applicationName}}";
+        /// <summary>
+        /// Remember password logo guid Variables "{{rememberPasswordLogoGuid}}"
+        /// </summary>
+        public static string RememberPasswordLogoGuidVariable => "{{rememberPasswordLogoGuid}}";
+        /// <summary>
+        /// Remember password keys guid Variables "{{rememberPasswordKeysGuid}}"
+        /// </summary>
+        public static string RememberPasswordKeysGuidVariable => "{{rememberPasswordKeysGuid}}";
+        /// <summary>
+        /// Remember password keys guid Variables "{{rememberPasswordUrl}}"
+        /// </summary>
+        public static string RememberPasswordUrlVariable => "{{rememberPasswordUrl}}";
+        /// <summary>
+        /// Remember password keys guid Variables "{{rememberPasswordLocation}}"
+        /// </summary>
+        public static string RememberPasswordLocationVariable => "{{rememberPasswordLocation}}";
 
         #endregion
     }

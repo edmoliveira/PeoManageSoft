@@ -11,7 +11,7 @@ namespace PeoManageSoft.Business.Application.User.Read
     /// <summary>
     /// Read user application layer.
     /// </summary>
-    internal class ReadApplication : IReadApplication
+    internal sealed class ReadApplication : IReadApplication
     {
         #region Fields
 

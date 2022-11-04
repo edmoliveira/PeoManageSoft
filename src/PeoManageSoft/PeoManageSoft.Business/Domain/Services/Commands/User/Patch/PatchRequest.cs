@@ -6,7 +6,7 @@ namespace PeoManageSoft.Business.Domain.Services.Commands.User.Patch
     /// <summary>
     /// Request for the patch user command.
     /// </summary>
-    internal class PatchRequest
+    internal sealed class PatchRequest
     {
         #region Properties
 

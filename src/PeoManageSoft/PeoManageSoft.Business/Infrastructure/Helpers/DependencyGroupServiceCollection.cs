@@ -11,8 +11,11 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
 using PeoManageSoft.Business.Application.User;
+using PeoManageSoft.Business.Domain.Services.Apis;
 using PeoManageSoft.Business.Domain.Services.Commands.User;
+using PeoManageSoft.Business.Domain.Services.Creators;
 using PeoManageSoft.Business.Domain.Services.Factories;
+using PeoManageSoft.Business.Domain.Services.Middlewares;
 using PeoManageSoft.Business.Domain.Services.Queries.User;
 using PeoManageSoft.Business.Infrastructure.Helpers.Exceptions;
 using PeoManageSoft.Business.Infrastructure.Helpers.Extensions;
@@ -73,6 +76,9 @@ namespace PeoManageSoft.Business.Infrastructure.Helpers
 
             services.AddRepositoryDependencies();
             services.AddFactoryDependencies();
+            services.AddMiddlewareDependencies();
+            services.AddCreatorDependencies();
+            services.AddApiDependencies();
 
             AddApplicationServices(services);
             AddCommandServices(services);

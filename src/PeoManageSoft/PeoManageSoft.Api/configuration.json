@@ -1,6 +1,10 @@
 {
   "AppConfig": {
+    "ApplicationName": "PeoManageSoft",
+    "ApplicationTitle": "PeoManageSoft - People management software",
+    "ApplicationLanguage": "English",
     "AuthTokenExpireSeconds": 120,
+    "PasswordTokenExpireHours": 6,
     "SqlCommandTimeout": 120,
     "TermsOfServiceOpenApi": "https://example.com/terms",
     "NameOpenApiContact": "Shayne Boyer",
@@ -10,9 +14,14 @@
     "UrlOpenApiLicense": "https://example.com/license",
     "Documents": [
       {
-        "DocumentName": "Users",
-        "Title": "PeoManageSoft Api",
-        "Description": "PeoManageSoft Api documentation"
+        "DocumentName": "CRUD",
+        "Title": "PeoManageSoft Api documentation",
+        "Description": "Create, read, update and delete are the four basic operations of the system."
+      },
+      {
+        "DocumentName": "Security",
+        "Title": "PeoManageSoft Api documentation",
+        "Description": "Services related to system security."
       }
     ],
     "AllowedMethods": [

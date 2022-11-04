@@ -7,7 +7,7 @@ namespace PeoManageSoft.Business.Infrastructure.Helpers.Filters
     /// <summary>
     /// Header parameter attribute's operation filter
     /// </summary>
-    public class HeaderParameterOperationFilter : IOperationFilter
+    public sealed class HeaderParameterOperationFilter : IOperationFilter
     {
         #region Methods
 

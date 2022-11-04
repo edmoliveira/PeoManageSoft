@@ -3,7 +3,7 @@
     /// <summary>
     /// Class to be used on one instance throughout the application per request
     /// </summary>
-    public interface IApplicationContext
+    internal interface IApplicationContext
     {
         #region Properties
 

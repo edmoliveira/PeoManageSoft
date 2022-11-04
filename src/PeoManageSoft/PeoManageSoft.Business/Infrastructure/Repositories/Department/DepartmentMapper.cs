@@ -6,7 +6,7 @@ namespace PeoManageSoft.Business.Infrastructure.Repositories.Department
     /// <summary>
     /// Configuration for maps.
     /// </summary>
-    internal class DepartmentMapper : Profile
+    internal sealed class DepartmentMapper : Profile
     {
         #region Constructors
 

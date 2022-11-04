@@ -5,7 +5,7 @@ namespace PeoManageSoft.Business.Application.User.SignIn
     /// <summary>
     /// Response data.
     /// </summary>
-    public class SignInResponse
+    public sealed class SignInResponse
     {
         #region Properties
 

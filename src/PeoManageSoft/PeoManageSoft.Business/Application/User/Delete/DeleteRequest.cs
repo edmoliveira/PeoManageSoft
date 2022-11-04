@@ -3,7 +3,7 @@
     /// <summary>
     /// Request data.
     /// </summary>
-    public class DeleteRequest
+    public sealed class DeleteRequest
     {
         #region Properties
 

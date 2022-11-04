@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.Extensions.Logging;
-using PeoManageSoft.Business.Domain.Services.Queries.User.GetAll.Response;
+using PeoManageSoft.Business.Domain.Services.Queries.User.Get.Response;
 using PeoManageSoft.Business.Infrastructure.Helpers.Extensions;
 using PeoManageSoft.Business.Infrastructure.ObjectRelationalMapper.Interfaces;
 using PeoManageSoft.Business.Infrastructure.Repositories.User;
@@ -10,7 +10,7 @@ namespace PeoManageSoft.Business.Domain.Services.Queries.User.GetAll
     /// <summary>
     /// Get all user query.
     /// </summary>
-    internal class GetAllQuery : IGetAllQuery
+    internal sealed class GetAllQuery : IGetAllQuery
     {
         #region Fields
 
@@ -62,7 +62,7 @@ namespace PeoManageSoft.Business.Domain.Services.Queries.User.GetAll
         /// Task: Represents an asynchronous operation. 
         /// The return value
         /// </returns>
-        public async Task<IEnumerable<GetAllResponse>> ExecuteAsync(IScope scope)
+        public async Task<IEnumerable<GetResponse>> ExecuteAsync(IScope scope)
         {
             string methodName = nameof(ExecuteAsync);
 
@@ -70,7 +70,7 @@ namespace PeoManageSoft.Business.Domain.Services.Queries.User.GetAll
 
             IEnumerable<UserEntity> collection = await _repository.SelectAllAsync(scope).ConfigureAwait(false);
 
-            IEnumerable<GetAllResponse> response = _mapper.Map<IEnumerable<GetAllResponse>>(collection);
+            IEnumerable<GetResponse> response = _mapper.Map<IEnumerable<GetResponse>>(collection);
 
             _logger.LogEndInformation(methodName);
 

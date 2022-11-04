@@ -3,7 +3,7 @@
     /// <summary>
     /// Response for the read department query.
     /// </summary>
-    public class ReadDepartmentResponse
+    public sealed class ReadDepartmentResponse
     {
         #region Properties
 

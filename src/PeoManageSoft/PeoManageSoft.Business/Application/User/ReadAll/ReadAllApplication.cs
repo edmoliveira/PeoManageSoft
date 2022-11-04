@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.Extensions.Logging;
-using PeoManageSoft.Business.Application.User.ReadAll.Response;
+using PeoManageSoft.Business.Application.User.Read.Response;
 using PeoManageSoft.Business.Domain.Services.Queries.User.GetAll;
 using PeoManageSoft.Business.Infrastructure.Helpers.Extensions;
 
@@ -9,7 +9,7 @@ namespace PeoManageSoft.Business.Application.User.ReadAll
     /// <summary>
     /// Read all user application layer.
     /// </summary>
-    internal class ReadAllApplication : IReadAllApplication
+    internal sealed class ReadAllApplication : IReadAllApplication
     {
         #region Fields
 
@@ -60,13 +60,13 @@ namespace PeoManageSoft.Business.Application.User.ReadAll
         /// Task: Represents an asynchronous operation. 
         /// Response for the application layer.
         /// </returns>
-        public async Task<IEnumerable<ReadAllResponse>> HandleAsync()
+        public async Task<IEnumerable<ReadResponse>> HandleAsync()
         {
             string methodName = nameof(HandleAsync);
 
             _logger.LogBeginInformation(methodName);
 
-            IEnumerable<ReadAllResponse> response = _mapper.Map<IEnumerable<ReadAllResponse>>(
+            IEnumerable<ReadResponse> response = _mapper.Map<IEnumerable<ReadResponse>>(
                 await _getAllHandler.HandleAsync().ConfigureAwait(false)
             );
 

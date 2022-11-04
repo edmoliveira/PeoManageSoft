@@ -207,7 +207,7 @@ namespace PeoManageSoft.Business.Infrastructure.Repositories.User
                 CreateParameter(_emailConfig, entity.Email),
                 CreateParameter(_bussinessPhoneConfig, entity.BussinessPhone),
                 CreateParameter(_mobilePhoneConfig, entity.MobilePhone),
-                CreateParameter(_locationConfig, entity.Location)
+                CreateParameter(_locationConfig, entity.Location.ToString())
             };
         }
 

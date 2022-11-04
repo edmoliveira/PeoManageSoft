@@ -6,7 +6,7 @@ namespace PeoManageSoft.Business.Infrastructure.Tokens
     /// Represents something that configures the TOptions type. Note: These are run after
     /// all Microsoft.Extensions.Options.IConfigureOptions`1.
     /// </summary>
-    public sealed class NetAuthenticationPostConfigureOptions : IPostConfigureOptions<NetAuthenticationOptions>
+    internal sealed class NetAuthenticationPostConfigureOptions : IPostConfigureOptions<NetAuthenticationOptions>
     {
         #region Methods public
 

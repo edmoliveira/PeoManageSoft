@@ -5,7 +5,7 @@ namespace PeoManageSoft.Business.Infrastructure.Helpers
     /// <summary>
     /// Provides the metadata about the Open API.
     /// </summary>
-    public class ConfigurationOpenApiInfo : IConfigurationOpenApiInfo
+    internal sealed class ConfigurationOpenApiInfo : IConfigurationOpenApiInfo
     {
         #region Properties 
 

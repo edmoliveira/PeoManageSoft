@@ -10,7 +10,7 @@ namespace PeoManageSoft.Business.Domain.Services.Queries.User.Get
     /// <summary>
     /// Get user query.
     /// </summary>
-    internal class GetQuery : IGetQuery
+    internal sealed class GetQuery : IGetQuery
     {
         #region Fields
 

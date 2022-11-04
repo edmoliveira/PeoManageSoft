@@ -5,7 +5,7 @@ namespace PeoManageSoft.Business.Infrastructure.Tokens
     /// <summary>
     ///  A NetSecurityTokenHandler designed for creating and validating Json Web Tokens.
     /// </summary>
-    public sealed class NetSecurityTokenHandler : INetSecurityTokenHandler
+    internal sealed class NetSecurityTokenHandler : INetSecurityTokenHandler
     {
         #region Methods
 

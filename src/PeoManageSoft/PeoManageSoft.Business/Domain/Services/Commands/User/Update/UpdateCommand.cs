@@ -9,7 +9,7 @@ namespace PeoManageSoft.Business.Domain.Services.Commands.User.Update
     /// <summary>
     /// Update user command.
     /// </summary>
-    internal class UpdateCommand : IUpdateCommand
+    internal sealed class UpdateCommand : IUpdateCommand
     {
         #region Fields
 

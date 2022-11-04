@@ -3,7 +3,7 @@
     /// <summary>
     /// Request for the get user query.
     /// </summary>
-    internal class GetRequest
+    internal sealed class GetRequest
     {
         #region Properties
 

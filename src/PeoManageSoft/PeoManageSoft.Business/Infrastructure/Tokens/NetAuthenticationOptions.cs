@@ -5,7 +5,7 @@ namespace PeoManageSoft.Business.Infrastructure.Tokens
     /// <summary>
     /// Contains the options used by the Microsoft.AspNetCore.Authentication.AuthenticationHandler.
     /// </summary>
-    public sealed class NetAuthenticationOptions : AuthenticationSchemeOptions
+    internal sealed class NetAuthenticationOptions : AuthenticationSchemeOptions
     {
         #region Properties
 

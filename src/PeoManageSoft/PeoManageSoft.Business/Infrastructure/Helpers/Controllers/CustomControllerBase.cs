@@ -11,12 +11,25 @@ namespace PeoManageSoft.Business.Infrastructure.Helpers.Controllers
     /// </summary>
     public class CustomControllerBase : ControllerBase
     {
-        #region Fields protected 
+        #region Constants
+
+        /// <summary>
+        /// Create, read, update and delete are the four basic operations of the system.
+        /// </summary>
+        protected const string Crud_GroupName = "CRUD";
+        /// <summary>
+        /// Services related to system security.
+        /// </summary>
+        protected const string Security_GroupName = "Security";
+
+        #endregion
+
+        #region Properties protected 
 
         /// <summary>
         /// Log
         /// </summary>
-        protected readonly ILogger _Logger;
+        protected ILogger Logger { get; }
 
         #endregion
 
@@ -28,7 +41,7 @@ namespace PeoManageSoft.Business.Infrastructure.Helpers.Controllers
         /// <param name="logger">Log</param>
         public CustomControllerBase(ILogger logger)
         {
-            _Logger = logger;
+            Logger = logger;
         }
 
         #endregion
@@ -39,7 +52,7 @@ namespace PeoManageSoft.Business.Infrastructure.Helpers.Controllers
         /// Action Result with Try..Catch
         /// </summary>
         /// <param name="func">Funciton with return "IActionResult"</param>
-        /// <returns>IActionResult</returns>
+        /// <returns>The contract that represents the result.</returns>
         [NonAction]
         protected IActionResult TryActionResult(Func<IActionResult> func)
         {
@@ -48,7 +61,7 @@ namespace PeoManageSoft.Business.Infrastructure.Helpers.Controllers
 
                 if (func == null)
                 {
-                    _Logger.LogError($"Argument {nameof(func)} is null.");
+                    Logger.LogError($"Argument {nameof(func)} is null.");
 
                     return InternalServerError();
                 }
@@ -77,7 +90,7 @@ namespace PeoManageSoft.Business.Infrastructure.Helpers.Controllers
         /// Action Result with Try..Catch (Stopwatch)
         /// </summary>
         /// <param name="func">Funciton with return "IActionResult"</param>
-        /// <returns>IActionResult</returns>
+        /// <returns>The contract that represents the result.</returns>
         [NonAction]
         protected IActionResult TryActionResult(Func<Stopwatch, IActionResult> func)
         {
@@ -89,7 +102,7 @@ namespace PeoManageSoft.Business.Infrastructure.Helpers.Controllers
 
                 if (func == null)
                 {
-                    _Logger.LogError($"Argument {nameof(func)} is null.");
+                    Logger.LogError($"Argument {nameof(func)} is null.");
 
                     return InternalServerError();
                 }
@@ -118,7 +131,7 @@ namespace PeoManageSoft.Business.Infrastructure.Helpers.Controllers
         /// Action Result with Try..Catch [Async]
         /// </summary>
         /// <param name="func">Funciton with return "IActionResult"</param>
-        /// <returns>IActionResult</returns>
+        /// <returns>The contract that represents the result.</returns>
         [NonAction]
         protected async Task<IActionResult> TryActionResultAsync(Func<Task<IActionResult>> func)
         {
@@ -126,7 +139,7 @@ namespace PeoManageSoft.Business.Infrastructure.Helpers.Controllers
             {
                 if (func == null)
                 {
-                    _Logger.LogError($"Argument {nameof(func)} is null.");
+                    Logger.LogError($"Argument {nameof(func)} is null.");
 
                     return InternalServerError();
                 }
@@ -155,7 +168,7 @@ namespace PeoManageSoft.Business.Infrastructure.Helpers.Controllers
         /// Action Result with Try..Catch [Async] (Stopwatch)
         /// </summary>
         /// <param name="func">Funciton with return "IActionResult"</param>
-        /// <returns>IActionResult</returns>
+        /// <returns>The contract that represents the result.</returns>
         [NonAction]
         protected async Task<IActionResult> TryActionResultAsync(Func<Stopwatch, Task<IActionResult>> func)
         {
@@ -167,7 +180,7 @@ namespace PeoManageSoft.Business.Infrastructure.Helpers.Controllers
 
                 if (func == null)
                 {
-                    _Logger.LogError($"Argument {nameof(func)} is null.");
+                    Logger.LogError($"Argument {nameof(func)} is null.");
 
                     return InternalServerError();
                 }
@@ -196,6 +209,7 @@ namespace PeoManageSoft.Business.Infrastructure.Helpers.Controllers
         /// Validates the model state whether it is invalid or not.
         /// </summary>
         /// <exception cref="RequestException">Represents errors that occur during application execution (Request Data)</exception>
+        [NonAction]
         protected void ValidateModelState()
         {
             if (!ModelState.IsValid)
@@ -240,16 +254,19 @@ namespace PeoManageSoft.Business.Infrastructure.Helpers.Controllers
                              .Select(m => m.ErrorMessage);
         }
 
+        [NonAction]
         protected static object MakeObjectResult(object message, HttpStatusCode statusCode)
         {
             return new { Error = message, Status = (int)statusCode };
         }
 
+        [NonAction]
         protected static string GetMethodBeginMessage(string methodName)
         {
             return string.Concat("Begin: ", methodName);
         }
 
+        [NonAction]
         protected static string GetMethodEndMessage(string methodName, long requestTimeMilliseconds)
         {
             return string.Concat("End: ", methodName, " (Request finished in ", requestTimeMilliseconds, "ms)");
@@ -259,6 +276,11 @@ namespace PeoManageSoft.Business.Infrastructure.Helpers.Controllers
 
         #region Method private
 
+        /// <summary>
+        /// Handle the TryActionResult exception
+        /// </summary>
+        /// <param name="aggregateException">Represents one or more errors that occur during application execution.</param>
+        /// <returns>The contract that represents the result.</returns>
         private IActionResult ManageExceptionOfTryActionResult(AggregateException aggregateException)
         {
             foreach (var exception in aggregateException.Flatten().InnerExceptions)
@@ -275,12 +297,17 @@ namespace PeoManageSoft.Business.Infrastructure.Helpers.Controllers
                     return HttpRequestExceptionObject(customException);
                 }
                 else
-                    _Logger.LogError(exception, exception.Message);
+                    Logger.LogError(exception, exception.Message);
             }
 
             return InternalServerError();
         }
 
+        /// <summary>
+        /// Handle the TryActionResult exception
+        /// </summary>
+        /// <param name="exception">Represents errors that occur during application execution.</param>
+        /// <returns>The contract that represents the result.</returns>
         private IActionResult ManageExceptionOfTryActionResult(Exception exception)
         {
             if (exception is RequestException requestException)
@@ -294,9 +321,8 @@ namespace PeoManageSoft.Business.Infrastructure.Helpers.Controllers
             {
                 return HttpRequestExceptionObject(customException);
             }
-            else
-                _Logger.LogError(exception, exception.Message);
-
+            
+            Logger.LogError(exception, exception.Message);
 
             return InternalServerError();
         }
@@ -312,7 +338,7 @@ namespace PeoManageSoft.Business.Infrastructure.Helpers.Controllers
 
             if (exception != null)
             {
-                _Logger.LogError(exception, string.Concat("[", exception.RequestUri, "|", exception.StatusCode, "] = ", exception.Message));
+                Logger.LogError(exception, string.Concat("[", exception.RequestUri, "|", exception.StatusCode, "] = ", exception.Message));
 
                 result = new(MakeObjectResult(message, exception.StatusCode))
                 {

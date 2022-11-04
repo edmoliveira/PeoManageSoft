@@ -7,7 +7,8 @@ using PeoManageSoft.Business.Application.User.Delete;
 using PeoManageSoft.Business.Application.User.New;
 using PeoManageSoft.Business.Application.User.Read;
 using PeoManageSoft.Business.Application.User.Read.Response;
-using PeoManageSoft.Business.Application.User.ReadAll.Response;
+using PeoManageSoft.Business.Infrastructure;
+using PeoManageSoft.Business.Infrastructure.Helpers.Attributes;
 using PeoManageSoft.Business.Infrastructure.Helpers.Controllers;
 using PeoManageSoft.Business.Infrastructure.Helpers.Extensions;
 using PeoManageSoft.Business.Infrastructure.Helpers.Filters;
@@ -23,8 +24,8 @@ namespace PeoManageSoft.Api.Controllers.Users
     [RequireHttps]
     [Produces("application/json")]
     [Route("api/users")]
-    //[SerialNumberAuthorizationFilter]
-    //[AuthorizeRoles(UserRole.Admin)]
+    [SerialNumberAuthorizationFilter]
+    [AuthorizeRoles(UserRole.Admin)]
     public sealed class UsersController : CustomControllerBase
     {
         #region Fields private
@@ -50,7 +51,7 @@ namespace PeoManageSoft.Api.Controllers.Users
 
         #endregion
 
-        #region Method 
+        #region Methods
 
         #region public
 
@@ -59,7 +60,7 @@ namespace PeoManageSoft.Api.Controllers.Users
         /// </summary>
         /// <param name="id">User id</param>
         /// <returns>UserResponse</returns>
-        [ApiExplorerSettings(GroupName = "Users")]
+        [ApiExplorerSettings(GroupName = Crud_GroupName)]
         [HttpGet()]
         [ApiVersion("1.0")]
         [Route("{id}/{v:apiVersion}")]
@@ -80,15 +81,15 @@ namespace PeoManageSoft.Api.Controllers.Users
             {
                 string methodName = nameof(GetAsync);
 
-                _Logger.LogInformation(GetMethodBeginMessage(methodName));
+                Logger.LogInformation(GetMethodBeginMessage(methodName));
 
-                _Logger.DebugIsEnabled(() => string.Concat("Request: ", id));
+                Logger.DebugIsEnabled(() => string.Concat("Request: ", id));
 
                 ReadResponse response = await _facade.GetAsync(new ReadRequest { Id = id }).ConfigureAwait(false);
 
-                _Logger.DebugIsEnabled(() => string.Concat("Response: ", JsonConvert.SerializeObject(response)));
+                Logger.DebugIsEnabled(() => string.Concat("Response: ", JsonConvert.SerializeObject(response)));
 
-                _Logger.LogInformation(GetMethodEndMessage(methodName, stopwatch.StopAndGetMilliseconds()));
+                Logger.LogInformation(GetMethodEndMessage(methodName, stopwatch.StopAndGetMilliseconds()));
 
                 return Ok(response);
             }).ConfigureAwait(false);
@@ -98,12 +99,12 @@ namespace PeoManageSoft.Api.Controllers.Users
         /// Gets all registered users.
         /// </summary>
         /// <returns>IEnumerable<ReadAllResponse></returns>
-        [ApiExplorerSettings(GroupName = "Users")]
+        [ApiExplorerSettings(GroupName = Crud_GroupName)]
         [HttpGet()]
         [ApiVersion("1.0")]
         [Route("{v:apiVersion}")]
         [TypeFilter(typeof(LogFilterAttribute))]
-        [ProducesResponseType(typeof(IEnumerable<ReadAllResponse>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(IEnumerable<ReadResponse>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
@@ -118,13 +119,13 @@ namespace PeoManageSoft.Api.Controllers.Users
             {
                 string methodName = nameof(GetAllAsync);
 
-                _Logger.LogInformation(GetMethodBeginMessage(methodName));
+                Logger.LogInformation(GetMethodBeginMessage(methodName));
 
-                IEnumerable<ReadAllResponse> response = await _facade.GetAllAsync().ConfigureAwait(false);
+                IEnumerable<ReadResponse> response = await _facade.GetAllAsync().ConfigureAwait(false);
 
-                _Logger.DebugIsEnabled(() => string.Concat("Response: ", JsonConvert.SerializeObject(response)));
+                Logger.DebugIsEnabled(() => string.Concat("Response: ", JsonConvert.SerializeObject(response)));
 
-                _Logger.LogInformation(GetMethodEndMessage(methodName, stopwatch.StopAndGetMilliseconds()));
+                Logger.LogInformation(GetMethodEndMessage(methodName, stopwatch.StopAndGetMilliseconds()));
 
                 return Ok(response);
             }).ConfigureAwait(false);
@@ -138,7 +139,7 @@ namespace PeoManageSoft.Api.Controllers.Users
         /// Task: Represents an asynchronous operation. 
         /// Response data.
         /// </returns>
-        [ApiExplorerSettings(GroupName = "Users")]
+        [ApiExplorerSettings(GroupName = Crud_GroupName)]
         [HttpPost()]
         [ApiVersion("1.0")]
         [Route("{v:apiVersion}")]
@@ -158,17 +159,17 @@ namespace PeoManageSoft.Api.Controllers.Users
             {
                 string methodName = nameof(AddAsync);
 
-                _Logger.LogInformation(GetMethodBeginMessage(methodName));
+                Logger.LogInformation(GetMethodBeginMessage(methodName));
 
                 ValidateModelState();
 
-                _Logger.DebugIsEnabled(() => string.Concat("Request: ", JsonConvert.SerializeObject(request)));
+                Logger.DebugIsEnabled(() => string.Concat("Request: ", JsonConvert.SerializeObject(request)));
 
                 NewResponse response = await _facade.AddAsync(request).ConfigureAwait(false);
 
-                _Logger.DebugIsEnabled(() => string.Concat("Response: ", JsonConvert.SerializeObject(response)));
+                Logger.DebugIsEnabled(() => string.Concat("Response: ", JsonConvert.SerializeObject(response)));
 
-                _Logger.LogInformation(GetMethodEndMessage(methodName, stopwatch.StopAndGetMilliseconds()));
+                Logger.LogInformation(GetMethodEndMessage(methodName, stopwatch.StopAndGetMilliseconds()));
 
                 return Ok(response);
             }).ConfigureAwait(false);
@@ -178,7 +179,7 @@ namespace PeoManageSoft.Api.Controllers.Users
         /// Updates an user data.
         /// </summary>
         /// <param name="request">Request data</param>
-        [ApiExplorerSettings(GroupName = "Users")]
+        [ApiExplorerSettings(GroupName = Crud_GroupName)]
         [HttpPut()]
         [ApiVersion("1.0")]
         [Route("{v:apiVersion}")]
@@ -199,13 +200,13 @@ namespace PeoManageSoft.Api.Controllers.Users
             {
                 string methodName = nameof(UpdateAsync);
 
-                _Logger.LogInformation(GetMethodBeginMessage(methodName));
+                Logger.LogInformation(GetMethodBeginMessage(methodName));
 
-                _Logger.DebugIsEnabled(() => string.Concat("Request: ", JsonConvert.SerializeObject(request)));
+                Logger.DebugIsEnabled(() => string.Concat("Request: ", JsonConvert.SerializeObject(request)));
 
                 await _facade.UpdateAsync(request).ConfigureAwait(false);
 
-                _Logger.LogInformation(GetMethodEndMessage(methodName, stopwatch.StopAndGetMilliseconds()));
+                Logger.LogInformation(GetMethodEndMessage(methodName, stopwatch.StopAndGetMilliseconds()));
 
                 return NoContent();
             }).ConfigureAwait(false);
@@ -215,7 +216,7 @@ namespace PeoManageSoft.Api.Controllers.Users
         /// Removes an user.
         /// </summary>
         /// <param name="id">User id</param>
-        [ApiExplorerSettings(GroupName = "Users")]
+        [ApiExplorerSettings(GroupName = Crud_GroupName)]
         [HttpDelete()]
         [ApiVersion("1.0")]
         [Route("{id}/{v:apiVersion}")]
@@ -236,13 +237,13 @@ namespace PeoManageSoft.Api.Controllers.Users
             {
                 string methodName = nameof(RemoveAsync);
 
-                _Logger.LogInformation(GetMethodBeginMessage(methodName));
+                Logger.LogInformation(GetMethodBeginMessage(methodName));
 
-                _Logger.DebugIsEnabled(() => string.Concat("Request: ", id));
+                Logger.DebugIsEnabled(() => string.Concat("Request: ", id));
 
                 await _facade.RemoveAsync(new DeleteRequest { Id = id }).ConfigureAwait(false);
 
-                _Logger.LogInformation(GetMethodEndMessage(methodName, stopwatch.StopAndGetMilliseconds()));
+                Logger.LogInformation(GetMethodEndMessage(methodName, stopwatch.StopAndGetMilliseconds()));
 
                 return NoContent();
             }).ConfigureAwait(false);

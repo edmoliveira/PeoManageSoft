@@ -5,7 +5,7 @@ namespace PeoManageSoft.Business.Application.User.New
     /// <summary>
     /// Object validator
     /// </summary>
-    internal class NewValidator : AbstractValidator<NewRequest>
+    internal sealed class NewValidator : AbstractValidator<NewRequest>
     {
         #region Constructors
 

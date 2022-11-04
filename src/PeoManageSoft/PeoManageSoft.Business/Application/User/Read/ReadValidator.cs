@@ -5,7 +5,7 @@ namespace PeoManageSoft.Business.Application.User.Read
     /// <summary>
     /// Object validator
     /// </summary>
-    internal class ReadValidator : AbstractValidator<ReadRequest>
+    internal sealed class ReadValidator : AbstractValidator<ReadRequest>
     {
         #region Constructors
 

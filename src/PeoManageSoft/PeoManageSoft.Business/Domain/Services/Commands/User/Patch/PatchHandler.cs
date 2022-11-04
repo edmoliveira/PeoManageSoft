@@ -7,7 +7,7 @@ namespace PeoManageSoft.Business.Domain.Services.Commands.User.Patch
     /// <summary>
     /// Handles all commands to patch the user.
     /// </summary>
-    internal class PatchHandler : IPatchHandler
+    internal sealed class PatchHandler : IPatchHandler
     {
         #region Fields
 

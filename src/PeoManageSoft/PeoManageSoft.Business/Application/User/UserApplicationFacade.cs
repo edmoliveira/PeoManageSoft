@@ -1,11 +1,14 @@
 ﻿using PeoManageSoft.Business.Application.User.Change;
+using PeoManageSoft.Business.Application.User.ChangePassword;
+using PeoManageSoft.Business.Application.User.CreateNewPassword;
 using PeoManageSoft.Business.Application.User.Delete;
 using PeoManageSoft.Business.Application.User.New;
 using PeoManageSoft.Business.Application.User.Read;
 using PeoManageSoft.Business.Application.User.Read.Response;
 using PeoManageSoft.Business.Application.User.ReadAll;
-using PeoManageSoft.Business.Application.User.ReadAll.Response;
+using PeoManageSoft.Business.Application.User.SendPasswordToken;
 using PeoManageSoft.Business.Application.User.SignIn;
+using PeoManageSoft.Business.Application.User.ValidatePasswordToken;
 using PeoManageSoft.Business.Infrastructure.Helpers.Exceptions;
 
 namespace PeoManageSoft.Business.Application.User
@@ -13,7 +16,7 @@ namespace PeoManageSoft.Business.Application.User
     /// <summary>
     /// User Facade that provides a simplified interface.
     /// </summary>
-    internal class UserApplicationFacade : IUserApplicationFacade
+    internal sealed class UserApplicationFacade : IUserApplicationFacade
     {
         #region Fields
 
@@ -45,6 +48,22 @@ namespace PeoManageSoft.Business.Application.User
         /// Sign in application layer.
         /// </summary>
         private readonly Lazy<ISignInApplication> _signInApplication;
+        /// <summary>
+        /// Application layer to send an email to the user to change his password.
+        /// </summary>
+        private readonly Lazy<ISendPasswordTokenApplication> _sendPasswordTokenApplication;
+        /// <summary>
+        /// Application layer to validate if the password token is valid. 
+        /// </summary>
+        private readonly Lazy<IValidatePasswordTokenApplication> _validPasswordTokenApplication;
+        /// <summary>
+        /// Application layer to create new password if the user token is valid. 
+        /// </summary>
+        private readonly Lazy<ICreateNewPasswordApplication> _createNewPasswordApplication;
+        /// <summary>
+        /// Application layer to change password if the old password is valid. 
+        /// </summary>
+        private readonly Lazy<IChangePasswordApplication> _changePasswordApplication;
 
         #endregion
 
@@ -64,6 +83,10 @@ namespace PeoManageSoft.Business.Application.User
             _readApplication = new Lazy<IReadApplication>(() => GetService<IReadApplication>());
             _readAllApplication = new Lazy<IReadAllApplication>(() => GetService<IReadAllApplication>());
             _signInApplication = new Lazy<ISignInApplication>(() => GetService<ISignInApplication>());
+            _sendPasswordTokenApplication = new Lazy<ISendPasswordTokenApplication>(() => GetService<ISendPasswordTokenApplication>());
+            _validPasswordTokenApplication = new Lazy<IValidatePasswordTokenApplication>(() => GetService<IValidatePasswordTokenApplication>());
+            _createNewPasswordApplication = new Lazy<ICreateNewPasswordApplication>(() => GetService<ICreateNewPasswordApplication>());
+            _changePasswordApplication = new Lazy<IChangePasswordApplication>(() => GetService<IChangePasswordApplication>());
         }
 
         #endregion
@@ -82,7 +105,7 @@ namespace PeoManageSoft.Business.Application.User
         /// </returns>
         public async Task<NewResponse> AddAsync(NewRequest request)
         {
-            return await _newApplication.Value.HandleAsync(request);
+            return await _newApplication.Value.HandleAsync(request).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -92,7 +115,7 @@ namespace PeoManageSoft.Business.Application.User
         /// <returns>Represents an asynchronous operation.</returns>
         public async Task UpdateAsync(ChangeRequest request)
         {
-            await _changeApplication.Value.HandleAsync(request);
+            await _changeApplication.Value.HandleAsync(request).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -102,7 +125,7 @@ namespace PeoManageSoft.Business.Application.User
         /// <returns>Represents an asynchronous operation.</returns>
         public async Task RemoveAsync(DeleteRequest request)
         {
-            await _deleteApplication.Value.HandleAsync(request);
+            await _deleteApplication.Value.HandleAsync(request).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -115,7 +138,7 @@ namespace PeoManageSoft.Business.Application.User
         /// </returns>
         public async Task<ReadResponse> GetAsync(ReadRequest request)
         {
-            return await _readApplication.Value.HandleAsync(request);
+            return await _readApplication.Value.HandleAsync(request).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -125,9 +148,9 @@ namespace PeoManageSoft.Business.Application.User
         /// Task: Represents an asynchronous operation. 
         /// Response data.
         /// </returns>
-        public async Task<IEnumerable<ReadAllResponse>> GetAllAsync()
+        public async Task<IEnumerable<ReadResponse>> GetAllAsync()
         {
-            return await _readAllApplication.Value.HandleAsync();
+            return await _readAllApplication.Value.HandleAsync().ConfigureAwait(false);
         }
 
         /// <summary>
@@ -140,7 +163,50 @@ namespace PeoManageSoft.Business.Application.User
         /// </returns>
         public async Task<SignInResponse> SignInAsync(SignInRequest request)
         {
-            return await _signInApplication.Value.HandleAsync(request);
+            return await _signInApplication.Value.HandleAsync(request).ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// Sends an email to the user to change his password. and asynchronously using Task.
+        /// </summary>
+        /// <param name="request">Request data</param>
+        /// <returns>Represents an asynchronous operation.</returns>
+        public async Task SendPasswordTokenAsync(SendPasswordTokenRequest request)
+        {
+            await _sendPasswordTokenApplication.Value.HandleAsync(request).ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// Validates if the password token is valid.  and asynchronously using Task.
+        /// </summary>
+        /// <param name="request">Request data</param>
+        /// <returns>
+        /// Task: Represents an asynchronous operation. 
+        /// Response data.
+        /// </returns>
+        public async Task<ValidatePasswordTokenResponse> ValidatePasswordTokenAsync(ValidatePasswordTokenRequest request)
+        {
+            return await _validPasswordTokenApplication.Value.HandleAsync(request).ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// Creates new password if the user token is valid.
+        /// </summary>
+        /// <param name="request">Request data</param>
+        /// <returns>Represents an asynchronous operation.</returns>
+        public async Task CreateNewPasswordAsync(CreateNewPasswordRequest request)
+        {
+            await _createNewPasswordApplication.Value.HandleAsync(request).ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// Changes password if the old password is valid. 
+        /// </summary>
+        /// <param name="request">Request data</param>
+        /// <returns>Represents an asynchronous operation.</returns>
+        public async Task ChangePasswordAsync(ChangePasswordRequest request)
+        {
+            await _changePasswordApplication.Value.HandleAsync(request).ConfigureAwait(false);
         }
 
         #endregion

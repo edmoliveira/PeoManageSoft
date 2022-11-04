@@ -1,9 +1,11 @@
-﻿namespace PeoManageSoft.Business.Application.User.SignIn
+﻿using PeoManageSoft.Business.Infrastructure.Helpers.Structs;
+
+namespace PeoManageSoft.Business.Application.User.SignIn
 {
     /// <summary>
     /// Request data.
     /// </summary>
-    public class SignInRequest
+    public sealed class SignInRequest
     {
         #region Properties
 
@@ -18,7 +20,7 @@
         /// <summary>
         /// Indicates the last location where the user logged in "Longitude and latitude"
         /// </summary>
-        public string Location { get; set; }
+        public GeoLocation Location { get; set; }
 
         #endregion
     }

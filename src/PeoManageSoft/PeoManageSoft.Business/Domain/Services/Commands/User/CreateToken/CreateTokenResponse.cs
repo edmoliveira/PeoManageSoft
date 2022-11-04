@@ -3,7 +3,7 @@
     /// <summary>
     /// Response for the create token command.
     /// </summary>
-    internal class CreateTokenResponse
+    internal sealed class CreateTokenResponse
     {
         #region Properties
 

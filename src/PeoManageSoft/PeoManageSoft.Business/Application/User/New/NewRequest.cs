@@ -1,11 +1,12 @@
 ﻿using PeoManageSoft.Business.Infrastructure;
+using PeoManageSoft.Business.Infrastructure.Helpers.Structs;
 
 namespace PeoManageSoft.Business.Application.User.New
 {
     /// <summary>
     /// Request data.
     /// </summary>
-    public class NewRequest
+    public sealed class NewRequest
     {
         #region Properties
 
@@ -60,7 +61,7 @@ namespace PeoManageSoft.Business.Application.User.New
         /// <summary>
         /// Indicates the last location where the user logged in "Longitude and latitude"
         /// </summary>
-        public string Location { get; set; }
+        public GeoLocation Location { get; set; }
 
         #endregion
     }

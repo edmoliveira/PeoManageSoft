@@ -6,7 +6,7 @@ namespace PeoManageSoft.Business.Application.User.Delete
     /// <summary>
     /// Configuration for maps.
     /// </summary>
-    internal class DeleteMapper : Profile
+    internal sealed class DeleteMapper : Profile
     {
         #region Constructors
 

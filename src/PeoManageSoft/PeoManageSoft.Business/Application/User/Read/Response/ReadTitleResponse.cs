@@ -3,7 +3,7 @@
     /// <summary>
     /// Response for the read title query.
     /// </summary>
-    public class ReadTitleResponse
+    public sealed class ReadTitleResponse
     {
         #region Properties
 

@@ -1,4 +1,5 @@
-﻿using PeoManageSoft.Business.Infrastructure.Repositories.Department;
+﻿using PeoManageSoft.Business.Infrastructure.Helpers.Structs;
+using PeoManageSoft.Business.Infrastructure.Repositories.Department;
 using PeoManageSoft.Business.Infrastructure.Repositories.Interfaces;
 using PeoManageSoft.Business.Infrastructure.Repositories.Title;
 
@@ -7,7 +8,7 @@ namespace PeoManageSoft.Business.Infrastructure.Repositories.User
     /// <summary>
     /// Mapping to the database user table.
     /// </summary>
-    internal class UserEntity : IEntity, IUser
+    internal sealed class UserEntity : IEntity, IUser
     {
         #region Properties
 
@@ -74,7 +75,7 @@ namespace PeoManageSoft.Business.Infrastructure.Repositories.User
         /// <summary>
         /// Indicates the last location where the user logged in "Longitude and latitude"
         /// </summary>
-        public string Location { get; private set; }
+        public GeoLocation Location { get; private set; }
         /// <summary>
         /// Request id for all transaction in the platform.
         /// </summary>
@@ -154,7 +155,6 @@ namespace PeoManageSoft.Business.Infrastructure.Repositories.User
         }
 
         #endregion
-
 
         #endregion
     }

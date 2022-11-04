@@ -8,7 +8,7 @@ namespace PeoManageSoft.Business.Domain.Services.Queries.User.Get
     /// <summary>
     /// Handles all queries to get the user.
     /// </summary>
-    internal class GetHandler : IGetHandler
+    internal sealed class GetHandler : IGetHandler
     {
         #region Fields
 

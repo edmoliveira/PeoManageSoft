@@ -5,7 +5,7 @@ namespace PeoManageSoft.Business.Infrastructure.Tokens
     /// <summary>
     /// Data stored inside token.
     /// </summary>
-    public sealed class NetSecurityTokenData
+    internal sealed class NetSecurityTokenData
     {
         #region Properties
 

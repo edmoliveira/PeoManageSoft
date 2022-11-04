@@ -3,7 +3,7 @@
     /// <summary>
     /// Token Cache
     /// </summary>
-    public interface ITokenCache
+    internal interface ITokenCache
     {
         #region Methods
 

@@ -1,11 +1,12 @@
 ﻿using PeoManageSoft.Business.Infrastructure;
+using PeoManageSoft.Business.Infrastructure.Helpers.Structs;
 
 namespace PeoManageSoft.Business.Domain.Services.Commands.User.Add
 {
     /// <summary>
     /// Request for the add user command.
     /// </summary>
-    internal class AddRequest
+    internal sealed class AddRequest
     {
         #region Properties
 
@@ -56,7 +57,7 @@ namespace PeoManageSoft.Business.Domain.Services.Commands.User.Add
         /// <summary>
         /// Indicates the last location where the user logged in "Longitude and latitude"
         /// </summary>
-        public string Location { get; set; }
+        public GeoLocation Location { get; set; }
 
         #endregion
     }

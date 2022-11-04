@@ -5,7 +5,7 @@ namespace PeoManageSoft.Business.Application.User.Read.Response
     /// <summary>
     /// Response data.
     /// </summary>
-    public class ReadResponse
+    public sealed class ReadResponse
     {
         #region Properties
 

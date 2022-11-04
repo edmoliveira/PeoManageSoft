@@ -5,7 +5,7 @@ namespace PeoManageSoft.Business.Infrastructure.Repositories.Department
     /// <summary>
     /// Mapping to the database department table.
     /// </summary>
-    internal class DepartmentEntity : IEntity
+    internal sealed class DepartmentEntity : IEntity
     {
         #region Properties
 

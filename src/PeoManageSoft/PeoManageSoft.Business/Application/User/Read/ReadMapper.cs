@@ -8,7 +8,7 @@ namespace PeoManageSoft.Business.Application.User.Read
     /// <summary>
     /// Configuration for maps.
     /// </summary>
-    internal class ReadMapper : Profile
+    internal sealed class ReadMapper : Profile
     {
         #region Constructors
 

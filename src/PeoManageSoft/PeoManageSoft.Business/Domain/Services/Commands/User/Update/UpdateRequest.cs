@@ -5,7 +5,7 @@ namespace PeoManageSoft.Business.Domain.Services.Commands.User.Update
     /// <summary>
     /// Request for the update user command.
     /// </summary>
-    internal class UpdateRequest
+    internal sealed class UpdateRequest
     {
         #region Properties
 

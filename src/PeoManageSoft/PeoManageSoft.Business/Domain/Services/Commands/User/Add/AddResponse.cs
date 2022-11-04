@@ -3,7 +3,7 @@
     /// <summary>
     /// Response for the add user command.
     /// </summary>
-    internal class AddResponse
+    internal sealed class AddResponse
     {
         #region Properties
 

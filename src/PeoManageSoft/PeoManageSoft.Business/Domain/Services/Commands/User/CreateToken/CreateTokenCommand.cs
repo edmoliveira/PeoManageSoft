@@ -8,7 +8,7 @@ namespace PeoManageSoft.Business.Domain.Services.Commands.User.CreateToken
     /// <summary>
     /// Create token command.
     /// </summary>
-    internal class CreateTokenCommand : ICreateTokenCommand
+    internal sealed class CreateTokenCommand : ICreateTokenCommand
     {
         #region Fields
 

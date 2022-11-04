@@ -3,7 +3,7 @@
     /// <summary>
     /// Response data.
     /// </summary>
-    public class NewResponse
+    public sealed class NewResponse
     {
         #region Properties
 

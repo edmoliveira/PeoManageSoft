@@ -1,10 +1,13 @@
 ﻿using PeoManageSoft.Business.Application.User.Change;
+using PeoManageSoft.Business.Application.User.ChangePassword;
+using PeoManageSoft.Business.Application.User.CreateNewPassword;
 using PeoManageSoft.Business.Application.User.Delete;
 using PeoManageSoft.Business.Application.User.New;
 using PeoManageSoft.Business.Application.User.Read;
 using PeoManageSoft.Business.Application.User.Read.Response;
-using PeoManageSoft.Business.Application.User.ReadAll.Response;
+using PeoManageSoft.Business.Application.User.SendPasswordToken;
 using PeoManageSoft.Business.Application.User.SignIn;
+using PeoManageSoft.Business.Application.User.ValidatePasswordToken;
 
 namespace PeoManageSoft.Business.Application.User
 {
@@ -53,7 +56,7 @@ namespace PeoManageSoft.Business.Application.User
         /// Task: Represents an asynchronous operation. 
         /// Response data.
         /// </returns>
-        Task<IEnumerable<ReadAllResponse>> GetAllAsync();
+        Task<IEnumerable<ReadResponse>> GetAllAsync();
         /// <summary>
         /// Accesses the system through authentication and asynchronously using Task.
         /// </summary>
@@ -63,6 +66,33 @@ namespace PeoManageSoft.Business.Application.User
         /// Response data.
         /// </returns>
         Task<SignInResponse> SignInAsync(SignInRequest request);
+        /// <summary>
+        /// Sends an email to the user to change his password. and asynchronously using Task.
+        /// </summary>
+        /// <param name="request">Request data</param>
+        /// <returns>Represents an asynchronous operation.</returns>
+        Task SendPasswordTokenAsync(SendPasswordTokenRequest request);
+        /// <summary>
+        /// Validates if the password token is valid.  and asynchronously using Task.
+        /// </summary>
+        /// <param name="request">Request data</param>
+        /// <returns>
+        /// Task: Represents an asynchronous operation. 
+        /// Response data.
+        /// </returns>
+        Task<ValidatePasswordTokenResponse> ValidatePasswordTokenAsync(ValidatePasswordTokenRequest request);
+        /// <summary>
+        /// Creates new password if the user token is valid.
+        /// </summary>
+        /// <param name="request">Request data</param>
+        /// <returns>Represents an asynchronous operation.</returns>
+        Task CreateNewPasswordAsync(CreateNewPasswordRequest request);
+        /// <summary>
+        /// Changes password if the old password is valid. 
+        /// </summary>
+        /// <param name="request">Request data</param>
+        /// <returns>Represents an asynchronous operation.</returns>
+        Task ChangePasswordAsync(ChangePasswordRequest request);
 
         #endregion
     }

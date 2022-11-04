@@ -6,7 +6,7 @@ namespace PeoManageSoft.Business.Infrastructure.Repositories.Title
     /// <summary>
     /// Configuration for maps.
     /// </summary>
-    internal class TitleMapper : Profile
+    internal sealed class TitleMapper : Profile
     {
         #region Constructors
 

@@ -5,7 +5,7 @@ namespace PeoManageSoft.Business.Infrastructure.Tokens
     /// <summary>
     /// Contains some information which used to create a security token.
     /// </summary>
-    public sealed class NetSecurityTokenDescriptor
+    internal sealed class NetSecurityTokenDescriptor
     {
         #region Properties
 

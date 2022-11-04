@@ -1,5 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
-using PeoManageSoft.Business.Domain.Services.Queries.User.GetAll.Response;
+using PeoManageSoft.Business.Domain.Services.Queries.User.Get.Response;
 using PeoManageSoft.Business.Infrastructure.Helpers.Extensions;
 using PeoManageSoft.Business.Infrastructure.ObjectRelationalMapper.Interfaces;
 
@@ -8,7 +8,7 @@ namespace PeoManageSoft.Business.Domain.Services.Queries.User.GetAll
     /// <summary>
     /// Handles all queries to get all the user.
     /// </summary>
-    internal class GetAllHandler : IGetAllHandler
+    internal sealed class GetAllHandler : IGetAllHandler
     {
         #region Fields
 
@@ -60,13 +60,13 @@ namespace PeoManageSoft.Business.Domain.Services.Queries.User.GetAll
         /// Task: Represents an asynchronous operation. 
         /// Response for the get all user query.
         /// </returns>
-        public async Task<IEnumerable<GetAllResponse>> HandleAsync()
+        public async Task<IEnumerable<GetResponse>> HandleAsync()
         {
             string methodName = nameof(HandleAsync);
 
             _logger.LogBeginInformation(methodName);
 
-            IEnumerable<GetAllResponse> result = await _transactionScope
+            IEnumerable<GetResponse> result = await _transactionScope
                                                         .UsingAsync(async scope => await _query.ExecuteAsync(scope))
                                                         .ConfigureAwait(false);
 

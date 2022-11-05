@@ -153,7 +153,7 @@ namespace PeoManageSoft.Business.Application.User.SendPasswordToken
         {
             var rules = new IRule<UserEntityField>[1]
                 {
-                    _getByRulesHandler.CreateRule(UserEntityField.Email_Readonly, SqlComparisonOperator.EqualTo, email)
+                    _getByRulesHandler.CreateRule(UserEntityField.Email, SqlComparisonOperator.EqualTo, email)
                 };
 
             var result = await _getByRulesHandler.HandleAsync(_getByRulesHandler.CreateRule(rules)).ConfigureAwait(false);

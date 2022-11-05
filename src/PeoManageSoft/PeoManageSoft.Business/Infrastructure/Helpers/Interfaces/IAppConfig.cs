@@ -10,17 +10,25 @@ namespace PeoManageSoft.Business.Infrastructure.Helpers.Interfaces
         #region Properties
 
         /// <summary>
+        /// Minimum login length
+        /// </summary>
+        int LoginMinimumLength { get; }
+        /// <summary>
+        /// Minimum password length
+        /// </summary>
+        int PasswordMinimumLength { get; }
+        /// <summary>
         /// Specifies the name of the application.
         /// </summary>
-        string ApplicationName { get; set; }
+        string ApplicationName { get; }
         /// <summary>
         /// Specifies the title of the application.
         /// </summary>
-        string ApplicationTitle { get; set; }
+        string ApplicationTitle { get; }
         /// <summary>
         /// Specifies the language of the application.
         /// </summary>
-        ApplicationLanguage ApplicationLanguage { get; set; }
+        ApplicationLanguage ApplicationLanguage { get; }
         /// <summary>
         /// Relational Database Type
         /// </summary>
@@ -123,6 +131,10 @@ namespace PeoManageSoft.Business.Infrastructure.Helpers.Interfaces
         /// Platform Email Template Catalog.
         /// </summary>
         IEmailTemplatesCatalogResource EmailTemplatesCatalog { get; }
+        /// <summary>
+        /// Platform messages catalog.
+        /// </summary>
+        IMessagesCatalogResource MessagesCatalogResource { get; }
 
         #endregion
     }

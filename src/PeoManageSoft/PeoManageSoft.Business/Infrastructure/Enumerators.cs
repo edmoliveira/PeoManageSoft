@@ -22,6 +22,68 @@ namespace PeoManageSoft.Business.Infrastructure
     }
 
     /// <summary>
+    /// Resource message key.
+    /// </summary>
+    public enum ResourceMessageKey
+    {
+        /// <summary>
+        /// Required
+        /// </summary>
+        [Description("Required")]
+        Required,
+        /// <summary>
+        /// Invalid email
+        /// </summary>
+        [Description("Invalid email")]
+        InvalidEmail,
+        /// <summary>
+        /// Invalid Uri
+        /// </summary>
+        [Description("Invalid Uri")]
+        InvalidUri,
+        /// <summary>
+        /// The values do not match!
+        /// </summary>
+        [Description("Not Match")]
+        NotMatch,
+        /// <summary>
+        /// Minimum Length
+        /// </summary>
+        [Description("Minimum Length")]
+        MinimumLength,
+        /// <summary>
+        /// Password length error message
+        /// </summary>
+        [Description("Password length error message")]
+        PasswordLength,
+        /// <summary>
+        /// Password uppercase letter error message
+        /// </summary>
+        [Description("Password uppercase letter error message")]
+        PasswordUppercaseLetter,
+        /// <summary>
+        /// Password lowercase letter error message
+        /// </summary>
+        [Description("Password lowercase letter error message")]
+        PasswordLowercaseLetter,
+        /// <summary>
+        /// Password digit error message
+        /// </summary>
+        [Description("Password digit error message")]
+        PasswordDigit,
+        /// <summary>
+        /// Password special character error message
+        /// </summary>
+        [Description("Password special character error message")]
+        PasswordSpecialCharacter,
+        /// <summary>
+        /// Unauthorized
+        /// </summary>
+        [Description("Unauthorized")]
+        Unauthorized,
+    }
+
+    /// <summary>
     /// Roles
     /// </summary>
     public enum UserRole

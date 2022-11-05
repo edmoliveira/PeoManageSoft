@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using PeoManageSoft.Business.Infrastructure.Helpers.Interfaces;
 
 namespace PeoManageSoft.Business.Application.User.ValidatePasswordToken
 {
@@ -12,11 +13,13 @@ namespace PeoManageSoft.Business.Application.User.ValidatePasswordToken
         /// <summary>
         /// Initializes a new instance of the PeoManageSoft.Business.Application.User.ValidatePasswordToken.ValidPasswordTokenValidator class.
         /// </summary>
-        public ValidatePasswordTokenValidator()
+        /// <param name="appConfig">Application Configuration</param>
+        public ValidatePasswordTokenValidator(IAppConfig appConfig)
         {
             RuleFor(x => x.PasswordToken)
+                .Cascade(CascadeMode.Stop)
                 .NotEmpty()
-                .NotNull();
+                .WithMessage(x => appConfig.MessagesCatalogResource.GetMessageRequired(nameof(x.PasswordToken)));
         }
 
         #endregion

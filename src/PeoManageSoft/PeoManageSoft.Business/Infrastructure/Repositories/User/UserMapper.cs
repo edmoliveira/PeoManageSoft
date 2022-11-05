@@ -26,7 +26,7 @@ namespace PeoManageSoft.Business.Infrastructure.Repositories.User
                 .ForMember(dest => dest.ShortName, opt => opt.MapFrom(src => src.GetValue<string>(UserEntityField.ShortName)))
                 .ForMember(dest => dest.TitleId, opt => opt.MapFrom(src => src.GetValue<long>(UserEntityField.TitleId)))
                 .ForMember(dest => dest.DepartmentId, opt => opt.MapFrom(src => src.GetValue<long>(UserEntityField.DepartmentId)))
-                .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.GetValue<string>(UserEntityField.Email_Readonly)))
+                .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.GetValue<string>(UserEntityField.Email)))
                 .ForMember(dest => dest.BussinessPhone, opt => opt.MapFrom(src => src.GetValue<string>(UserEntityField.BussinessPhone)))
                 .ForMember(dest => dest.MobilePhone, opt => opt.MapFrom(src => src.GetValue<string>(UserEntityField.MobilePhone)))
                 .ForMember(dest => dest.Location, opt => opt.MapFrom(src => src.GetValue<string>(UserEntityField.Location)));

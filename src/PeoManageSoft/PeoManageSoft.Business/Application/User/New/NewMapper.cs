@@ -16,6 +16,7 @@ namespace PeoManageSoft.Business.Application.User.New
         public NewMapper()
         {
             CreateMap<NewRequest, AddRequest>()
+                .ForMember(dest => dest.IsActive, opt => opt.MapFrom(src => src.IsActive))
                 .ForMember(dest => dest.Role, opt => opt.MapFrom(src => src.Role))
                 .ForMember(dest => dest.Login, opt => opt.MapFrom(src => src.Login))
                 .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name))

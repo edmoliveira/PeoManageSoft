@@ -12,6 +12,15 @@ namespace PeoManageSoft.Business.Infrastructure.Helpers
         #region Properties
 
         /// <summary>
+        /// Minimum login length
+        /// </summary>
+        public int LoginMinimumLength { get; set; }
+        /// <summary>
+        /// Minimum password length
+        /// </summary>
+        public int PasswordMinimumLength { get; set; }
+
+        /// <summary>
         /// Specifies the name of the application.
         /// </summary>
         public string ApplicationName { get; set; }
@@ -128,7 +137,7 @@ namespace PeoManageSoft.Business.Infrastructure.Helpers
         /// <summary>
         /// Platform Images catalog.
         /// </summary>
-        ImagesCatalogResource ImagesCatalog { get; set; }
+        public ImagesCatalogResource ImagesCatalog { get; set; }
         /// <summary>
         /// Platform Images catalog.
         /// </summary>
@@ -136,11 +145,19 @@ namespace PeoManageSoft.Business.Infrastructure.Helpers
         /// <summary>
         /// Platform Email Template Catalog.
         /// </summary>
-        EmailTemplatesCatalogResource EmailTemplatesCatalog { get; set; }
+        public EmailTemplatesCatalogResource EmailTemplatesCatalog { get; set; }
         /// <summary>
         /// Platform Email Template Catalog.
         /// </summary>
         IEmailTemplatesCatalogResource IAppConfig.EmailTemplatesCatalog => EmailTemplatesCatalog;
+        /// <summary>
+        /// Platform messages catalog.
+        /// </summary>
+        public Dictionary<ApplicationLanguage, MessagesCatalogResource> MessagesCatalogResource { get; set; }
+        /// <summary>
+        /// Platform messages catalog.
+        /// </summary>
+        IMessagesCatalogResource IAppConfig.MessagesCatalogResource => MessagesCatalogResource[ApplicationLanguage];
 
         #endregion
     }

@@ -1,4 +1,7 @@
 ﻿using FluentValidation;
+using PeoManageSoft.Business.Infrastructure.Helpers;
+using PeoManageSoft.Business.Infrastructure.Helpers.Extensions;
+using PeoManageSoft.Business.Infrastructure.Helpers.Interfaces;
 
 namespace PeoManageSoft.Business.Application.User.ChangePassword
 {
@@ -12,19 +15,26 @@ namespace PeoManageSoft.Business.Application.User.ChangePassword
         /// <summary>
         /// Initializes a new instance of the PeoManageSoft.Business.Application.User.ChangePassword.ChangePasswordValidator class.
         /// </summary>
-        public ChangePasswordValidator()
+        /// <param name="appConfig">Application Configuration</param>
+        public ChangePasswordValidator(IAppConfig appConfig)
         {
             RuleFor(x => x.OldPassword)
-                .NotEmpty()
-                .NotNull();
+            .Cascade(CascadeMode.Stop)
+                .NotEmpty().WithMessage(x => appConfig.MessagesCatalogResource.GetMessageRequired(nameof(x.OldPassword)));
 
             RuleFor(x => x.NewPassword)
-                .NotEmpty()
-                .NotNull();
+            .Cascade(CascadeMode.Stop)
+                .NotEmpty().WithMessage(x => appConfig.MessagesCatalogResource.GetMessageRequired(nameof(x.NewPassword)))
+                .Password(appConfig.PasswordMinimumLength);
 
             RuleFor(x => x.RepeatPassword)
-                .NotEmpty()
-                .NotNull();
+            .Cascade(CascadeMode.Stop)
+                .NotEmpty().WithMessage(x => appConfig.MessagesCatalogResource.GetMessageRequired(nameof(x.RepeatPassword)));
+
+            RuleFor(x => x.NewPassword)
+                .Equal(x => x.RepeatPassword)
+                .When(x => !string.IsNullOrWhiteSpace(x.NewPassword))
+                .WithMessage(x => appConfig.MessagesCatalogResource.GetMessageNotMatch(nameof(x.NewPassword), nameof(x.RepeatPassword)));
         }
 
         #endregion

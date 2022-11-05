@@ -63,7 +63,7 @@ namespace PeoManageSoft.Api.Controllers.Users
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [SwaggerOperation(
-            Summary = "Remember pasword",
+            Summary = "Send password token",
             Description = "Sends an email with password token to user to change his password."
         )]
         public async Task<IActionResult> SendPasswordTokenToChangePasswordAsync(SendPasswordTokenRequest request)

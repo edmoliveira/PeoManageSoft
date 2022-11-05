@@ -12,6 +12,10 @@
         /// </summary>
         public long Id { get; set; }
         /// <summary>
+        /// Indicates whether the user is active
+        /// </summary>
+        public bool IsActive { get; set; }
+        /// <summary>
         /// Title name
         /// </summary>
         public string Name { get; set; }

@@ -55,7 +55,7 @@ namespace PeoManageSoft.Business.Infrastructure.Repositories.User
         /// <summary>
         /// Readonly
         /// </summary>
-        Email_Readonly,
+        Email,
         /// <summary>
         /// Read and Write
         /// </summary>
@@ -175,6 +175,7 @@ namespace PeoManageSoft.Business.Infrastructure.Repositories.User
                 {  UserEntityField.ShortName, _shortNameConfig },
                 {  UserEntityField.TitleId, _titleIdConfig },
                 {  UserEntityField.DepartmentId, _departmentIdConfig },
+                {  UserEntityField.Email, _emailConfig },
                 {  UserEntityField.BussinessPhone, _bussinessPhoneConfig },
                 {  UserEntityField.MobilePhone, _mobilePhoneConfig },
                 {  UserEntityField.Location, _locationConfig },
@@ -187,7 +188,6 @@ namespace PeoManageSoft.Business.Infrastructure.Repositories.User
 
             dictionary.Add(UserEntityField.Id_Readonly, _idConfig);
             dictionary.Add(UserEntityField.Login_Readonly, _loginConfig);
-            dictionary.Add(UserEntityField.Email_Readonly, _emailConfig);
 
             return dictionary;
         }

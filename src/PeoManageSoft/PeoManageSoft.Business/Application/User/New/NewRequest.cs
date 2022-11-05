@@ -15,10 +15,6 @@ namespace PeoManageSoft.Business.Application.User.New
         /// </summary>
         public UserRole Role { get; set; }
         /// <summary>
-        /// Indicates whether the user is active
-        /// </summary>
-        public bool IsActive { get; set; }
-        /// <summary>
         /// User login
         /// </summary>
         public string Login { get; set; }

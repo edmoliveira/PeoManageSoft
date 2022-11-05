@@ -50,6 +50,10 @@ namespace PeoManageSoft.Business.Infrastructure.Helpers
         {
             AppConfig appConfig = configuration.GetSection("AppConfig").Get<AppConfig>();
 
+            services.AddSingleton<IAppConfig>(c => appConfig);
+
+            SetErrorMessages(appConfig);
+
             services.AddScoped<IApplicationContext, ApplicationContext>();
             services.AddScoped(c => (ISetApplicationContext)c.GetService<IApplicationContext>());
 
@@ -71,8 +75,6 @@ namespace PeoManageSoft.Business.Infrastructure.Helpers
             services.AddTransient<ITransactionScope, TransactionScopeOrm>();
 
             services.AddScoped<IDbContext, DbContext>();
-
-            services.AddSingleton<IAppConfig>(c => appConfig);
 
             services.AddRepositoryDependencies();
             services.AddFactoryDependencies();
@@ -284,6 +286,19 @@ namespace PeoManageSoft.Business.Infrastructure.Helpers
             configuration.CreateMapper();
 
             services.AddSingleton<IMapper>(c => new Mapper(configuration));
+        }
+
+        /// <summary>
+        /// Sets error messages.
+        /// </summary>
+        /// <param name="appConfig">Application Configuration</param>
+        private static void SetErrorMessages(IAppConfig appConfig)
+        {
+            RuleBuilderExtension.PasswordLengthErrorMessage = appConfig.MessagesCatalogResource.GetMessagePasswordLength();
+            RuleBuilderExtension.PasswordUppercaseLetterErrorMessage = appConfig.MessagesCatalogResource.GetMessagePasswordUppercaseLetter();
+            RuleBuilderExtension.PasswordLowercaseLetterErrorMessage = appConfig.MessagesCatalogResource.GetMessagePasswordLowercaseLetter();
+            RuleBuilderExtension.PasswordDigitErrorMessage = appConfig.MessagesCatalogResource.GetMessagePasswordDigit();
+            RuleBuilderExtension.PasswordSpecialCharacterErrorMessage = appConfig.MessagesCatalogResource.GetMessagePasswordSpecialCharacter();
         }
 
         #endregion

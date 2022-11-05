@@ -1,5 +1,7 @@
 {
   "AppConfig": {
+    "LoginMinimumLength": 8,
+    "PasswordMinimumLength": 8,
     "ApplicationName": "PeoManageSoft",
     "ApplicationTitle": "PeoManageSoft - People management software",
     "ApplicationLanguage": "English",
@@ -35,6 +37,38 @@
       "X-Auth",
       "serial-number",
       "request-id"
-    ]
+    ],
+    "MessagesCatalogResource": {
+      "English": {
+        "MessageDictionary": {
+          "Required": "The {fieldName} field is required!",
+          "InvalidEmail": "The {fieldName} contains an invalid email format!",
+          "InvalidUri": "The {fieldName} field must be a valid URI.",
+          "NotMatch": "The {fieldName1} field and the {fieldName2} field do not match!",
+          "MinimumLength": "The {fieldName} field must at least {minimumLength} characters long.",
+          "PasswordLength": "The password field must at least {minimumLength} characters long.",
+          "PasswordUppercaseLetter": "The password field must at least contain one uppercase letter!",
+          "PasswordLowercaseLetter": "The password field must at least contain one lowercase letter!",
+          "PasswordDigit": "The password field must at least contain one digit from 0 to 9!",
+          "PasswordSpecialCharacter": "The password field must at least contain one special character!",
+          "Unauthorized": "Not authorized!"
+        }
+      },
+      "Portuguese": {
+        "MessageDictionary": {
+          "Required": "O {fieldName} campo é obrigatório!",
+          "InvalidEmail": "O {fieldName} contém um formato de e-mail inválido!",
+          "InvalidUri": "O campo {fieldName} deve ser um URI válido.",
+          "NotMatch": "O campo {fieldName1} e o campo {fieldName2} não correspondem!",
+          "MinimumLength": "O campo {fieldName} deve ter pelo menos {minimumLength} caracteres.",
+          "PasswordLength": "O campo password deve ter pelo menos {minimumLength} caracteres!",
+          "PasswordUppercaseLetter": "O campo password deve conter pelo menos uma letra maiúscula!",
+          "PasswordLowercaseLetter": "O campo password deve conter pelo menos uma letra minúscula!",
+          "PasswordDigit": "O campo password deve conter pelo menos um dígito de 0 a 9!",
+          "PasswordSpecialCharacter": "O campo password deve conter pelo menos um caractere especial!",
+          "Unauthorized": "Não autorizado!"
+        }
+      }
+    }
   }
 }

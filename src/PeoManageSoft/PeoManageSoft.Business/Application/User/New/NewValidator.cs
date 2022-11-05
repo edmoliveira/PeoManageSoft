@@ -1,4 +1,6 @@
 ﻿using FluentValidation;
+using PeoManageSoft.Business.Infrastructure.Helpers.Extensions;
+using PeoManageSoft.Business.Infrastructure.Helpers.Interfaces;
 
 namespace PeoManageSoft.Business.Application.User.New
 {
@@ -12,12 +14,53 @@ namespace PeoManageSoft.Business.Application.User.New
         /// <summary>
         /// Initializes a new instance of the PeoManageSoft.Business.Application.User.New.NewValidator class.
         /// </summary>
-        public NewValidator()
+        /// <param name="appConfig">Application Configuration</param>
+        public NewValidator(IAppConfig appConfig)
         {
-            RuleFor(x => x.Role).IsInEnum();
+            RuleFor(x => x.Role)
+            .Cascade(CascadeMode.Stop)
+                .IsInEnum().WithMessage(x => appConfig.MessagesCatalogResource.GetMessageRequired(nameof(x.Role)))
+                .NotEmpty().WithMessage(x => appConfig.MessagesCatalogResource.GetMessageRequired(nameof(x.Role)));
+
             RuleFor(x => x.Login)
-                .NotEmpty()
-                .NotNull();
+                .Cascade(CascadeMode.Stop)
+                .NotEmpty().WithMessage(x => appConfig.MessagesCatalogResource.GetMessageRequired(nameof(x.Login)))
+                .MinimumLength(appConfig.LoginMinimumLength).WithMessage(x => appConfig.MessagesCatalogResource.GetMessageMinimumLength(nameof(x.Login), appConfig.LoginMinimumLength));
+
+            RuleFor(x => x.Password)
+                .Cascade(CascadeMode.Stop)
+                .NotEmpty().WithMessage(x => appConfig.MessagesCatalogResource.GetMessageRequired(nameof(x.Password)))
+                .Password(appConfig.PasswordMinimumLength);
+
+            RuleFor(x => x.RepeatPassword)
+                .Cascade(CascadeMode.Stop)
+                .NotEmpty().WithMessage(x => appConfig.MessagesCatalogResource.GetMessageRequired(nameof(x.RepeatPassword)));
+
+            RuleFor(x => x.Password)
+                .Equal(x => x.RepeatPassword)
+                .When(x => !string.IsNullOrWhiteSpace(x.Password))
+                .WithMessage(x => appConfig.MessagesCatalogResource.GetMessageNotMatch(nameof(x.Password), nameof(x.RepeatPassword)));
+
+            RuleFor(x => x.Name)
+            .Cascade(CascadeMode.Stop)
+                .NotEmpty().WithMessage(x => appConfig.MessagesCatalogResource.GetMessageRequired(nameof(x.Name)));
+
+            RuleFor(x => x.ShortName)
+            .Cascade(CascadeMode.Stop)
+                .NotEmpty().WithMessage(x => appConfig.MessagesCatalogResource.GetMessageRequired(nameof(x.ShortName)));
+
+            RuleFor(x => x.TitleId)
+            .Cascade(CascadeMode.Stop)
+                .GreaterThan(0).WithMessage(x => appConfig.MessagesCatalogResource.GetMessageRequired(nameof(x.TitleId)));
+
+            RuleFor(x => x.DepartmentId)
+            .Cascade(CascadeMode.Stop)
+                .GreaterThan(0).WithMessage(x => appConfig.MessagesCatalogResource.GetMessageRequired(nameof(x.DepartmentId)));
+
+            RuleFor(x => x.Email)
+            .Cascade(CascadeMode.Stop)
+                .NotEmpty().WithMessage(x => appConfig.MessagesCatalogResource.GetMessageRequired(nameof(x.Email)))
+                .EmailAddress().WithMessage(x => appConfig.MessagesCatalogResource.GetMessageInvalidEmail(nameof(x.Email)));
         }
 
         #endregion

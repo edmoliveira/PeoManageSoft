@@ -5,7 +5,7 @@ namespace PeoManageSoft.Business.Infrastructure.Helpers.Resources
     /// <summary>
     /// Platform Email Template Catalog.
     /// </summary>
-    public sealed class EmailTemplatesCatalogResource : IEmailTemplatesCatalogResource
+    internal sealed class EmailTemplatesCatalogResource : IEmailTemplatesCatalogResource
     {
         #region Properties
 

@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using PeoManageSoft.Business.Infrastructure.Helpers.Interfaces;
 
 namespace PeoManageSoft.Business.Application.User.Read
 {
@@ -12,10 +13,12 @@ namespace PeoManageSoft.Business.Application.User.Read
         /// <summary>
         /// Initializes a new instance of the PeoManageSoft.Business.Application.User.New.ReadValidator class.
         /// </summary>
-        public ReadValidator()
+        /// <param name="appConfig">Application Configuration</param>
+        public ReadValidator(IAppConfig appConfig)
         {
             RuleFor(x => x.Id)
-                .GreaterThan(0);
+                .Cascade(CascadeMode.Stop)
+                .GreaterThan(0).WithMessage(x => appConfig.MessagesCatalogResource.GetMessageRequired(nameof(x.Id)));
         }
 
         #endregion

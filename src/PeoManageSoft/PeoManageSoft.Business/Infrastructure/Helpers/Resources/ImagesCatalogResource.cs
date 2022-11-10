@@ -5,7 +5,7 @@ namespace PeoManageSoft.Business.Infrastructure.Helpers.Resources
     /// <summary>
     /// Platform Images catalog.
     /// </summary>
-    internal sealed class ImagesCatalogResource: IImagesCatalogResource
+    internal sealed class ImagesCatalogResource : IImagesCatalogResource
     {
         #region Properties
 

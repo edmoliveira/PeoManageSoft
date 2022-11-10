@@ -321,7 +321,7 @@ namespace PeoManageSoft.Business.Infrastructure.Helpers.Controllers
             {
                 return HttpRequestExceptionObject(customException);
             }
-            
+
             Logger.LogError(exception, exception.Message);
 
             return InternalServerError();

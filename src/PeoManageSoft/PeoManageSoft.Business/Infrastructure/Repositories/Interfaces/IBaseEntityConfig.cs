@@ -43,6 +43,14 @@ namespace PeoManageSoft.Business.Infrastructure.Repositories.Interfaces
         /// Returns the sql statement, parameters and the command type.
         /// </returns>
         (string sqlStatement, IEnumerable<IParameter> parameters, CommandType commandType) GetExistsByIdSqlStatement(long id);
+        /// <summary>
+        /// Gets select exists command of the entity by rules.
+        /// </summary>
+        /// <param name="rule"></param>
+        /// <returns>
+        /// Returns the sql statement, parameters and the command type.
+        /// </returns>
+        (string sqlStatement, IEnumerable<IParameter> parameters, CommandType commandType) GetSelectExistsByRulesSqlStatement(IRule<TEntityField> rule);
 
         /// <summary>
         /// Gets select command of the entity by id.

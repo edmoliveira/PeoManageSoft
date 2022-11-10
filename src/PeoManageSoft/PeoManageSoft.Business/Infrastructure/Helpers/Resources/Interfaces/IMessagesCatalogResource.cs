@@ -40,6 +40,18 @@
         /// <returns>Returns the message minimum length.</returns>
         string GetMessageMinimumLength(string fieldName, int minimumLength);
         /// <summary>
+        /// Gets the message already exists.
+        /// </summary>
+        /// <param name="fieldName">Field Name</param>
+        /// <returns>Returns the message already exists.</returns>
+        string GetMessageAlreadyExists(string fieldName);
+        /// <summary>
+        /// Gets the message no exists.
+        /// </summary>
+        /// <param name="fieldName">Field Name</param>
+        /// <returns>Returns the message no exists.</returns>
+        string GetMessageNoExists(string fieldName);
+        /// <summary>
         /// Gets the message password length.
         /// </summary>
         /// <returns>Returns the message password length.</returns>
@@ -64,6 +76,23 @@
         /// </summary>
         /// <returns>Returns the message password special character.</returns>
         string GetMessagePasswordSpecialCharacter();
+        /// <summary>
+        /// Gets the message unauthorized.
+        /// </summary>
+        /// <returns>Returns the message unauthorized.</returns>
+        string GetMessageUnauthorized();
+        /// <summary>
+        /// Gets the message expired token.
+        /// </summary>
+        /// <returns>Returns the message expired token.</returns>
+        string GetMessageExpiredToken();        
+        /// <summary>
+        /// Gets the message not found.
+        /// </summary>
+        /// <param name="fieldName">Field Name</param>
+        /// <returns>Returns the message not found.</returns>
+        string GetMessageNotFound(string fieldName);
+
 
         #endregion
     }

@@ -16,7 +16,7 @@ namespace PeoManageSoft.Business.Application.User.Read.Response
         /// <summary>
         /// Set of permissions for actions available in application
         /// </summary>
-        public UserRole Role { get; set; }
+        public int RoleId { get; set; }
         /// <summary>
         /// Indicates whether the user is active
         /// </summary>

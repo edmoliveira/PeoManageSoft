@@ -15,6 +15,7 @@ using PeoManageSoft.Business.Domain.Services.Apis;
 using PeoManageSoft.Business.Domain.Services.Commands.User;
 using PeoManageSoft.Business.Domain.Services.Creators;
 using PeoManageSoft.Business.Domain.Services.Factories;
+using PeoManageSoft.Business.Domain.Services.Functions;
 using PeoManageSoft.Business.Domain.Services.Middlewares;
 using PeoManageSoft.Business.Domain.Services.Queries.User;
 using PeoManageSoft.Business.Infrastructure.Helpers.Exceptions;
@@ -81,6 +82,7 @@ namespace PeoManageSoft.Business.Infrastructure.Helpers
             services.AddMiddlewareDependencies();
             services.AddCreatorDependencies();
             services.AddApiDependencies();
+            services.AddFunctionDependencies();
 
             AddApplicationServices(services);
             AddCommandServices(services);

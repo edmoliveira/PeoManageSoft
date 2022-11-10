@@ -28,17 +28,17 @@
         /// </summary>
         public static string ApplicationNameVariable => "{{applicationName}}";
         /// <summary>
-        /// Remember password logo guid Variables "{{rememberPasswordLogoGuid}}"
+        /// Remember password logo guid Variables "{{emailPasswordLogoGuid}}"
         /// </summary>
-        public static string RememberPasswordLogoGuidVariable => "{{rememberPasswordLogoGuid}}";
+        public static string EmailLogoGuidVariable => "{{emailPasswordLogoGuid}}";
         /// <summary>
-        /// Remember password keys guid Variables "{{rememberPasswordKeysGuid}}"
+        /// Remember password keys guid Variables "{{emailPasswordKeysGuid}}"
         /// </summary>
-        public static string RememberPasswordKeysGuidVariable => "{{rememberPasswordKeysGuid}}";
+        public static string EmailKeysGuidVariable => "{{emailPasswordKeysGuid}}";
         /// <summary>
-        /// Remember password keys guid Variables "{{rememberPasswordUrl}}"
+        /// Remember password keys guid Variables "{{emailPasswordUrl}}"
         /// </summary>
-        public static string RememberPasswordUrlVariable => "{{rememberPasswordUrl}}";
+        public static string EmailUrlVariable => "{{emailPasswordUrl}}";
         /// <summary>
         /// Remember password keys guid Variables "{{rememberPasswordLocation}}"
         /// </summary>

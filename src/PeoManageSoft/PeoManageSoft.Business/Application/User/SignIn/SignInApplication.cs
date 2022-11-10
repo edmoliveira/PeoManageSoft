@@ -1,16 +1,10 @@
 ﻿using AutoMapper;
 using Microsoft.Extensions.Logging;
 using PeoManageSoft.Business.Domain.Services.Commands.User.CreateToken;
-using PeoManageSoft.Business.Domain.Services.Commands.User.Patch;
-using PeoManageSoft.Business.Domain.Services.Queries.User.Get.Response;
-using PeoManageSoft.Business.Domain.Services.Queries.User.GetByRules;
-using PeoManageSoft.Business.Infrastructure;
+using PeoManageSoft.Business.Domain.Services.Functions.User;
 using PeoManageSoft.Business.Infrastructure.Helpers.Exceptions;
 using PeoManageSoft.Business.Infrastructure.Helpers.Extensions;
 using PeoManageSoft.Business.Infrastructure.Helpers.Interfaces;
-using PeoManageSoft.Business.Infrastructure.ObjectRelationalMapper;
-using PeoManageSoft.Business.Infrastructure.ObjectRelationalMapper.Interfaces;
-using PeoManageSoft.Business.Infrastructure.Repositories.User;
 using System.Net;
 
 namespace PeoManageSoft.Business.Application.User.SignIn
@@ -23,17 +17,13 @@ namespace PeoManageSoft.Business.Application.User.SignIn
         #region Fields
 
         /// <summary>
-        ///  Handles all queries to get the user by rules.
+        /// User function facade that provides a simplified interface.
         /// </summary>
-        private readonly IGetByRulesHandler _getByRulesHandler;
+        private readonly IUserFunctionFacade _functionFacade;
         /// <summary>
         ///  Handles all commands to create the token.
         /// </summary>
         private readonly ICreateTokenHandler _createTokenHandler;
-        /// <summary>
-        ///  Handles all commands to patch the user.
-        /// </summary>
-        private readonly IPatchHandler _patchHandler;
         /// <summary>
         ///  Manages Json Web Token and Cryptography.
         /// </summary>
@@ -58,26 +48,23 @@ namespace PeoManageSoft.Business.Application.User.SignIn
         /// <summary>
         /// Initializes a new instance of the PeoManageSoft.Business.Application.User.SignIn.SignInApplication class.
         /// </summary>
-        /// <param name="getByRulesHandler">Handles all queries to get the user by rules.</param>
+        /// <param name="functionFacade">User function facade that provides a simplified interface.</param>
         /// <param name="createTokenHandler">Handles all commands to create the token.</param>
-        /// <param name="patchHandler">Handles all commands to patch the user.</param>
         /// <param name="tokenJwt">Manages Json Web Token and Cryptography.</param>
         /// <param name="appConfig">Application Configuration</param>
         /// <param name="mapper">Data Mapper </param>
         /// <param name="logger">Log</param>
         public SignInApplication(
-                IGetByRulesHandler getByRulesHandler,
+                IUserFunctionFacade functionFacade,
                 ICreateTokenHandler createTokenHandler,
-                IPatchHandler patchHandler,
                 ITokenJwt tokenJwt,
                 IAppConfig appConfig,
                 IMapper mapper,
                 ILogger<SignInApplication> logger
             )
         {
-            _getByRulesHandler = getByRulesHandler;
+            _functionFacade = functionFacade;
             _createTokenHandler = createTokenHandler;
-            _patchHandler = patchHandler;
             _tokenJwt = tokenJwt;
             _appConfig = appConfig;
             _mapper = mapper;
@@ -104,27 +91,24 @@ namespace PeoManageSoft.Business.Application.User.SignIn
 
             _logger.LogBeginInformation(methodName);
 
-            var authResponse = await GetByAuthentication(request.Login, request.Password).ConfigureAwait(false);
+            var userResponse = await _functionFacade
+                .GetByAuthenticationAsync(request.Login, _tokenJwt.EncryptPassword(request.Password))
+                .ConfigureAwait(false);
 
-            if (authResponse is null)
+            if (userResponse is null)
             {
-                throw new RequestException(HttpStatusCode.Unauthorized, "Not authorized!");
+                throw new RequestException(HttpStatusCode.Unauthorized, _appConfig.MessagesCatalogResource.GetMessageUnauthorized());
             }
 
-            await _patchHandler.HandleAsync(new PatchRequest
-            {
-                Id = authResponse.Id,
-                Fields = new List<Field<UserEntityField>>
-                {
-                    new Field<UserEntityField>{ Type = UserEntityField.Location, Value = request.Location.ToString() }
-                }
-            }).ConfigureAwait(false);
+            await _functionFacade
+                    .PutLocationAsync(userResponse.Id, request.Location)
+                    .ConfigureAwait(false);
 
             CreateTokenResponse tokenResponse = await _createTokenHandler.HandleAsync(new CreateTokenRequest
             {
-                Id = authResponse.Id,
-                Login = authResponse.Login,
-                Role = authResponse.Role,
+                Id = userResponse.Id,
+                Login = userResponse.Login,
+                Role = userResponse.Role,
                 ExpireSeconds = _appConfig.AuthTokenExpireSeconds
             }).ConfigureAwait(false);
 
@@ -134,35 +118,10 @@ namespace PeoManageSoft.Business.Application.User.SignIn
             {
                 Key = tokenResponse.Key,
                 ExpireSeconds = _appConfig.AuthTokenExpireSeconds,
-                Role = authResponse.Role,
-                Name = authResponse.Name,
-                ShortName = authResponse.ShortName
+                Role = userResponse.Role,
+                Name = userResponse.Name,
+                ShortName = userResponse.ShortName
             };
-        }
-
-        #endregion
-
-        #region private
-
-        /// <summary>
-        /// Gets the user by login and password
-        /// </summary>
-        /// <param name="login">User login</param>
-        /// <param name="password">User password</param>
-        /// <returns>User data</returns>
-        private async Task<GetResponse> GetByAuthentication(string login, string password)
-        {
-            var encryptedPassword = _tokenJwt.EncryptPassword(password);
-
-            var rules = new IRule<UserEntityField>[2]
-                {
-                    _getByRulesHandler.CreateRule(UserEntityField.Login_Readonly, SqlComparisonOperator.EqualTo, login),
-                    _getByRulesHandler.CreateRule(UserEntityField.Password, SqlComparisonOperator.EqualTo, encryptedPassword, SqlOperator.And)
-                };
-
-            var result = await _getByRulesHandler.HandleAsync(_getByRulesHandler.CreateRule(rules)).ConfigureAwait(false);
-
-            return result.FirstOrDefault();
         }
 
         #endregion

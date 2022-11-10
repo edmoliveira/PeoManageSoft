@@ -1,8 +1,8 @@
 ﻿using Microsoft.Extensions.Logging;
 using PeoManageSoft.Business.Domain.Services.Commands.Messaging.SendEmail.Models;
 using PeoManageSoft.Business.Domain.Services.Creators.RememberPasswordEmail.Interfaces;
-using PeoManageSoft.Business.Infrastructure.Helpers;
 using PeoManageSoft.Business.Infrastructure;
+using PeoManageSoft.Business.Infrastructure.Helpers;
 using PeoManageSoft.Business.Infrastructure.Helpers.Extensions;
 using PeoManageSoft.Business.Infrastructure.Helpers.Interfaces;
 using PeoManageSoft.Business.Infrastructure.Helpers.Resources.Interfaces;
@@ -47,7 +47,7 @@ namespace PeoManageSoft.Business.Domain.Services.Creators.RememberPasswordEmail
         #region public
 
         /// <summary>
-        /// Create the object of the class Salep.Domain.Service.Messages.Models.EmailData
+        /// Create the object of the class PeoManageSoft.Business.Domain.Services.Commands.Messaging.SendEmail.Models.EmailData
         /// </summary>
         /// <param name="to">Email address that will be sent</param>
         /// <param name="urlToken">Url with token.</param>
@@ -66,9 +66,9 @@ namespace PeoManageSoft.Business.Domain.Services.Creators.RememberPasswordEmail
             EmailLinkedResource keysLinkedResource = new(imagesResource.Keys256x256, Guid.NewGuid().ToString());
 
             string html = templateResource.ReadHtmlFile(_appConfig.ApplicationLanguage)
-                            .Replace(ApplicationResource.RememberPasswordLogoGuidVariable, logoLinkedResource.ContentId)
-                            .Replace(ApplicationResource.RememberPasswordKeysGuidVariable, keysLinkedResource.ContentId)
-                            .Replace(ApplicationResource.RememberPasswordUrlVariable, urlToken)
+                            .Replace(ApplicationResource.EmailLogoGuidVariable, logoLinkedResource.ContentId)
+                            .Replace(ApplicationResource.EmailKeysGuidVariable, keysLinkedResource.ContentId)
+                            .Replace(ApplicationResource.EmailUrlVariable, urlToken)
                             .Replace(ApplicationResource.RememberPasswordLocationVariable, location);
 
             EmailAlternateView alternateView = new(html, new EmailContentType(System.Net.Mime.MediaTypeNames.Text.Html))

@@ -1,4 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using PeoManageSoft.Business.Domain.Services.Creators.ActiveUserEmail;
+using PeoManageSoft.Business.Domain.Services.Creators.ActiveUserEmail.Interfaces;
 using PeoManageSoft.Business.Domain.Services.Creators.RememberPasswordEmail;
 using PeoManageSoft.Business.Domain.Services.Creators.RememberPasswordEmail.Interfaces;
 
@@ -20,6 +22,7 @@ namespace PeoManageSoft.Business.Domain.Services.Creators
         public static void AddCreatorDependencies(this IServiceCollection services)
         {
             services.AddSingleton<IRememberPasswordEmailCreator, RememberPasswordEmailCreator>();
+            services.AddSingleton<IActiveUserEmailCreator, ActiveUserEmailCreator>();
         }
 
         #endregion

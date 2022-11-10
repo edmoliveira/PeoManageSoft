@@ -11,9 +11,13 @@ namespace PeoManageSoft.Business.Application.User.New
         #region Properties
 
         /// <summary>
+        /// Application url
+        /// </summary>
+        public string Url { get; set; }
+        /// <summary>
         /// Set of permissions for actions available in application
         /// </summary>
-        public UserRole Role { get; set; }
+        public int RoleId { get; set; }
         /// <summary>
         /// User login
         /// </summary>

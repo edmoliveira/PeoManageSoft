@@ -1,10 +1,10 @@
 ﻿using PeoManageSoft.Business.Domain.Services.Middlewares.Interfaces;
 using System.Collections.Specialized;
+using System.Net;
 using System.Net.Mail;
 using System.Net.Mime;
-using System.Text;
-using System.Net;
 using System.Security.Cryptography.X509Certificates;
+using System.Text;
 
 namespace PeoManageSoft.Business.Domain.Services.Middlewares
 {

@@ -11,6 +11,10 @@
         /// Remember password email template.
         /// </summary>
         IEmailTemplateResource RememberPassword { get; }
+        /// <summary>
+        /// Active user email template.
+        /// </summary>
+        IEmailTemplateResource ActiveUser { get; }
 
         #endregion
     }

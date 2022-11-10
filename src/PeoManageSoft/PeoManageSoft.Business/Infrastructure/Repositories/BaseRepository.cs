@@ -98,7 +98,8 @@ namespace PeoManageSoft.Business.Infrastructure.Repositories
             Logger.LogEndInformation(methodName);
         }
 
-        /// Determines whether the specified entiy table contains the record that match the id
+        /// <summary>
+        /// Determines whether the specified entity table contains the record that match the id
         /// </summary>
         /// <param name="scope">Transactional scope</param>
         /// <param name="id">Entity identifier</param>
@@ -115,6 +116,31 @@ namespace PeoManageSoft.Business.Infrastructure.Repositories
             bool result = await ExecuteScalarAsync<bool>(
                 scope, () =>
                 EntityConfig.GetExistsByIdSqlStatement(id)
+            ).ConfigureAwait(false);
+
+            Logger.LogEndInformation(methodName);
+
+            return result;
+        }
+
+        /// <summary>
+        /// Determines whether the specified entity table contains the record that matches the rules.
+        /// </summary>
+        /// <param name="scope">Transactional scope</param>
+        /// <param name="rule">Rules to filter the data.</param>
+        /// <returns>
+        /// Task: Represents an asynchronous operation.
+        /// Returns true if the record exists in the table
+        /// </returns>
+        public async Task<bool> ExistsAsync(IScope scope, IRule<TEntityField> rule)
+        {
+            string methodName = nameof(ExistsAsync);
+
+            Logger.LogBeginInformation(methodName);
+
+            bool result = await ExecuteScalarAsync<bool>(
+                scope, () =>
+                EntityConfig.GetSelectExistsByRulesSqlStatement(rule)
             ).ConfigureAwait(false);
 
             Logger.LogEndInformation(methodName);

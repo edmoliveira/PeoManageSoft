@@ -16,7 +16,7 @@ namespace PeoManageSoft.Business.Application.User.Delete
         public DeleteMapper()
         {
             CreateMap<DeleteRequest, RemoveRequest>()
-            .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id));
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id));
         }
 
         #endregion

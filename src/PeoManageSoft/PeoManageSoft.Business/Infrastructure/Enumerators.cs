@@ -52,6 +52,16 @@ namespace PeoManageSoft.Business.Infrastructure
         [Description("Minimum Length")]
         MinimumLength,
         /// <summary>
+        /// Already Exists
+        /// </summary>
+        [Description("Already Exists")]
+        AlreadyExists,
+        /// <summary>
+        /// No Exists
+        /// </summary>
+        [Description("No Exists")]
+        NoExists,
+        /// <summary>
         /// Password length error message
         /// </summary>
         [Description("Password length error message")]
@@ -81,6 +91,16 @@ namespace PeoManageSoft.Business.Infrastructure
         /// </summary>
         [Description("Unauthorized")]
         Unauthorized,
+        /// <summary>
+        /// Expired Token
+        /// </summary>
+        [Description("Expired Token")]
+        ExpiredToken,
+        /// <summary>
+        /// Not Found
+        /// </summary>
+        [Description("Not Found")]
+        NotFound,
     }
 
     /// <summary>

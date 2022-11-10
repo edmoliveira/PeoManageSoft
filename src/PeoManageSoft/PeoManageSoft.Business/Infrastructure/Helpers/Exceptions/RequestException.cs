@@ -1,4 +1,6 @@
-﻿using System.Net;
+﻿using FluentValidation.Results;
+using Newtonsoft.Json;
+using System.Net;
 
 namespace PeoManageSoft.Business.Infrastructure.Helpers.Exceptions
 {
@@ -33,7 +35,17 @@ namespace PeoManageSoft.Business.Infrastructure.Helpers.Exceptions
         /// </summary>
         /// <param name="statusCode">Contains the values of status codes defined for HTTP</param>
         /// <param name="messageList">Message collection.</param>
-        public RequestException(HttpStatusCode statusCode, List<string> messageList) : base(TransformMessageListToMessage(messageList))
+        public RequestException(HttpStatusCode statusCode, IList<string> messageList) : base(TransformMessageListToMessage(messageList))
+        {
+            StatusCode = statusCode;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the PeoManageSoft.Business.Infrastructure.Exceptions.BadRequestException class with a specific messages that describes the current exception.
+        /// </summary>
+        /// <param name="statusCode">Contains the values of status codes defined for HTTP</param>
+        /// <param name="errors">List with validation failure.</param>
+        public RequestException(HttpStatusCode statusCode, IList<ValidationFailure> errors) : base(TransformValidationFailureTDictionary(errors))
         {
             StatusCode = statusCode;
         }
@@ -58,9 +70,31 @@ namespace PeoManageSoft.Business.Infrastructure.Helpers.Exceptions
         /// </summary>
         /// <param name="messageList">A list of exception messages.</param>
         /// <returns>Exception messages concatenated into a single string</returns>
-        private static string TransformMessageListToMessage(List<string> messageList)
+        private static string TransformMessageListToMessage(IList<string> messageList)
         {
             return messageList.Aggregate((current, value) => $"{current}\r\n{value}");
+        }
+
+        /// <summary>
+        /// Transforms a list with validation failure to into a single string
+        /// </summary>
+        /// <param name="errors">List with validation failure.</param>
+        /// <returns>Returns the list with validation failure concatenated into a single string</returns>
+        private static string TransformValidationFailureTDictionary(IList<ValidationFailure> errors)
+        {
+            var dictionary = new Dictionary<string, IList<string>>();
+
+            foreach(var propertyName in errors.GroupBy(c => c.PropertyName))
+            {
+                dictionary.Add(propertyName.Key, 
+                    errors
+                        .Where(c => c.PropertyName == propertyName.Key)
+                        .Select(c => c.ErrorMessage)
+                        .ToList()
+                );
+            }
+
+            return JsonConvert.SerializeObject(new { errors = dictionary });
         }
 
         #endregion

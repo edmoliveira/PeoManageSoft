@@ -6,7 +6,7 @@ namespace PeoManageSoft.Business.Infrastructure.Helpers.Resources
     /// <summary>
     /// Email template data
     /// </summary>
-    public sealed class EmailTemplateResource: IEmailTemplateResource
+    public sealed class EmailTemplateResource : IEmailTemplateResource
     {
         #region Properties
 

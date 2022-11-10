@@ -1,14 +1,8 @@
 ﻿using Microsoft.Extensions.Logging;
-using PeoManageSoft.Business.Domain.Services.Commands.User.Patch;
-using PeoManageSoft.Business.Domain.Services.Queries.User.Get.Response;
-using PeoManageSoft.Business.Domain.Services.Queries.User.GetByRules;
-using PeoManageSoft.Business.Infrastructure;
+using PeoManageSoft.Business.Domain.Services.Functions.User;
 using PeoManageSoft.Business.Infrastructure.Helpers.Exceptions;
 using PeoManageSoft.Business.Infrastructure.Helpers.Extensions;
 using PeoManageSoft.Business.Infrastructure.Helpers.Interfaces;
-using PeoManageSoft.Business.Infrastructure.ObjectRelationalMapper;
-using PeoManageSoft.Business.Infrastructure.ObjectRelationalMapper.Interfaces;
-using PeoManageSoft.Business.Infrastructure.Repositories.User;
 using System.Net;
 
 namespace PeoManageSoft.Business.Application.User.ChangePassword
@@ -21,13 +15,9 @@ namespace PeoManageSoft.Business.Application.User.ChangePassword
         #region Fields
 
         /// <summary>
-        /// Handles all queries to get the user by rules.
+        /// User function facade that provides a simplified interface.
         /// </summary>
-        private readonly IGetByRulesHandler _getByRulesHandler;
-        /// <summary>
-        /// Handles all commands to patch the user.
-        /// </summary>
-        private readonly IPatchHandler _patchHandler;
+        private readonly IUserFunctionFacade _functionFacade;
         /// <summary>
         /// Manages Json Web Token and Cryptography.
         /// </summary>
@@ -36,6 +26,10 @@ namespace PeoManageSoft.Business.Application.User.ChangePassword
         /// Class to be used on one instance throughout the application per request.
         /// </summary>
         private readonly IApplicationContext _applicationContext;
+        /// <summary>
+        /// Application Configuration.
+        /// </summary>
+        private readonly IAppConfig _appConfig;
         /// <summary>
         /// Log
         /// </summary>
@@ -48,23 +42,23 @@ namespace PeoManageSoft.Business.Application.User.ChangePassword
         /// <summary>
         /// Initializes a new instance of the PeoManageSoft.Business.Application.User.CreateNewPassword.CreateNewPasswordApplication class.
         /// </summary>
-        /// <param name="getByRulesHandler">Handles all queries to get the user by rules.</param>
-        /// <param name="patchHandler">Handles all commands to patch the user.</param>
+        /// <param name="functionFacade">User function facade that provides a simplified interface.</param>
         /// <param name="tokenJwt">Manages Json Web Token and Cryptography.</param>
         /// <param name="applicationContext">Class to be used on one instance throughout the application per request.</param>
+        /// <param name="appConfig">Application Configuration.</param>
         /// <param name="logger">Log</param>
         public ChangePasswordApplication(
-                IGetByRulesHandler getByRulesHandler,
-                IPatchHandler patchHandler,
+                IUserFunctionFacade functionFacade,
                 ITokenJwt tokenJwt,
                 IApplicationContext applicationContext,
+                IAppConfig appConfig,
                 ILogger<ChangePasswordApplication> logger
             )
         {
-            _getByRulesHandler = getByRulesHandler;
-            _patchHandler = patchHandler;
+            _functionFacade = functionFacade;
             _tokenJwt = tokenJwt;
             _applicationContext = applicationContext;
+            _appConfig = appConfig;
             _logger = logger;
         }
 
@@ -85,53 +79,22 @@ namespace PeoManageSoft.Business.Application.User.ChangePassword
 
             _logger.LogBeginInformation(methodName);
 
-            var userResponse = await GetByAuthentication(_applicationContext.LoggedUser.User, request.OldPassword).ConfigureAwait(false);
+            var userResponse = await _functionFacade
+                .GetByAuthenticationAsync
+                (
+                    _applicationContext.LoggedUser.User, _tokenJwt.EncryptPassword(request.OldPassword)
+                ).ConfigureAwait(false);
 
             if (userResponse is null)
             {
-                throw new RequestException(HttpStatusCode.Unauthorized, "Not authorized!");
+                throw new RequestException(HttpStatusCode.Unauthorized, _appConfig.MessagesCatalogResource.GetMessageUnauthorized());
             }
 
-            var password = _tokenJwt.EncryptPassword(request.NewPassword);
-
-            await _patchHandler.HandleAsync(new PatchRequest
-            {
-                Id = userResponse.Id,
-                Fields = new List<Field<UserEntityField>>
-                    {
-                        new Field<UserEntityField> {
-                            Type = UserEntityField.Password,
-                            Value = password
-                        }
-                    }
-            }).ConfigureAwait(false);
+            await _functionFacade
+                .PutPasswordAsync(userResponse.Id, _tokenJwt.EncryptPassword(request.NewPassword))
+                .ConfigureAwait(false);
 
             _logger.LogEndInformation(methodName);
-        }
-
-        #endregion
-
-        #region private
-
-        /// <summary>
-        /// Gets the user by login and password
-        /// </summary>
-        /// <param name="login">User login</param>
-        /// <param name="password">User password</param>
-        /// <returns>User data</returns>
-        private async Task<GetResponse> GetByAuthentication(string login, string password)
-        {
-            var encryptedPassword = _tokenJwt.EncryptPassword(password);
-
-            var rules = new IRule<UserEntityField>[2]
-                {
-                    _getByRulesHandler.CreateRule(UserEntityField.Login_Readonly, SqlComparisonOperator.EqualTo, login),
-                    _getByRulesHandler.CreateRule(UserEntityField.Password, SqlComparisonOperator.EqualTo, encryptedPassword, SqlOperator.And)
-                };
-
-            var result = await _getByRulesHandler.HandleAsync(_getByRulesHandler.CreateRule(rules)).ConfigureAwait(false);
-
-            return result.FirstOrDefault();
         }
 
         #endregion

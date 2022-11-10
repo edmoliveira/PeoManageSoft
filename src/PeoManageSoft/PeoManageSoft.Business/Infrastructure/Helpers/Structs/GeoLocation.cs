@@ -13,11 +13,11 @@
         /// <param name="value">Latitude and Longitude separated by comma.</param>
         public static implicit operator GeoLocation(string value)
         {
-            if(value is null) { return new GeoLocation(0, 0); }
+            if (value is null) { return new GeoLocation(0, 0); }
 
             var array = value.Split(';');
 
-            if(array.Length < 2) { return new GeoLocation(0, 0); }
+            if (array.Length < 2) { return new GeoLocation(0, 0); }
 
             _ = double.TryParse(array[0], out double latitude);
             _ = double.TryParse(array[1], out double longitude);

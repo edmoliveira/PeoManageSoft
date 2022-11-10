@@ -20,10 +20,9 @@ namespace PeoManageSoft.Business.Application.User.Change
                 .Cascade(CascadeMode.Stop)
                 .GreaterThan(0).WithMessage(x => appConfig.MessagesCatalogResource.GetMessageRequired(nameof(x.Id)));
 
-            RuleFor(x => x.Role)
+            RuleFor(x => x.RoleId)
                 .Cascade(CascadeMode.Stop)
-                .IsInEnum().WithMessage(x => appConfig.MessagesCatalogResource.GetMessageRequired(nameof(x.Role)))
-                .NotEmpty().WithMessage(x => appConfig.MessagesCatalogResource.GetMessageRequired(nameof(x.Role)));
+                .NotEmpty().WithMessage(x => appConfig.MessagesCatalogResource.GetMessageRequired(nameof(x.RoleId)));
 
             RuleFor(x => x.Name)
                 .Cascade(CascadeMode.Stop)

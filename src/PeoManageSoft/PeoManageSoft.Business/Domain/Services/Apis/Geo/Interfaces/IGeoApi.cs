@@ -13,7 +13,7 @@
         /// <param name="latitude">It shows the angle between the straight line in the certain point and the equatorial plane.</param>
         /// <param name="longitude">It shows another angular coordinate defining the position of a point on a surface of earth.</param>
         /// <returns>Returns the address</returns>
-        Task<string> FindAddressByLatLongAsync(double latitude , double longitude);
+        Task<string> FindAddressByLatLongAsync(double latitude, double longitude);
 
         #endregion
     }

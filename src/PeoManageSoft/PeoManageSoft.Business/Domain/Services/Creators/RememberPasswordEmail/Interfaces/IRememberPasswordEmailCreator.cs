@@ -10,7 +10,7 @@ namespace PeoManageSoft.Business.Domain.Services.Creators.RememberPasswordEmail.
         #region Methods
 
         /// <summary>
-        /// Create the object of the class Salep.Domain.Service.Messages.Models.EmailData
+        /// Create the object of the class PeoManageSoft.Business.Domain.Services.Commands.Messaging.SendEmail.Models.EmailData
         /// </summary>
         /// <param name="to">Email address that will be sent</param>
         /// <param name="urlToken">Url with token.</param>

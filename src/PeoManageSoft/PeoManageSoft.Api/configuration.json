@@ -46,12 +46,16 @@
           "InvalidUri": "The {fieldName} field must be a valid URI.",
           "NotMatch": "The {fieldName1} field and the {fieldName2} field do not match!",
           "MinimumLength": "The {fieldName} field must at least {minimumLength} characters long.",
+          "AlreadyExists": "The {fieldName} field already exists!",
+          "NoExists": "The {fieldName} field no exists!",
           "PasswordLength": "The password field must at least {minimumLength} characters long.",
           "PasswordUppercaseLetter": "The password field must at least contain one uppercase letter!",
           "PasswordLowercaseLetter": "The password field must at least contain one lowercase letter!",
           "PasswordDigit": "The password field must at least contain one digit from 0 to 9!",
           "PasswordSpecialCharacter": "The password field must at least contain one special character!",
-          "Unauthorized": "Not authorized!"
+          "Unauthorized": "Not authorized!",
+          "NotFound": "The {fieldName} not found!",
+          "ExpiredToken": "Expired token"
         }
       },
       "Portuguese": {
@@ -61,12 +65,16 @@
           "InvalidUri": "O campo {fieldName} deve ser um URI válido.",
           "NotMatch": "O campo {fieldName1} e o campo {fieldName2} não correspondem!",
           "MinimumLength": "O campo {fieldName} deve ter pelo menos {minimumLength} caracteres.",
+          "AlreadyExists": "O campo {fieldName} já existe!",
+          "NoExists": "O campo {fieldName} não existe!",
           "PasswordLength": "O campo password deve ter pelo menos {minimumLength} caracteres!",
           "PasswordUppercaseLetter": "O campo password deve conter pelo menos uma letra maiúscula!",
           "PasswordLowercaseLetter": "O campo password deve conter pelo menos uma letra minúscula!",
           "PasswordDigit": "O campo password deve conter pelo menos um dígito de 0 a 9!",
           "PasswordSpecialCharacter": "O campo password deve conter pelo menos um caractere especial!",
-          "Unauthorized": "Não autorizado!"
+          "Unauthorized": "Não autorizado!",
+          "NotFound": "O {fieldName} não foi encontrado!",
+          "ExpiredToken": "Token expirado"
         }
       }
     }

@@ -25,7 +25,7 @@ namespace PeoManageSoft.Business.Domain.Services.Queries
         /// Initializes a new instance of the PeoManageSoft.Business.Domain.Services.Queries.BaseGetByRulesHandler class.
         /// </summary>
         /// <param name="repositoryFactory">Create objects from repositories.</param>
-        public BaseGetByRulesHandler( 
+        public BaseGetByRulesHandler(
                 IRepositoryFactory repositoryFactory
             )
         {

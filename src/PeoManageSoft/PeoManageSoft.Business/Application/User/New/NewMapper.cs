@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using PeoManageSoft.Business.Domain.Services.Commands.User.Add;
+using PeoManageSoft.Business.Infrastructure;
 
 namespace PeoManageSoft.Business.Application.User.New
 {
@@ -16,8 +17,7 @@ namespace PeoManageSoft.Business.Application.User.New
         public NewMapper()
         {
             CreateMap<NewRequest, AddRequest>()
-                .ForMember(dest => dest.IsActive, opt => opt.MapFrom(src => src.IsActive))
-                .ForMember(dest => dest.Role, opt => opt.MapFrom(src => src.Role))
+                .ForMember(dest => dest.Role, opt => opt.MapFrom(src => (UserRole)src.RoleId))
                 .ForMember(dest => dest.Login, opt => opt.MapFrom(src => src.Login))
                 .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name))
                 .ForMember(dest => dest.ShortName, opt => opt.MapFrom(src => src.ShortName))

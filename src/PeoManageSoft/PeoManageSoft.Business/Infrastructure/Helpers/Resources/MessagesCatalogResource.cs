@@ -77,6 +77,26 @@ namespace PeoManageSoft.Business.Infrastructure.Helpers.Resources
         }
 
         /// <summary>
+        /// Gets the message already exists.
+        /// </summary>
+        /// <param name="fieldName">Field Name</param>
+        /// <returns>Returns the message already exists.</returns>
+        public string GetMessageAlreadyExists(string fieldName)
+        {
+            return MessageDictionary[ResourceMessageKey.AlreadyExists].Replace("{fieldName}", fieldName);
+        }
+
+        /// <summary>
+        /// Gets the message no exists.
+        /// </summary>
+        /// <param name="fieldName">Field Name</param>
+        /// <returns>Returns the message no exists.</returns>
+        public string GetMessageNoExists(string fieldName)
+        {
+            return MessageDictionary[ResourceMessageKey.NoExists].Replace("{fieldName}", fieldName);
+        }
+
+        /// <summary>
         /// Gets the message password length.
         /// </summary>
         /// <returns>Returns the message password length.</returns>
@@ -121,6 +141,33 @@ namespace PeoManageSoft.Business.Infrastructure.Helpers.Resources
             return MessageDictionary[ResourceMessageKey.PasswordSpecialCharacter];
         }
 
+        /// <summary>
+        /// Gets the message unauthorized.
+        /// </summary>
+        /// <returns>Returns the message unauthorized.</returns>
+        public string GetMessageUnauthorized()
+        {
+            return MessageDictionary[ResourceMessageKey.Unauthorized];
+        }
+
+        /// <summary>
+        /// Gets the message expired token.
+        /// </summary>
+        /// <returns>Returns the message expired token.</returns>
+        public string GetMessageExpiredToken()
+        {
+            return MessageDictionary[ResourceMessageKey.ExpiredToken];
+        }
+
+        /// <summary>
+        /// Gets the message not found.
+        /// </summary>
+        /// <param name="fieldName">Field Name</param>
+        /// <returns>Returns the message not found.</returns>
+        public string GetMessageNotFound(string fieldName)
+        {
+            return MessageDictionary[ResourceMessageKey.NotFound].Replace("{fieldName}", fieldName);
+        }
 
         #endregion
 

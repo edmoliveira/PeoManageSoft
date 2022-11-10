@@ -1,13 +1,9 @@
 ﻿using Microsoft.Extensions.Logging;
 using PeoManageSoft.Business.Application.User.SendPasswordToken;
-using PeoManageSoft.Business.Domain.Services.Queries.User.Get.Response;
-using PeoManageSoft.Business.Domain.Services.Queries.User.GetByRules;
-using PeoManageSoft.Business.Infrastructure;
+using PeoManageSoft.Business.Domain.Services.Functions.User;
 using PeoManageSoft.Business.Infrastructure.Helpers.Exceptions;
 using PeoManageSoft.Business.Infrastructure.Helpers.Extensions;
 using PeoManageSoft.Business.Infrastructure.Helpers.Interfaces;
-using PeoManageSoft.Business.Infrastructure.ObjectRelationalMapper.Interfaces;
-using PeoManageSoft.Business.Infrastructure.Repositories.User;
 using System.Net;
 
 namespace PeoManageSoft.Business.Application.User.ValidatePasswordToken
@@ -15,18 +11,22 @@ namespace PeoManageSoft.Business.Application.User.ValidatePasswordToken
     /// <summary>
     /// Application layer to validate if the password token is valid. 
     /// </summary>
-    internal sealed class ValidatePasswordTokenApplication: IValidatePasswordTokenApplication
+    internal sealed class ValidatePasswordTokenApplication : IValidatePasswordTokenApplication
     {
         #region Fields
 
         /// <summary>
-        /// Handles all queries to get the user by rules.
+        /// User function facade that provides a simplified interface.
         /// </summary>
-        private readonly IGetByRulesHandler _getByRulesHandler;
+        private readonly IUserFunctionFacade _functionFacade;
         /// <summary>
         /// Manages Json Web Token and Cryptography.
         /// </summary>
         private readonly ITokenJwt _tokenJwt;
+        /// <summary>
+        /// Application Configuration.
+        /// </summary>
+        private readonly IAppConfig _appConfig;
         /// <summary>
         /// Log
         /// </summary>
@@ -39,17 +39,20 @@ namespace PeoManageSoft.Business.Application.User.ValidatePasswordToken
         /// <summary>
         /// Initializes a new instance of the PeoManageSoft.Business.Application.User.ValidatePasswordToken.ValidPasswordTokenApplication class.
         /// </summary>
-        /// <param name="getByRulesHandler">Handles all queries to get the user by rules.</param>
+        /// <param name="functionFacade">User function facade that provides a simplified interface.</param>
         /// <param name="tokenJwt">Manages Json Web Token and Cryptography.</param>
+        /// <param name="appConfig">Application Configuration.</param>
         /// <param name="logger">Log</param>
         public ValidatePasswordTokenApplication(
-                IGetByRulesHandler getByRulesHandler,
+                IUserFunctionFacade functionFacade,
                 ITokenJwt tokenJwt,
+                IAppConfig appConfig,
                 ILogger<SendPasswordTokenApplication> logger
             )
         {
-            _getByRulesHandler = getByRulesHandler;
+            _functionFacade = functionFacade;
             _tokenJwt = tokenJwt;
+            _appConfig = appConfig;
             _logger = logger;
         }
 
@@ -73,11 +76,11 @@ namespace PeoManageSoft.Business.Application.User.ValidatePasswordToken
 
             _logger.LogBeginInformation(methodName);
 
-            var userResponse = await GetByPasswordToken(request.PasswordToken).ConfigureAwait(false);
+            var userResponse = await _functionFacade.GetByPasswordTokenAsync(request.PasswordToken).ConfigureAwait(false);
 
             if (userResponse is null || !_tokenJwt.CheckPasswordToken(userResponse.PasswordToken))
             {
-                throw new RequestException(HttpStatusCode.Unauthorized, "Expired token!");
+                throw new RequestException(HttpStatusCode.Unauthorized, _appConfig.MessagesCatalogResource.GetMessageExpiredToken());
             }
 
             var response = new ValidatePasswordTokenResponse
@@ -88,27 +91,6 @@ namespace PeoManageSoft.Business.Application.User.ValidatePasswordToken
             _logger.LogEndInformation(methodName);
 
             return response;
-        }
-
-        #endregion
-
-        #region private
-
-        /// <summary>
-        /// Gets the user by PasswordToken
-        /// </summary>
-        /// <param name="passwordToken">Token to change the user password.</param>
-        /// <returns>User data</returns>
-        private async Task<GetResponse> GetByPasswordToken(string passwordToken)
-        {
-            var rules = new IRule<UserEntityField>[1]
-                {
-                    _getByRulesHandler.CreateRule(UserEntityField.PasswordToken, SqlComparisonOperator.EqualTo, passwordToken)
-                };
-
-            var result = await _getByRulesHandler.HandleAsync(_getByRulesHandler.CreateRule(rules)).ConfigureAwait(false);
-
-            return result.FirstOrDefault();
         }
 
         #endregion

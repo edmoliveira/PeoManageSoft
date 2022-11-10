@@ -29,10 +29,12 @@ namespace PeoManageSoft.Business.Application.User
         {
             services.AddScoped<IUserApplicationFacade, UserApplicationFacade>();
             services.AddScoped<IChangeApplication, ChangeApplication>();
+            services.AddScoped<IChangeValidation, ChangeValidation>(); 
             services.AddScoped<IChangePasswordApplication, ChangePasswordApplication>();
             services.AddScoped<ICreateNewPasswordApplication, CreateNewPasswordApplication>();
             services.AddScoped<IDeleteApplication, DeleteApplication>();
-            services.AddScoped<INewApplication, NewApplication>();            
+            services.AddScoped<INewApplication, NewApplication>();
+            services.AddScoped<INewValidation, NewValidation>();
             services.AddScoped<IReadApplication, ReadApplication>();
             services.AddScoped<IReadAllApplication, ReadAllApplication>();
             services.AddScoped<ISendPasswordTokenApplication, SendPasswordTokenApplication>();

@@ -1,12 +1,12 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using PeoManageSoft.Business.Application.User;
+using PeoManageSoft.Business.Application.User.SendPasswordToken;
 using PeoManageSoft.Business.Infrastructure.Helpers.Controllers;
 using PeoManageSoft.Business.Infrastructure.Helpers.Extensions;
 using PeoManageSoft.Business.Infrastructure.Helpers.Filters;
 using Swashbuckle.AspNetCore.Annotations;
-using Newtonsoft.Json;
-using PeoManageSoft.Business.Application.User.SendPasswordToken;
 
 namespace PeoManageSoft.Api.Controllers.Users
 {

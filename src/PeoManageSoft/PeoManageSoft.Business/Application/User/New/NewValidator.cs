@@ -17,10 +17,9 @@ namespace PeoManageSoft.Business.Application.User.New
         /// <param name="appConfig">Application Configuration</param>
         public NewValidator(IAppConfig appConfig)
         {
-            RuleFor(x => x.Role)
+            RuleFor(x => x.RoleId)
             .Cascade(CascadeMode.Stop)
-                .IsInEnum().WithMessage(x => appConfig.MessagesCatalogResource.GetMessageRequired(nameof(x.Role)))
-                .NotEmpty().WithMessage(x => appConfig.MessagesCatalogResource.GetMessageRequired(nameof(x.Role)));
+                .NotEmpty().WithMessage(x => appConfig.MessagesCatalogResource.GetMessageRequired(nameof(x.RoleId)));
 
             RuleFor(x => x.Login)
                 .Cascade(CascadeMode.Stop)

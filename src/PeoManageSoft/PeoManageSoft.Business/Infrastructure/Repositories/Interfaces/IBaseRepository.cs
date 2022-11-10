@@ -50,6 +50,16 @@ namespace PeoManageSoft.Business.Infrastructure.Repositories.Interfaces
         /// </returns>
         Task<bool> ExistsAsync(IScope scope, long id);
         /// <summary>
+        /// Determines whether the specified entity table contains the record that matches the rules.
+        /// </summary>
+        /// <param name="scope">Transactional scope</param>
+        /// <param name="rule">Rules to filter the data.</param>
+        /// <returns>
+        /// Task: Represents an asynchronous operation.
+        /// Returns true if the record exists in the table
+        /// </returns>
+        Task<bool> ExistsAsync(IScope scope, IRule<TEntityField> rule);
+        /// <summary>
         /// Query the record in the <see cref="TEntity"/> table by id and asynchronously using Task.
         /// </summary>
         /// <param name="scope">Transactional scope</param>

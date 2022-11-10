@@ -5,7 +5,7 @@ namespace PeoManageSoft.Business.Infrastructure.Helpers
     /// <summary>
     /// Smtp configuration.
     /// </summary>
-    internal sealed class SmtpConfiguration: ISmtpConfiguration
+    internal sealed class SmtpConfiguration : ISmtpConfiguration
     {
         #region Properties
 

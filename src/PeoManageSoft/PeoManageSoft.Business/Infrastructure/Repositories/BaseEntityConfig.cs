@@ -155,6 +155,27 @@ namespace PeoManageSoft.Business.Infrastructure.Repositories
         }
 
         /// <summary>
+        /// Gets select exists command of the entity by rules.
+        /// </summary>
+        /// <param name="rule"></param>
+        /// <returns>
+        /// Returns the sql statement, parameters and the command type.
+        /// </returns>
+        public (string sqlStatement, IEnumerable<IParameter> parameters, CommandType commandType) GetSelectExistsByRulesSqlStatement(IRule<TEntityField> rule)
+        {
+            var parametersConfig = GetParametersConfigAndReadonly();
+
+            var sql = GetSelectExistsByRulesSqlStatement(
+                rule,
+                entityField => parametersConfig[entityField],
+                out var parameterList);
+
+            return (sqlStatement: sql,
+                parameters: parameterList,
+                CommandType.Text);
+        }
+
+        /// <summary>
         /// Gets select command of the entity by id.
         /// </summary>
         /// <param name="id">User identifier value</param>
@@ -336,9 +357,28 @@ namespace PeoManageSoft.Business.Infrastructure.Repositories
         }
 
         /// <summary>
+        /// Gets select exists by rules command of the entity.
+        /// </summary>
+        /// <param name="rule">Rules to filter the data</param>
+        /// <param name="searchParameter">Search for parameter in entity configuration</param>
+        /// <param name="parameters">Parameter list to a command object.</param>
+        /// <returns>SQL statement</returns>
+        private string GetSelectExistsByRulesSqlStatement(IRule<TEntityField> rule, Func<TEntityField, ParameterConfig> searchParameter, out IEnumerable<IParameter> parameters)
+        {
+            var paramList = new List<IParameter>();
+
+            var sqlStatement = $"SELECT CAST(1 AS BIT) FROM {_view.Name} ";
+
+            sqlStatement += $"WHERE {GetRules(rule, paramList, searchParameter)}";
+
+            parameters = paramList;
+
+            return sqlStatement;
+        }
+
+        /// <summary>
         /// Gets select by rules command of the entity.
         /// </summary>
-        /// <typeparam name="TEntityField">Entity fields types</typeparam>
         /// <param name="rule">Rules to filter the data</param>
         /// <param name="searchParameter">Search for parameter in entity configuration</param>
         /// <param name="parameters">Parameter list to a command object.</param>

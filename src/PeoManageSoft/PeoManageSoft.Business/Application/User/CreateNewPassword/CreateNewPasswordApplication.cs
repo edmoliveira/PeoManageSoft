@@ -1,11 +1,9 @@
 ﻿using Microsoft.Extensions.Logging;
-using PeoManageSoft.Business.Domain.Services.Commands.User.Patch;
+using PeoManageSoft.Business.Domain.Services.Functions.User;
 using PeoManageSoft.Business.Domain.Services.Queries.User.Get;
 using PeoManageSoft.Business.Infrastructure.Helpers.Exceptions;
 using PeoManageSoft.Business.Infrastructure.Helpers.Extensions;
 using PeoManageSoft.Business.Infrastructure.Helpers.Interfaces;
-using PeoManageSoft.Business.Infrastructure.ObjectRelationalMapper;
-using PeoManageSoft.Business.Infrastructure.Repositories.User;
 using System.Net;
 
 namespace PeoManageSoft.Business.Application.User.CreateNewPassword
@@ -18,17 +16,21 @@ namespace PeoManageSoft.Business.Application.User.CreateNewPassword
         #region Fields
 
         /// <summary>
+        /// User function facade that provides a simplified interface.
+        /// </summary>
+        private readonly IUserFunctionFacade _functionFacade;
+        /// <summary>
         /// Handles all queries to get the user.
         /// </summary>
         private readonly IGetHandler _getHandler;
         /// <summary>
-        /// Handles all commands to patch the user.
-        /// </summary>
-        private readonly IPatchHandler _patchHandler;
-        /// <summary>
         /// Manages Json Web Token and Cryptography.
         /// </summary>
         private readonly ITokenJwt _tokenJwt;
+        /// <summary>
+        /// Application Configuration.
+        /// </summary>
+        private readonly IAppConfig _appConfig;
         /// <summary>
         /// Log
         /// </summary>
@@ -41,20 +43,23 @@ namespace PeoManageSoft.Business.Application.User.CreateNewPassword
         /// <summary>
         /// Initializes a new instance of the PeoManageSoft.Business.Application.User.CreateNewPassword.CreateNewPasswordApplication class.
         /// </summary>
+        /// <param name="functionFacade">User function facade that provides a simplified interface.</param>
         /// <param name="getHandler">Handles all queries to get the user.</param>
-        /// <param name="patchHandler">Handles all commands to patch the user.</param>
         /// <param name="tokenJwt">Manages Json Web Token and Cryptography.</param>
+        /// <param name="appConfig">Application Configuration.</param>
         /// <param name="logger">Log</param>
         public CreateNewPasswordApplication(
+                IUserFunctionFacade functionFacade,
                 IGetHandler getHandler,
-                IPatchHandler patchHandler,
                 ITokenJwt tokenJwt,
+                IAppConfig appConfig,
                 ILogger<CreateNewPasswordApplication> logger
             )
         {
+            _functionFacade = functionFacade;
             _getHandler = getHandler;
-            _patchHandler = patchHandler;
             _tokenJwt = tokenJwt;
+            _appConfig = appConfig;
             _logger = logger;
         }
 
@@ -84,26 +89,16 @@ namespace PeoManageSoft.Business.Application.User.CreateNewPassword
 
                 if (userResponse is null)
                 {
-                    throw new RequestException(HttpStatusCode.NotFound, "User not found!");
+                    throw new RequestException(HttpStatusCode.NotFound, _appConfig.MessagesCatalogResource.GetMessageNotFound(nameof(userId)));
                 }
 
-                var password = _tokenJwt.EncryptPassword(request.Password);
-
-                await _patchHandler.HandleAsync(new PatchRequest
-                {
-                    Id = userResponse.Id,
-                    Fields = new List<Field<UserEntityField>>
-                    {
-                        new Field<UserEntityField> {
-                            Type = UserEntityField.Password,
-                            Value = password
-                        }
-                    }
-                }).ConfigureAwait(false);
+                await _functionFacade
+                        .PutPasswordAsync(userResponse.Id, _tokenJwt.EncryptPassword(request.Password))
+                        .ConfigureAwait(false);
             }
             else
             {
-                throw new RequestException(HttpStatusCode.Unauthorized, "Expired token!");
+                throw new RequestException(HttpStatusCode.Unauthorized, _appConfig.MessagesCatalogResource.GetMessageExpiredToken());
             }
 
             _logger.LogEndInformation(methodName);

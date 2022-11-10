@@ -7,7 +7,7 @@ namespace PeoManageSoft.Business.Domain.Services.Apis.Geo
     /// <summary>
     /// Reverse geocoding is the process of converting geographic coordinates into a human-readable address.
     /// </summary>
-    internal sealed class GeoApi: IGeoApi
+    internal sealed class GeoApi : IGeoApi
     {
         #region Fields private
 

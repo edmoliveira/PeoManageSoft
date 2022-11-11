@@ -1,11 +1,8 @@
 ﻿using AutoMapper;
 using Microsoft.Extensions.Logging;
 using PeoManageSoft.Business.Domain.Services.Commands.User.Remove;
-using PeoManageSoft.Business.Domain.Services.Functions.User;
-using PeoManageSoft.Business.Infrastructure.Helpers.Exceptions;
 using PeoManageSoft.Business.Infrastructure.Helpers.Extensions;
 using PeoManageSoft.Business.Infrastructure.Helpers.Interfaces;
-using System.Net;
 
 namespace PeoManageSoft.Business.Application.User.Delete
 {
@@ -21,9 +18,9 @@ namespace PeoManageSoft.Business.Application.User.Delete
         /// </summary>
         private readonly IRemoveHandler _removeHandler;
         /// <summary>
-        /// User function facade that provides a simplified interface.
+        /// Application layer validation object.
         /// </summary>
-        private readonly IUserFunctionFacade _functionFacade;
+        private readonly IDeleteValidation _deleteValidation;
         /// <summary>
         /// Data Mapper 
         /// </summary>
@@ -45,20 +42,20 @@ namespace PeoManageSoft.Business.Application.User.Delete
         /// Initializes a new instance of the PeoManageSoft.Business.Application.User.Delete.DeleteApplication class.
         /// </summary>
         /// <param name="removeHandler">Handles all commands to remove the user.</param>
-        /// <param name="functionFacade">User function facade that provides a simplified interface./param>
+        /// <param name="deleteValidation">Application layer validation object.</param>
         /// <param name="mapper">Data Mapper </param>
         /// <param name="appConfig">Application Configuration.</param>
         /// <param name="logger">Log</param>
         public DeleteApplication(
                 IRemoveHandler removeHandler,
-                IUserFunctionFacade functionFacade,
+                IDeleteValidation deleteValidation,
                 IMapper mapper,
                 IAppConfig appConfig,
                 ILogger<DeleteApplication> logger
             )
         {
             _removeHandler = removeHandler;
-            _functionFacade = functionFacade;
+            _deleteValidation = deleteValidation;
             _mapper = mapper;
             _appConfig = appConfig;
             _logger = logger;
@@ -81,12 +78,7 @@ namespace PeoManageSoft.Business.Application.User.Delete
 
             _logger.LogBeginInformation(methodName);
 
-            bool exists = await _functionFacade.ExistsAsync(request.Id).ConfigureAwait(false);
-
-            if (!exists)
-            {
-                throw new RequestException(HttpStatusCode.NotFound, _appConfig.MessagesCatalogResource.GetMessageNotFound(nameof(request.Id)));
-            }
+            await _deleteValidation.RunValidationAsync(request).ConfigureAwait(false);
 
             await _removeHandler.HandleAsync(_mapper.Map<RemoveRequest>(request)).ConfigureAwait(false);
 

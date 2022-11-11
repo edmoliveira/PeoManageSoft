@@ -38,10 +38,6 @@ namespace PeoManageSoft.Business.Domain.Services.Commands.User.Update
         /// </summary>
         public long DepartmentId { get; set; }
         /// <summary>
-        /// User email
-        /// </summary>
-        public string Email { get; set; }
-        /// <summary>
         /// User bussiness phone
         /// </summary>
         public string BussinessPhone { get; set; }

@@ -13,6 +13,12 @@ namespace PeoManageSoft.Business.Domain.Services.Functions.User
         #region Methods
 
         /// <summary>
+        /// Activates the user and asynchronously using Task.
+        /// </summary>
+        /// <param name="userId">User identifier</param>
+        /// <returns>Represents an asynchronous operation.</returns>
+        Task ActivateUserAsync(long userId);
+        /// <summary>
         /// Determines whether the specified user table contains the record that match the id and asynchronously using Task.
         /// </summary>
         /// <param name="userId">User identifier</param>

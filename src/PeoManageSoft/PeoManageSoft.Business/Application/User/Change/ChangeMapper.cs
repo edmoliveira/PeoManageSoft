@@ -24,7 +24,6 @@ namespace PeoManageSoft.Business.Application.User.Change
                 .ForMember(dest => dest.ShortName, opt => opt.MapFrom(src => src.ShortName))
                 .ForMember(dest => dest.TitleId, opt => opt.MapFrom(src => src.TitleId))
                 .ForMember(dest => dest.DepartmentId, opt => opt.MapFrom(src => src.DepartmentId))
-                .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.Email))
                 .ForMember(dest => dest.BussinessPhone, opt => opt.MapFrom(src => src.BussinessPhone))
                 .ForMember(dest => dest.MobilePhone, opt => opt.MapFrom(src => src.MobilePhone));
         }

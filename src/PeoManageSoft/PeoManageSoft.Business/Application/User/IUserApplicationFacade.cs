@@ -1,4 +1,5 @@
-﻿using PeoManageSoft.Business.Application.User.Change;
+﻿using PeoManageSoft.Business.Application.User.ActivateUser;
+using PeoManageSoft.Business.Application.User.Change;
 using PeoManageSoft.Business.Application.User.ChangePassword;
 using PeoManageSoft.Business.Application.User.CreateNewPassword;
 using PeoManageSoft.Business.Application.User.Delete;
@@ -6,6 +7,7 @@ using PeoManageSoft.Business.Application.User.New;
 using PeoManageSoft.Business.Application.User.Read;
 using PeoManageSoft.Business.Application.User.Read.Response;
 using PeoManageSoft.Business.Application.User.SendPasswordToken;
+using PeoManageSoft.Business.Application.User.SendReminderActivateUser;
 using PeoManageSoft.Business.Application.User.SignIn;
 using PeoManageSoft.Business.Application.User.ValidatePasswordToken;
 
@@ -18,6 +20,12 @@ namespace PeoManageSoft.Business.Application.User
     {
         #region Methods
 
+        /// <summary>
+        /// Activates the user and asynchronously using Task.
+        /// </summary>
+        /// <param name="request">Request data</param>
+        /// <returns>Represents an asynchronous operation.</returns>
+        Task ActivateUserAsync(ActivateUserRequest request);
         /// <summary>
         /// Registers an new user and asynchronously using Task.
         /// </summary>
@@ -72,6 +80,12 @@ namespace PeoManageSoft.Business.Application.User
         /// <param name="request">Request data</param>
         /// <returns>Represents an asynchronous operation.</returns>
         Task SendPasswordTokenAsync(SendPasswordTokenRequest request);
+        /// <summary>
+        /// Sends an email with a reminder to activate the user and asynchronously using Task.
+        /// </summary>
+        /// <param name="request">Request data</param>
+        /// <returns>Represents an asynchronous operation.</returns>
+        Task SendReminderActivateUserAsync(SendReminderActivateUserRequest request);
         /// <summary>
         /// Validates if the password token is valid.  and asynchronously using Task.
         /// </summary>

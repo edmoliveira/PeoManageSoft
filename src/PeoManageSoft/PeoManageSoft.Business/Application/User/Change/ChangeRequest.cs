@@ -38,10 +38,6 @@ namespace PeoManageSoft.Business.Application.User.Change
         /// </summary>
         public long DepartmentId { get; set; }
         /// <summary>
-        /// User email
-        /// </summary>
-        public string Email { get; set; }
-        /// <summary>
         /// User bussiness phone
         /// </summary>
         public string BussinessPhone { get; set; }

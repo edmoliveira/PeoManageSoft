@@ -2,6 +2,30 @@
 
 namespace PeoManageSoft.Business.Infrastructure
 {
+    /// <summary>
+    /// Provides a extension of the base class for application enumerations.
+    /// </summary>
+    public static class Enumerators
+    {
+        #region Methods
+
+        #region public
+
+        /// <summary>
+        ///  Returns a Boolean telling whether a given integral value, or its name as a string, exists in a specified enumeration.
+        /// </summary>
+        /// <param name="value">The value or name of a constant in enumType.</param>
+        /// <returns>true if a constant in enumType has a value equal to value; otherwise, false.</returns>
+        public static bool UserRoleIsDefined(int value)
+        {
+            return value > 0 && Enum.IsDefined(typeof(UserRole), value);
+        }
+
+        #endregion
+
+        #endregion
+    }
+
     #region Enumerators
 
     /// <summary>

@@ -1,4 +1,5 @@
-﻿using PeoManageSoft.Business.Domain.Services.Functions.User.EmailExists;
+﻿using PeoManageSoft.Business.Domain.Services.Functions.User.ActivateUser;
+using PeoManageSoft.Business.Domain.Services.Functions.User.EmailExists;
 using PeoManageSoft.Business.Domain.Services.Functions.User.Exists;
 using PeoManageSoft.Business.Domain.Services.Functions.User.GetByAuthentication;
 using PeoManageSoft.Business.Domain.Services.Functions.User.GetByEmail;
@@ -26,6 +27,10 @@ namespace PeoManageSoft.Business.Domain.Services.Functions.User
         /// Defines a mechanism for retrieving a service object; that is, an object that provides custom support to other objects.
         /// </summary>
         private readonly IServiceProvider _provider;
+        /// <summary>
+        /// Function that activates the user.
+        /// </summary>
+        private readonly Lazy<IActivateUserFunction> _activateUserFunction;
         /// <summary>
         /// Function that determines whether the specified user table contains the record that match the id
         /// </summary>
@@ -79,6 +84,7 @@ namespace PeoManageSoft.Business.Domain.Services.Functions.User
         {
             _provider = provider;
 
+            _activateUserFunction = new Lazy<IActivateUserFunction>(() => GetService<IActivateUserFunction>());
             _existsFunction = new Lazy<IExistsFunction>(() => GetService<IExistsFunction>());
             _getByPasswordTokenFunction = new Lazy<IGetByPasswordTokenFunction>(() => GetService<IGetByPasswordTokenFunction>());
             _getByAuthenticationFunction = new Lazy<IGetByAuthenticationFunction>(() => GetService<IGetByAuthenticationFunction>());
@@ -96,6 +102,16 @@ namespace PeoManageSoft.Business.Domain.Services.Functions.User
         #region Methods
 
         #region public
+
+        /// <summary>
+        /// Activates the user and asynchronously using Task.
+        /// </summary>
+        /// <param name="userId">User identifier</param>
+        /// <returns>Represents an asynchronous operation.</returns>
+        public async Task ActivateUserAsync(long userId)
+        {
+            await _activateUserFunction.Value.ExecuteAsync(userId).ConfigureAwait(false);
+        }
 
         /// <summary>
         /// Determines whether the specified user table contains the record that match the id and asynchronously using Task.

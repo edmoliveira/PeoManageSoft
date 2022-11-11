@@ -21,9 +21,9 @@ namespace PeoManageSoft.Business.Application.User
         /// <param name="services">Create a MapperConfiguration instance and initialize configuration via the constructor.</param>
         public static void AddUserApplicationProfiles(this IMapperConfigurationExpression configuration)
         {
-            configuration.AddProfile<NewMapper>();
             configuration.AddProfile<ChangeMapper>();
             configuration.AddProfile<DeleteMapper>();
+            configuration.AddProfile<NewMapper>();           
             configuration.AddProfile<ReadMapper>();
         }
 

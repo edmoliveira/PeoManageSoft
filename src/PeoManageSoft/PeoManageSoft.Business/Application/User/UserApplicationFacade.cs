@@ -1,4 +1,5 @@
-﻿using PeoManageSoft.Business.Application.User.Change;
+﻿using PeoManageSoft.Business.Application.User.ActivateUser;
+using PeoManageSoft.Business.Application.User.Change;
 using PeoManageSoft.Business.Application.User.ChangePassword;
 using PeoManageSoft.Business.Application.User.CreateNewPassword;
 using PeoManageSoft.Business.Application.User.Delete;
@@ -7,6 +8,7 @@ using PeoManageSoft.Business.Application.User.Read;
 using PeoManageSoft.Business.Application.User.Read.Response;
 using PeoManageSoft.Business.Application.User.ReadAll;
 using PeoManageSoft.Business.Application.User.SendPasswordToken;
+using PeoManageSoft.Business.Application.User.SendReminderActivateUser;
 using PeoManageSoft.Business.Application.User.SignIn;
 using PeoManageSoft.Business.Application.User.ValidatePasswordToken;
 using PeoManageSoft.Business.Infrastructure.Helpers.Exceptions;
@@ -24,6 +26,10 @@ namespace PeoManageSoft.Business.Application.User
         /// Defines a mechanism for retrieving a service object; that is, an object that provides custom support to other objects.
         /// </summary>
         private readonly IServiceProvider _provider;
+        /// <summary>
+        /// Application layer to activate the user if the user token is valid. 
+        /// </summary>
+        private readonly Lazy<IActivateUserApplication> _activateUserApplication;
         /// <summary>
         /// New user application layer.
         /// </summary>
@@ -53,6 +59,10 @@ namespace PeoManageSoft.Business.Application.User
         /// </summary>
         private readonly Lazy<ISendPasswordTokenApplication> _sendPasswordTokenApplication;
         /// <summary>
+        /// Application layer to send an email with a reminder to activate the user.
+        /// </summary>
+        private readonly Lazy<ISendReminderActivateUserApplication> _sendReminderActivateUserApplication;
+        /// <summary>
         /// Application layer to validate if the password token is valid. 
         /// </summary>
         private readonly Lazy<IValidatePasswordTokenApplication> _validPasswordTokenApplication;
@@ -77,6 +87,7 @@ namespace PeoManageSoft.Business.Application.User
         {
             _provider = provider;
 
+            _activateUserApplication = new Lazy<IActivateUserApplication>(() => GetService<IActivateUserApplication>());
             _newApplication = new Lazy<INewApplication>(() => GetService<INewApplication>());
             _changeApplication = new Lazy<IChangeApplication>(() => GetService<IChangeApplication>());
             _deleteApplication = new Lazy<IDeleteApplication>(() => GetService<IDeleteApplication>());
@@ -84,6 +95,7 @@ namespace PeoManageSoft.Business.Application.User
             _readAllApplication = new Lazy<IReadAllApplication>(() => GetService<IReadAllApplication>());
             _signInApplication = new Lazy<ISignInApplication>(() => GetService<ISignInApplication>());
             _sendPasswordTokenApplication = new Lazy<ISendPasswordTokenApplication>(() => GetService<ISendPasswordTokenApplication>());
+            _sendReminderActivateUserApplication = new Lazy<ISendReminderActivateUserApplication>(() => GetService<ISendReminderActivateUserApplication>());
             _validPasswordTokenApplication = new Lazy<IValidatePasswordTokenApplication>(() => GetService<IValidatePasswordTokenApplication>());
             _createNewPasswordApplication = new Lazy<ICreateNewPasswordApplication>(() => GetService<ICreateNewPasswordApplication>());
             _changePasswordApplication = new Lazy<IChangePasswordApplication>(() => GetService<IChangePasswordApplication>());
@@ -94,6 +106,16 @@ namespace PeoManageSoft.Business.Application.User
         #region Methods
 
         #region public
+
+        /// <summary>
+        /// Activates the user and asynchronously using Task.
+        /// </summary>
+        /// <param name="request">Request data</param>
+        /// <returns>Represents an asynchronous operation.</returns>
+        public async Task ActivateUserAsync(ActivateUserRequest request)
+        {
+            await _activateUserApplication.Value.HandleAsync(request).ConfigureAwait(false);
+        }
 
         /// <summary>
         /// Registers an new user and asynchronously using Task.
@@ -167,13 +189,23 @@ namespace PeoManageSoft.Business.Application.User
         }
 
         /// <summary>
-        /// Sends an email to the user to change his password. and asynchronously using Task.
+        /// Sends an email to the user to change his password and asynchronously using Task.
         /// </summary>
         /// <param name="request">Request data</param>
         /// <returns>Represents an asynchronous operation.</returns>
         public async Task SendPasswordTokenAsync(SendPasswordTokenRequest request)
         {
             await _sendPasswordTokenApplication.Value.HandleAsync(request).ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// Sends an email with a reminder to activate the user and asynchronously using Task.
+        /// </summary>
+        /// <param name="request">Request data</param>
+        /// <returns>Represents an asynchronous operation.</returns>
+        public async Task SendReminderActivateUserAsync(SendReminderActivateUserRequest request)
+        {
+            await _sendReminderActivateUserApplication.Value.HandleAsync(request).ConfigureAwait(false);
         }
 
         /// <summary>

@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using PeoManageSoft.Business.Domain.Services.Functions.User.ActivateUser;
 using PeoManageSoft.Business.Domain.Services.Functions.User.EmailExists;
 using PeoManageSoft.Business.Domain.Services.Functions.User.Exists;
 using PeoManageSoft.Business.Domain.Services.Functions.User.GetByAuthentication;
@@ -26,6 +27,7 @@ namespace PeoManageSoft.Business.Domain.Services.Functions.User
         /// <param name="services">Specifies the contract for a collection of service descriptors.</param>
         public static void AddUserFunctionDependencies(this IServiceCollection services)
         {
+            services.AddScoped<IActivateUserFunction, ActivateUserFunction>();
             services.AddScoped<IUserFunctionFacade, UserFunctionFacade>();
             services.AddScoped<IExistsFunction, ExistsFunction>();
             services.AddScoped<IGetByPasswordTokenFunction, GetByPasswordTokenFunction>();

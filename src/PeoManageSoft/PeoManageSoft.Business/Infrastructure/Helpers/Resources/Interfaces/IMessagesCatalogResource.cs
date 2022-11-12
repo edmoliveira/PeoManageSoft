@@ -85,7 +85,7 @@
         /// Gets the message expired token.
         /// </summary>
         /// <returns>Returns the message expired token.</returns>
-        string GetMessageExpiredToken();        
+        string GetMessageExpiredToken();
         /// <summary>
         /// Gets the message not found.
         /// </summary>

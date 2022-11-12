@@ -10,14 +10,14 @@ using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
-using PeoManageSoft.Business.Application.User;
+using PeoManageSoft.Business.Application;
 using PeoManageSoft.Business.Domain.Services.Apis;
-using PeoManageSoft.Business.Domain.Services.Commands.User;
+using PeoManageSoft.Business.Domain.Services.Commands;
 using PeoManageSoft.Business.Domain.Services.Creators;
 using PeoManageSoft.Business.Domain.Services.Factories;
 using PeoManageSoft.Business.Domain.Services.Functions;
 using PeoManageSoft.Business.Domain.Services.Middlewares;
-using PeoManageSoft.Business.Domain.Services.Queries.User;
+using PeoManageSoft.Business.Domain.Services.Queries;
 using PeoManageSoft.Business.Infrastructure.Helpers.Exceptions;
 using PeoManageSoft.Business.Infrastructure.Helpers.Extensions;
 using PeoManageSoft.Business.Infrastructure.Helpers.Filters;
@@ -59,7 +59,6 @@ namespace PeoManageSoft.Business.Infrastructure.Helpers
             services.AddScoped(c => (ISetApplicationContext)c.GetService<IApplicationContext>());
 
             AddMapperConfiguration(services);
-            AddFluentValidationConfiguration(services);
 
             services.AddControllers();
             services.AddHttpContextAccessor();
@@ -83,10 +82,9 @@ namespace PeoManageSoft.Business.Infrastructure.Helpers
             services.AddCreatorDependencies();
             services.AddApiDependencies();
             services.AddFunctionDependencies();
-
-            AddApplicationServices(services);
-            AddCommandServices(services);
-            AddQueryServices(services);
+            services.AddApplicationDependencies();
+            services.AddCommandDependencies();
+            services.AddQueryDependencies();
 
             services.AddSwaggerGen(c =>
             {
@@ -226,45 +224,6 @@ namespace PeoManageSoft.Business.Infrastructure.Helpers
         #region private
 
         /// <summary>
-        /// Adds Fluent Validation services to the specified Microsoft.Extensions.DependencyInjection.IServiceCollection.
-        /// </summary>
-        /// <param name="services">Specifies the contract for a collection of service descriptors.</param>
-        private static void AddFluentValidationConfiguration(IServiceCollection services)
-        {
-            services.AddUserApplicationValidation();
-        }
-
-        /// <summary>
-        ///  Adds services of the type Application in TService with an implementation type specified in 
-        ///  TImplementation to the specified Microsoft.Extensions.DependencyInjection.IServiceCollection.
-        /// </summary>
-        /// <param name="services">Specifies the contract for a collection of service descriptors.</param>
-        private static void AddApplicationServices(IServiceCollection services)
-        {
-            services.AddUserApplicationDependencies();
-        }
-
-        /// <summary>
-        ///  Adds services of the type Command in TService with an implementation type specified in 
-        ///  TImplementation to the specified Microsoft.Extensions.DependencyInjection.IServiceCollection.
-        /// </summary>
-        /// <param name="services">Specifies the contract for a collection of service descriptors.</param>
-        private static void AddCommandServices(IServiceCollection services)
-        {
-            services.AddUserCommandDependencies();
-        }
-
-        /// <summary>
-        ///  Adds services of the type Query in TService with an implementation type specified in 
-        ///  TImplementation to the specified Microsoft.Extensions.DependencyInjection.IServiceCollection.
-        /// </summary>
-        /// <param name="services">Specifies the contract for a collection of service descriptors.</param>
-        private static void AddQueryServices(IServiceCollection services)
-        {
-            services.AddUserQueryDependencies();
-        }
-
-        /// <summary>
         /// Adds object mappers to configuration source for generated mappers
         /// </summary>
         /// <param name="services">Specifies the contract for a collection of service descriptors.</param>
@@ -273,13 +232,13 @@ namespace PeoManageSoft.Business.Infrastructure.Helpers
             var configuration = new MapperConfiguration(c =>
             {
                 //Commmands
-                c.AddUserCommandProfiles();
+                c.AddCommandProfiles();
 
                 //Queries
-                c.AddUserQueryProfiles();
+                c.AddQueryProfiles();
 
                 //Applications
-                c.AddUserApplicationProfiles();
+                c.AddApplicationProfiles();
 
                 //Repositories
                 c.AddRepositoryProfiles();

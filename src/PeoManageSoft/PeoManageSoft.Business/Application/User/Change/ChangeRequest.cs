@@ -1,6 +1,4 @@
-﻿using PeoManageSoft.Business.Infrastructure;
-
-namespace PeoManageSoft.Business.Application.User.Change
+﻿namespace PeoManageSoft.Business.Application.User.Change
 {
     /// <summary>
     /// Request data.

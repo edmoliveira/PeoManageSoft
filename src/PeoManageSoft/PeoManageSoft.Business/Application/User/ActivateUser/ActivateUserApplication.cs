@@ -92,7 +92,7 @@ namespace PeoManageSoft.Business.Application.User.ActivateUser
                     throw new RequestException(HttpStatusCode.NotFound, _appConfig.MessagesCatalogResource.GetMessageNotFound(nameof(userId)));
                 }
 
-                if(!userResponse.IsActive)
+                if (!userResponse.IsActive)
                 {
                     await _functionFacade.ActivateUserAsync(userResponse.Id).ConfigureAwait(false);
                 }

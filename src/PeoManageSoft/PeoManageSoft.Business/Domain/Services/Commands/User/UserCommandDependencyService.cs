@@ -33,8 +33,6 @@ namespace PeoManageSoft.Business.Domain.Services.Commands.User
             services.AddScoped<IRemoveCommand, RemoveCommand>();
             services.AddScoped<ICreateTokenHandler, CreateTokenHandler>();
             services.AddScoped<ICreateTokenCommand, CreateTokenCommand>();
-            services.AddScoped<ISendEmailHandler, SendEmailHandler>();
-            services.AddScoped<ISendEmailCommand, SendEmailCommand>();
         }
 
         #endregion

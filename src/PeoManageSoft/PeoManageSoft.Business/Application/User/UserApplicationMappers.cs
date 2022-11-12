@@ -23,7 +23,7 @@ namespace PeoManageSoft.Business.Application.User
         {
             configuration.AddProfile<ChangeMapper>();
             configuration.AddProfile<DeleteMapper>();
-            configuration.AddProfile<NewMapper>();           
+            configuration.AddProfile<NewMapper>();
             configuration.AddProfile<ReadMapper>();
         }
 

@@ -84,9 +84,9 @@ namespace PeoManageSoft.Business.Infrastructure.Helpers.Exceptions
         {
             var dictionary = new Dictionary<string, IList<string>>();
 
-            foreach(var propertyName in errors.GroupBy(c => c.PropertyName))
+            foreach (var propertyName in errors.GroupBy(c => c.PropertyName))
             {
-                dictionary.Add(propertyName.Key, 
+                dictionary.Add(propertyName.Key,
                     errors
                         .Where(c => c.PropertyName == propertyName.Key)
                         .Select(c => c.ErrorMessage)

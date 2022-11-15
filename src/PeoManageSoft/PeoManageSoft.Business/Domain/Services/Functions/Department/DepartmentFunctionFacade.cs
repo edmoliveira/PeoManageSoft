@@ -1,4 +1,5 @@
 ﻿using PeoManageSoft.Business.Domain.Services.Functions.Department.Exists;
+using PeoManageSoft.Business.Domain.Services.Functions.Department.NameExists;
 using PeoManageSoft.Business.Infrastructure.Helpers.Exceptions;
 
 namespace PeoManageSoft.Business.Domain.Services.Functions.Department
@@ -18,6 +19,10 @@ namespace PeoManageSoft.Business.Domain.Services.Functions.Department
         /// Function that determines whether the specified department table contains the record that match the id
         /// </summary>
         private readonly Lazy<IExistsFunction> _existsFunction;
+        /// <summary>
+        /// Function that determines if the name already exists in the department table.
+        /// </summary>
+        private readonly Lazy<INameExistsFunction> _nameExistsFunction;
 
         #endregion
 
@@ -32,6 +37,7 @@ namespace PeoManageSoft.Business.Domain.Services.Functions.Department
             _provider = provider;
 
             _existsFunction = new Lazy<IExistsFunction>(() => GetService<IExistsFunction>());
+            _nameExistsFunction = new Lazy<INameExistsFunction>(() => GetService<INameExistsFunction>());
         }
 
         #endregion
@@ -51,6 +57,22 @@ namespace PeoManageSoft.Business.Domain.Services.Functions.Department
         public async Task<bool> ExistsAsync(long departmentId)
         {
             return await _existsFunction.Value.ExecuteAsync(departmentId).ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// Determines if the name already exists in the department table.
+        /// </summary>
+        /// <param name="name">Department name</param>
+        /// <param name="departmentId">Department identifier</param>
+        /// <returns>
+        /// Task: Represents an asynchronous operation. 
+        /// Returns true if the name already exists.
+        /// </returns>
+        public async Task<bool> NameExistsAsync(string name, long? departmentId = null)
+        {
+            return await _nameExistsFunction.Value
+                .ExecuteAsync(new NameExistsFunctionRequest(name, departmentId))
+                .ConfigureAwait(false);
         }
 
         #endregion

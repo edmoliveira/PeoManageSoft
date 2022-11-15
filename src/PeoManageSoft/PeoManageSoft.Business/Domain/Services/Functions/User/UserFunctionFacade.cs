@@ -149,7 +149,7 @@ namespace PeoManageSoft.Business.Domain.Services.Functions.User
         /// <param name="userId">User identifier</param>
         /// <returns>
         /// Task: Represents an asynchronous operation. 
-        /// Returns true if the email already exists.
+        /// Returns true if the login already exists.
         /// </returns>
         public async Task<bool> LoginExistsAsync(string login, long? userId = null)
         {

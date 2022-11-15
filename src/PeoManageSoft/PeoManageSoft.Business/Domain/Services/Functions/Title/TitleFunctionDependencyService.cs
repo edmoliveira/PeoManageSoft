@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using PeoManageSoft.Business.Domain.Services.Functions.Title.Exists;
+using PeoManageSoft.Business.Domain.Services.Functions.Title.NameExists;
 
 namespace PeoManageSoft.Business.Domain.Services.Functions.Title
 {
@@ -20,6 +21,7 @@ namespace PeoManageSoft.Business.Domain.Services.Functions.Title
         {
             services.AddScoped<ITitleFunctionFacade, TitleFunctionFacade>();
             services.AddScoped<IExistsFunction, ExistsFunction>();
+            services.AddScoped<INameExistsFunction, NameExistsFunction>();
         }
 
         #endregion

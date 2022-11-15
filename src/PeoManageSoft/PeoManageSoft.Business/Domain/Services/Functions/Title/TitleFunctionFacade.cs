@@ -1,4 +1,5 @@
 ﻿using PeoManageSoft.Business.Domain.Services.Functions.Title.Exists;
+using PeoManageSoft.Business.Domain.Services.Functions.Title.NameExists;
 using PeoManageSoft.Business.Infrastructure.Helpers.Exceptions;
 
 namespace PeoManageSoft.Business.Domain.Services.Functions.Title
@@ -18,6 +19,10 @@ namespace PeoManageSoft.Business.Domain.Services.Functions.Title
         /// Function that determines whether the specified title table contains the record that match the id
         /// </summary>
         private readonly Lazy<IExistsFunction> _existsFunction;
+        /// <summary>
+        /// Function that determines if the name already exists in the title table.
+        /// </summary>
+        private readonly Lazy<INameExistsFunction> _nameExistsFunction;
 
         #endregion
 
@@ -32,6 +37,7 @@ namespace PeoManageSoft.Business.Domain.Services.Functions.Title
             _provider = provider;
 
             _existsFunction = new Lazy<IExistsFunction>(() => GetService<IExistsFunction>());
+            _nameExistsFunction = new Lazy<INameExistsFunction>(() => GetService<INameExistsFunction>());
         }
 
         #endregion
@@ -51,6 +57,22 @@ namespace PeoManageSoft.Business.Domain.Services.Functions.Title
         public async Task<bool> ExistsAsync(long titleId)
         {
             return await _existsFunction.Value.ExecuteAsync(titleId).ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// Determines if the name already exists in the title table.
+        /// </summary>
+        /// <param name="name">Title name</param>
+        /// <param name="titleId">Title identifier</param>
+        /// <returns>
+        /// Task: Represents an asynchronous operation. 
+        /// Returns true if the name already exists.
+        /// </returns>
+        public async Task<bool> NameExistsAsync(string name, long? titleId = null)
+        {
+            return await _nameExistsFunction.Value
+                .ExecuteAsync(new NameExistsFunctionRequest(name, titleId))
+                .ConfigureAwait(false);
         }
 
         #endregion

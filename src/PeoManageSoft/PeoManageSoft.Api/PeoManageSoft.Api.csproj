@@ -14,4 +14,8 @@
     <ProjectReference Include="..\PeoManageSoft.Business\PeoManageSoft.Business.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Controllers\Titles\" />
+  </ItemGroup>
+
 </Project>

@@ -27,6 +27,16 @@ namespace PeoManageSoft.Business.Application.User.Change
             IAppConfig appConfig
         )
         {
+            RuleFor(x => x.Id)
+                .Cascade(CascadeMode.Stop)
+                .GreaterThan(0).WithMessage(x => appConfig.MessagesCatalogResource.GetMessageRequired(nameof(x.Id)))
+                .MustAsync(async (id, cancellation) =>
+                {
+                    bool exists = await functionFacade.ExistsAsync(id).ConfigureAwait(false);
+
+                    return exists;
+                }).WithMessage(x => appConfig.MessagesCatalogResource.GetMessageNoExists(nameof(x.Id)));
+
             RuleFor(x => x.TitleId)
                 .Cascade(CascadeMode.Stop)
                 .GreaterThan(0).WithMessage(x => appConfig.MessagesCatalogResource.GetMessageRequired(nameof(x.TitleId)))

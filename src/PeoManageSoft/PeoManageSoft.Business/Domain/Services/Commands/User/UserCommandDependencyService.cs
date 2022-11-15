@@ -1,5 +1,4 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using PeoManageSoft.Business.Domain.Services.Commands.Messaging.SendEmail;
 using PeoManageSoft.Business.Domain.Services.Commands.User.Add;
 using PeoManageSoft.Business.Domain.Services.Commands.User.CreateToken;
 using PeoManageSoft.Business.Domain.Services.Commands.User.Patch;

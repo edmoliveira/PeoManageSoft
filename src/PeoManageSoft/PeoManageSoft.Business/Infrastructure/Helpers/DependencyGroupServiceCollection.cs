@@ -88,6 +88,7 @@ namespace PeoManageSoft.Business.Infrastructure.Helpers
 
             services.AddSwaggerGen(c =>
             {
+                c.CustomSchemaIds(t => t.ToString());
                 c.EnableAnnotations();
                 c.OperationFilter<HeaderParameterOperationFilter>();
 

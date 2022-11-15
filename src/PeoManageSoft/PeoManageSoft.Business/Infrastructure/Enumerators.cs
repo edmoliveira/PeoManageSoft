@@ -144,10 +144,15 @@ namespace PeoManageSoft.Business.Infrastructure
         [Description("Administrator")]
         Admin = 1,
         /// <summary>
+        /// Manager
+        /// </summary>
+        [Description("Manager")]
+        Manager = 2,
+        /// <summary>
         /// Standard user
         /// </summary>
         [Description("Standard user")]
-        User = 2
+        User = 3
     }
 
     /// <summary>

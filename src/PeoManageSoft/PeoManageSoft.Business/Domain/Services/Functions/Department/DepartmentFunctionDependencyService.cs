@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using PeoManageSoft.Business.Domain.Services.Functions.Department.Exists;
+using PeoManageSoft.Business.Domain.Services.Functions.Department.NameExists;
 
 namespace PeoManageSoft.Business.Domain.Services.Functions.Department
 {
@@ -20,6 +21,7 @@ namespace PeoManageSoft.Business.Domain.Services.Functions.Department
         {
             services.AddScoped<IDepartmentFunctionFacade, DepartmentFunctionFacade>();
             services.AddScoped<IExistsFunction, ExistsFunction>();
+            services.AddScoped<INameExistsFunction, NameExistsFunction>();
         }
 
         #endregion

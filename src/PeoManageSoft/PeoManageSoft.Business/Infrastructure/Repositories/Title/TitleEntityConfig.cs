@@ -10,7 +10,7 @@ namespace PeoManageSoft.Business.Infrastructure.Repositories.Title
     /// <summary>
     /// Title Entity field
     /// </summary>
-    public enum TitleEntityField
+    internal enum TitleEntityField
     {
         /// <summary>
         /// Readonly

@@ -157,7 +157,7 @@ namespace PeoManageSoft.Business.Infrastructure.Repositories
         /// <summary>
         /// Gets select exists command of the entity by rules.
         /// </summary>
-        /// <param name="rule"></param>
+        /// <param name="rule">Rules to filter the data</param>
         /// <returns>
         /// Returns the sql statement, parameters and the command type.
         /// </returns>
@@ -194,7 +194,7 @@ namespace PeoManageSoft.Business.Infrastructure.Repositories
         /// <summary>
         /// Gets select command of the entity by rules.
         /// </summary>
-        /// <param name="rule"></param>
+        /// <param name="rule">Rules to filter the data</param>
         /// <returns>
         /// Returns the sql statement, parameters and the command type.
         /// </returns>
@@ -209,6 +209,58 @@ namespace PeoManageSoft.Business.Infrastructure.Repositories
 
             return (sqlStatement: sql,
                 parameters: parameterList,
+                CommandType.Text);
+        }
+
+        /// <summary>
+        /// Gets select command of the entity with pagination by rules
+        /// </summary>
+        /// <param name="page">Current page</param>
+        /// <param name="quantityPerPage">Quantity per page</param>
+        /// <param name="orderBy">OrderBy sql command</param>
+        /// <param name="rule">Rules to filter the data</param>
+        /// <returns>Returns the sql statement, parameters and the command type.</returns>
+        public (string sqlStatement, IEnumerable<IParameter> parameters, CommandType commandType)
+            GetSelectByRulesSqlStatementWithPagination(int page, int quantityPerPage, OrderBy<TEntityField> orderBy, IRule<TEntityField> rule)
+        {
+            var parametersConfig = GetParametersConfigAndReadonly();
+
+            var parameterList = new List<IParameter>();
+
+            var sql = GetSelectSqlStatementWithPagination(
+                        page,
+                        quantityPerPage,
+                        parametersConfig.Where(p => orderBy.Fields.Any(f => f.Equals(p.Key))).Select(p => p.Value),
+                        orderBy.IsDesc,
+                        GetRules(rule, parameterList, entityField => parametersConfig[entityField])
+                    );
+
+            return (sqlStatement: sql,
+                parameters: parameterList,
+                CommandType.Text);
+        }
+
+        /// <summary>
+        /// Gets select all command of the entity with pagination.
+        /// </summary>
+        /// <param name="page">Current page</param>
+        /// <param name="quantityPerPage">Quantity per page</param>
+        /// <param name="orderBy">OrderBy sql command</param>
+        /// <returns>Returns the sql statement, parameters and the command type.</returns>
+        public (string sqlStatement, IEnumerable<IParameter> parameters, CommandType commandType)
+            GetSelectAllSqlStatementWithPagination(int page, int quantityPerPage, OrderBy<TEntityField> orderBy)
+        {
+            var parametersConfig = GetParametersConfigAndReadonly();
+
+            var sql = GetSelectSqlStatementWithPagination(
+                        page,
+                        quantityPerPage,
+                        parametersConfig.Where(p => orderBy.Fields.Any(f => f.Equals(p.Key))).Select(p => p.Value),
+                        orderBy.IsDesc
+                    );
+
+            return (sqlStatement: sql,
+                parameters: null,
                 CommandType.Text);
         }
 
@@ -392,6 +444,38 @@ namespace PeoManageSoft.Business.Infrastructure.Repositories
             sqlStatement += $"WHERE {GetRules(rule, paramList, searchParameter)}";
 
             parameters = paramList;
+            return sqlStatement;
+        }
+
+        /// <summary>
+        /// Gets select command of the entity with pagination.
+        /// </summary>
+        /// <param name="page">Current page</param>
+        /// <param name="quantityPerPage">Quantity per page</param>
+        /// <param name="orderByParameters">OrderBy command parameters</param>
+        /// <param name="isDesc">Indicates whether sorting will be descending</param>
+        /// <param name="whereParameters">Where command parameters</param>
+        /// <returns></returns>
+        private string GetSelectSqlStatementWithPagination(int page, int quantityPerPage, IEnumerable<ParameterConfig> orderByParameters, bool isDesc = false, string whereParameters = null)
+        {
+            var sqlStatement = GetSelectSqlStatement(null);
+
+            if(whereParameters is not null)
+            {
+                sqlStatement += $"WHERE {whereParameters} ";
+            }
+
+            var descCommand = isDesc ? "DESC" : string.Empty;
+
+            var orderParams = orderByParameters
+                                .Select(c => c.SourceColumnAlias)
+                                .Aggregate((result, item) => string.Concat(result, ",", item));
+
+            sqlStatement += $@"
+	            ORDER BY {orderParams} {descCommand} 
+	            OFFSET ({page} - 1) * {quantityPerPage} ROWS 
+	            FETCH NEXT {quantityPerPage} ROWS ONLY
+            ";
 
             return sqlStatement;
         }

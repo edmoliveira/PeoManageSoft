@@ -38,6 +38,11 @@ namespace PeoManageSoft.Business.Infrastructure.Repositories.Title
 
         #region protected 
 
+        /// <summary>
+        /// Sets the unique identifier
+        /// </summary>
+        /// <param name="entity">Mapping to a database table</param>
+        /// <param name="id">The unique identifier</param>
         protected override void SetId(TitleEntity entity, long id)
         {
             IEntity ientity = entity;
@@ -51,7 +56,7 @@ namespace PeoManageSoft.Business.Infrastructure.Repositories.Title
         /// <param name="dataReaderGetValue">Functionality to fetch data from datareader based on entity settings.</param>
         /// <returns>Entity</returns>
         protected override TitleEntity SetEntity(IDataReaderGetValue dataReaderGetValue) =>
-            oMapper.Map<TitleEntity>(dataReaderGetValue);
+            Mapper.Map<TitleEntity>(dataReaderGetValue);
 
         #endregion
 

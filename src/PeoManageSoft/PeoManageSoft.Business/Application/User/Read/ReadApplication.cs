@@ -2,10 +2,8 @@
 using Microsoft.Extensions.Logging;
 using PeoManageSoft.Business.Application.User.Read.Response;
 using PeoManageSoft.Business.Domain.Services.Queries.User.Get;
-using PeoManageSoft.Business.Infrastructure.Helpers.Exceptions;
 using PeoManageSoft.Business.Infrastructure.Helpers.Extensions;
 using PeoManageSoft.Business.Infrastructure.Helpers.Interfaces;
-using System.Net;
 
 namespace PeoManageSoft.Business.Application.User.Read
 {
@@ -16,6 +14,10 @@ namespace PeoManageSoft.Business.Application.User.Read
     {
         #region Fields
 
+        /// <summary>
+        /// Application layer validation object
+        /// </summary>
+        private readonly IReadValidation _readValidation;
         /// <summary>
         ///  Handles all queries to get the user.
         /// </summary>
@@ -40,17 +42,20 @@ namespace PeoManageSoft.Business.Application.User.Read
         /// <summary>
         /// Initializes a new instance of the PeoManageSoft.Business.Application.User.Read.ReadApplication class.
         /// </summary>
+        /// <param name="readValidation">Application layer validation object</param>
         /// <param name="getHandler">Handles all queries to get the user.</param>
         /// <param name="mapper">Data Mapper </param>
         /// <param name="appConfig">Application Configuration.</param>
         /// <param name="logger">Log</param>
         public ReadApplication(
-                IGetHandler getHandler,
-                IMapper mapper,
-                IAppConfig appConfig,
-                ILogger<ReadApplication> logger
-            )
+            IReadValidation readValidation,
+            IGetHandler getHandler,
+            IMapper mapper,
+            IAppConfig appConfig,
+            ILogger<ReadApplication> logger
+        )
         {
+            _readValidation = readValidation;
             _getHandler = getHandler;
             _mapper = mapper;
             _appConfig = appConfig;
@@ -77,14 +82,11 @@ namespace PeoManageSoft.Business.Application.User.Read
 
             _logger.LogBeginInformation(methodName);
 
+            await _readValidation.RunValidationAsync(request).ConfigureAwait(false);
+
             ReadResponse response = _mapper.Map<ReadResponse>(
                 await _getHandler.HandleAsync(_mapper.Map<GetRequest>(request)).ConfigureAwait(false)
             );
-
-            if (response == null)
-            {
-                throw new RequestException(HttpStatusCode.NotFound, _appConfig.MessagesCatalogResource.GetMessageNotFound(nameof(request.Id)));
-            }
 
             _logger.LogEndInformation(methodName);
 

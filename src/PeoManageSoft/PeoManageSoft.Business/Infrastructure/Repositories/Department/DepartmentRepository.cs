@@ -38,6 +38,11 @@ namespace PeoManageSoft.Business.Infrastructure.Repositories.Department
 
         #region protected 
 
+        /// <summary>
+        /// Sets the unique identifier
+        /// </summary>
+        /// <param name="entity">Mapping to a database table</param>
+        /// <param name="id">The unique identifier</param>
         protected override void SetId(DepartmentEntity entity, long id)
         {
             IEntity ientity = entity;
@@ -45,14 +50,13 @@ namespace PeoManageSoft.Business.Infrastructure.Repositories.Department
             ientity.SetId(id);
         }
 
-
         /// <summary>
         /// Sets the entity
         /// </summary>
         /// <param name="dataReaderGetValue">Functionality to fetch data from datareader based on entity settings.</param>
         /// <returns>Entity</returns>
         protected override DepartmentEntity SetEntity(IDataReaderGetValue dataReaderGetValue) =>
-            oMapper.Map<DepartmentEntity>(dataReaderGetValue);
+            Mapper.Map<DepartmentEntity>(dataReaderGetValue);
 
         #endregion
 

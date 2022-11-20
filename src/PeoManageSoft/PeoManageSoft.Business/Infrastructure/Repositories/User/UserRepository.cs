@@ -56,6 +56,12 @@ namespace PeoManageSoft.Business.Infrastructure.Repositories.User
         #region Methods
 
         #region protected 
+
+        /// <summary>
+        /// Sets the unique identifier
+        /// </summary>
+        /// <param name="entity">Mapping to a database table</param>
+        /// <param name="id">The unique identifier</param>
         protected override void SetId(UserEntity entity, long id)
         {
             IEntity ientity = entity;
@@ -70,10 +76,10 @@ namespace PeoManageSoft.Business.Infrastructure.Repositories.User
         /// <returns>Entity</returns>
         protected override UserEntity SetEntity(IDataReaderGetValue dataReaderGetValue)
         {
-            var userEntity = oMapper.Map<UserEntity>(dataReaderGetValue);
-            var titleEntity = oMapper.Map<TitleEntity>(
+            var userEntity = Mapper.Map<UserEntity>(dataReaderGetValue);
+            var titleEntity = Mapper.Map<TitleEntity>(
                 new DataReaderGetValue<TitleEntity, TitleEntityField>(_titleEntityConfig, dataReaderGetValue.GetDataReader()));
-            var departmentEntity = oMapper.Map<DepartmentEntity>(
+            var departmentEntity = Mapper.Map<DepartmentEntity>(
                 new DataReaderGetValue<DepartmentEntity, DepartmentEntityField>(_departmentEntityConfig, dataReaderGetValue.GetDataReader()));
 
             IUser user = userEntity;

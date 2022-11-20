@@ -31,6 +31,7 @@ namespace PeoManageSoft.Business.Application.Title
             services.AddScoped<INewApplication, NewApplication>();
             services.AddScoped<INewValidation, NewValidation>();
             services.AddScoped<IReadApplication, ReadApplication>();
+            services.AddScoped<IReadValidation, ReadValidation>();
             services.AddScoped<IReadAllApplication, ReadAllApplication>();
         }
 

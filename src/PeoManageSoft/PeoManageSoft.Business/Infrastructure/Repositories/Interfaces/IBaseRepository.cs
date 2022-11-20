@@ -83,8 +83,36 @@ namespace PeoManageSoft.Business.Infrastructure.Repositories.Interfaces
         /// </summary>
         /// <param name="scope">Transactional scope</param>
         /// <param name="rule">Rules to filter the data.</param>
-        /// <returns>IEnumerable[TEntity]</returns>
+        /// <returns>
+        /// Task: Represents an asynchronous operation. 
+        /// Returns an enumerator that iterates through the <see cref="TEntity"/> entity collection.
+        /// </returns>
         Task<IEnumerable<TEntity>> SelectByRulesAsync(IScope scope, IRule<TEntityField> rule);
+        /// <summary>
+        /// Query records in the <see cref="TEntity"/> table with pagination and asynchronously using Task.
+        /// </summary>
+        /// <param name="scope">Transactional scope</param>
+        /// <param name="page">Current page</param>
+        /// <param name="quantityPerPage">Quantity per page</param>
+        /// <param name="orderBy">OrderBy sql command</param>
+        /// <returns>
+        /// Task: Represents an asynchronous operation. 
+        /// Returns an enumerator that iterates through the <see cref="TEntity"/> entity collection.
+        /// </returns>
+        Task<IEnumerable<TEntity>> SelectAllWithPaginationAsync(IScope scope, int page, int quantityPerPage, OrderBy<TEntityField> orderBy);
+        /// <summary>
+        /// Query the record in the <see cref="TEntity"/> table with pagination by rules and asynchronously using Task.
+        /// </summary>
+        /// <param name="scope">Transactional scope</param>
+        /// <param name="page">Current page</param>
+        /// <param name="quantityPerPage">Quantity per page</param>
+        /// <param name="orderBy">OrderBy sql command</param>
+        /// <param name="rule">Rules to filter the data.</param>
+        /// <returns>
+        /// Task: Represents an asynchronous operation. 
+        /// Returns an enumerator that iterates through the <see cref="TEntity"/> entity collection.
+        /// </returns>
+        Task<IEnumerable<TEntity>> SelectByRulesWithPaginationAsync(IScope scope, int page, int quantityPerPage, OrderBy<TEntityField> orderBy, IRule<TEntityField> rule);
 
         #endregion
     }

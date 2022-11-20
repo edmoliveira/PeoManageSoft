@@ -37,7 +37,7 @@ namespace PeoManageSoft.Business.Infrastructure.Repositories
         /// <summary>
         /// Data Mapper 
         /// </summary>
-        protected IMapper oMapper { get; }
+        protected IMapper Mapper { get; }
         /// <summary>
         /// Log
         /// </summary>
@@ -68,7 +68,7 @@ namespace PeoManageSoft.Business.Infrastructure.Repositories
             DbContext = dbContext;
             ApplicationContext = applicationContext;
             Provider = provider;
-            oMapper = mapper;
+            Mapper = mapper;
             Logger = logger;
         }
 
@@ -228,7 +228,10 @@ namespace PeoManageSoft.Business.Infrastructure.Repositories
         /// </summary>
         /// <param name="scope">Transactional scope</param>
         /// <param name="rule">Rules to filter the data.</param>
-        /// <returns>IEnumerable[TEntity]</returns>
+        /// <returns>
+        /// Task: Represents an asynchronous operation. 
+        /// Returns an enumerator that iterates through the <see cref="TEntity"/> entity collection.
+        /// </returns>
         public async Task<IEnumerable<TEntity>> SelectByRulesAsync(IScope scope, IRule<TEntityField> rule)
         {
             string methodName = nameof(SelectByRulesAsync);
@@ -286,6 +289,65 @@ namespace PeoManageSoft.Business.Infrastructure.Repositories
             ).ConfigureAwait(false);
 
             Logger.LogEndInformation(methodName);
+        }
+
+        /// <summary>
+        /// Query records in the table with pagination and asynchronously using Task.
+        /// </summary>
+        /// <param name="scope">Transactional scope</param>
+        /// <param name="page">Current page</param>
+        /// <param name="quantityPerPage">Quantity per page</param>
+        /// <param name="orderBy">OrderBy sql command</param>
+        /// <returns>
+        /// Task: Represents an asynchronous operation. 
+        /// Returns an enumerator that iterates through the entity collection.
+        /// </returns>
+        public async Task<IEnumerable<TEntity>> SelectAllWithPaginationAsync(IScope scope, int page, int quantityPerPage, OrderBy<TEntityField> orderBy)
+        {
+            string methodName = nameof(SelectAllWithPaginationAsync);
+
+            Logger.LogBeginInformation(methodName);
+
+            var collection = new List<TEntity>();
+
+            await ExecuteReaderAsync(dataReader =>
+            {
+                collection.Add(SetEntity(new DataReaderGetValue<TEntity, TEntityField>(EntityConfig, dataReader)));
+            }, scope, () => EntityConfig.GetSelectAllSqlStatementWithPagination(page, quantityPerPage, orderBy)).ConfigureAwait(false);
+
+            Logger.LogEndInformation(methodName);
+
+            return collection;
+        }
+
+        /// <summary>
+        /// Query the record in the table with pagination by rules and asynchronously using Task.
+        /// </summary>
+        /// <param name="scope">Transactional scope</param>
+        /// <param name="page">Current page</param>
+        /// <param name="quantityPerPage">Quantity per page</param>
+        /// <param name="orderBy">OrderBy sql command</param>
+        /// <param name="rule">Rules to filter the data.</param>
+        /// <returns>
+        /// Task: Represents an asynchronous operation. 
+        /// Returns an enumerator that iterates through the entity collection.
+        /// </returns>
+        public async Task<IEnumerable<TEntity>> SelectByRulesWithPaginationAsync(IScope scope, int page, int quantityPerPage, OrderBy<TEntityField> orderBy, IRule<TEntityField> rule)
+        {
+            string methodName = nameof(SelectByRulesWithPaginationAsync);
+
+            Logger.LogBeginInformation(methodName);
+
+            var collection = new List<TEntity>();
+
+            await ExecuteReaderAsync(dataReader =>
+            {
+                collection.Add(SetEntity(new DataReaderGetValue<TEntity, TEntityField>(EntityConfig, dataReader)));
+            }, scope, () => EntityConfig.GetSelectByRulesSqlStatementWithPagination(page, quantityPerPage, orderBy, rule)).ConfigureAwait(false);
+
+            Logger.LogEndInformation(methodName);
+
+            return collection;
         }
 
         #endregion

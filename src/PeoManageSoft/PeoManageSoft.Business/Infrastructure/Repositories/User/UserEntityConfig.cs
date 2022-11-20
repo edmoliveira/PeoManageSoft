@@ -10,7 +10,7 @@ namespace PeoManageSoft.Business.Infrastructure.Repositories.User
     /// <summary>
     /// User entity field
     /// </summary>
-    public enum UserEntityField
+    internal enum UserEntityField
     {
         /// <summary>
         /// Readonly

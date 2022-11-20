@@ -10,7 +10,7 @@ namespace PeoManageSoft.Business.Infrastructure.Repositories.Department
     /// <summary>
     /// Department Entity field
     /// </summary>
-    public enum DepartmentEntityField
+    internal enum DepartmentEntityField
     {
         /// <summary>
         /// Readonly

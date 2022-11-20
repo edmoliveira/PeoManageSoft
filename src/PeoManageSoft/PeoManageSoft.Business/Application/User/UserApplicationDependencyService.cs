@@ -41,6 +41,7 @@ namespace PeoManageSoft.Business.Application.User
             services.AddScoped<INewApplication, NewApplication>();
             services.AddScoped<INewValidation, NewValidation>();
             services.AddScoped<IReadApplication, ReadApplication>();
+            services.AddScoped<IReadValidation, ReadValidation>(); 
             services.AddScoped<IReadAllApplication, ReadAllApplication>();
             services.AddScoped<ISendPasswordTokenApplication, SendPasswordTokenApplication>();
             services.AddScoped<ISendReminderActivateUserApplication, SendReminderActivateUserApplication>();

@@ -77,6 +77,16 @@ namespace PeoManageSoft.Business.Infrastructure.Repositories.Interfaces
         (string sqlStatement, IEnumerable<IParameter> parameters, CommandType commandType) GetSelectAllSqlStatement();
 
         /// <summary>
+        /// Gets select command of the entity with pagination by rules
+        /// </summary>
+        /// <param name="page">Current page</param>
+        /// <param name="quantityPerPage">Quantity per page</param>
+        /// <param name="orderBy">OrderBy sql command</param>
+        /// <param name="rule">Rules to filter the data</param>
+        /// <returns>Returns the sql statement, parameters and the command type.</returns>
+        (string sqlStatement, IEnumerable<IParameter> parameters, CommandType commandType) GetSelectByRulesSqlStatementWithPagination(int page, int quantityPerPage, OrderBy<TEntityField> orderBy, IRule<TEntityField> rule);
+
+        /// <summary>
         /// Stored procedures "UPDATE"
         /// </summary>
         /// <param name="entity">Entity user.</param>
@@ -90,6 +100,15 @@ namespace PeoManageSoft.Business.Infrastructure.Repositories.Interfaces
         /// <param name="id">Identifier value</param>
         /// <returns>Returns the sql statement, the parameters and the command type</returns>
         (string sqlStatement, IEnumerable<IParameter> parameters, CommandType commandType) GetPatchSqlStatement(IEnumerable<Field<TEntityField>> fields, long id);
+
+        /// <summary>
+        /// Gets select all command of the entity with pagination.
+        /// </summary>
+        /// <param name="page">Current page</param>
+        /// <param name="quantityPerPage">Quantity per page</param>
+        /// <param name="orderBy">OrderBy sql command</param>
+        /// <returns>Returns the sql statement, parameters and the command type.</returns>
+        (string sqlStatement, IEnumerable<IParameter> parameters, CommandType commandType) GetSelectAllSqlStatementWithPagination(int page, int quantityPerPage, OrderBy<TEntityField> orderBy);
 
         #endregion
     }

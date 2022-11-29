@@ -1,7 +1,9 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using PeoManageSoft.Business.Domain.Services.Queries.Title.Get;
 using PeoManageSoft.Business.Domain.Services.Queries.Title.GetAll;
+using PeoManageSoft.Business.Domain.Services.Queries.Title.GetAllWithPagination;
 using PeoManageSoft.Business.Domain.Services.Queries.Title.GetByRules;
+using PeoManageSoft.Business.Domain.Services.Queries.Title.GetByRulesWithPagination;
 
 namespace PeoManageSoft.Business.Domain.Services.Queries.Title
 {
@@ -26,6 +28,10 @@ namespace PeoManageSoft.Business.Domain.Services.Queries.Title
             services.AddScoped<IGetAllQuery, GetAllQuery>();
             services.AddScoped<IGetByRulesHandler, GetByRulesHandler>();
             services.AddScoped<IGetByRulesQuery, GetByRulesQuery>();
+            services.AddScoped<IGetAllWithPaginationgHandler, GetAllWithPaginationgHandler>();
+            services.AddScoped<IGetAllWithPaginationQuery, GetAllWithPaginationQuery>();
+            services.AddScoped<IGetByRulesWithPaginationHandler, GetByRulesWithPaginationHandler>();
+            services.AddScoped<IGetByRulesWithPaginationQuery, GetByRulesWithPaginationQuery>();
         }
 
         #endregion

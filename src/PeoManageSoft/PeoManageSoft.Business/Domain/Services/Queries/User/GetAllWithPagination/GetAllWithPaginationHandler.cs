@@ -8,7 +8,7 @@ namespace PeoManageSoft.Business.Domain.Services.Queries.User.GetAllWithPaginati
     /// <summary>
     /// Handles all queries to get all the user with paginationg.
     /// </summary>
-    internal sealed class GetAllWithPaginationgHandler : IGetAllWithPaginationgHandler
+    internal sealed class GetAllWithPaginationHandler : IGetAllWithPaginationHandler
     {
         #region Fields
 
@@ -23,7 +23,7 @@ namespace PeoManageSoft.Business.Domain.Services.Queries.User.GetAllWithPaginati
         /// <summary>
         /// Log
         /// </summary>
-        private readonly ILogger<GetAllWithPaginationgHandler> _logger;
+        private readonly ILogger<GetAllWithPaginationHandler> _logger;
 
         #endregion
 
@@ -35,10 +35,10 @@ namespace PeoManageSoft.Business.Domain.Services.Queries.User.GetAllWithPaginati
         /// <param name="transactionScope">Create the code block transactional.</param>
         /// <param name="query">Query to get all users with pagination.</param>
         /// <param name="logger">Log</param>
-        public GetAllWithPaginationgHandler(
+        public GetAllWithPaginationHandler(
                 ITransactionScope transactionScope,
                 IGetAllWithPaginationQuery query,
-                ILogger<GetAllWithPaginationgHandler> logger
+                ILogger<GetAllWithPaginationHandler> logger
             )
         {
             _transactionScope = transactionScope;

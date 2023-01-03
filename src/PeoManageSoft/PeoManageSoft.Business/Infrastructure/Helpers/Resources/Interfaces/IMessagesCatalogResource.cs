@@ -92,7 +92,13 @@
         /// <param name="fieldName">Field Name</param>
         /// <returns>Returns the message not found.</returns>
         string GetMessageNotFound(string fieldName);
-
+        /// <summary>
+        /// Gets the message greater than.
+        /// </summary>
+        /// <param name="fieldName">Field Name</param>
+        /// <param name="value">The compared value</param>
+        /// <returns>Returns the message greater than.</returns>
+        string GetMessageGreaterThan(string fieldName, double value);
 
         #endregion
     }

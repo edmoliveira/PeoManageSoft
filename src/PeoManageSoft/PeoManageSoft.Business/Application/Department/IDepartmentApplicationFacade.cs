@@ -3,6 +3,8 @@ using PeoManageSoft.Business.Application.Department.Delete;
 using PeoManageSoft.Business.Application.Department.New;
 using PeoManageSoft.Business.Application.Department.Read;
 using PeoManageSoft.Business.Application.Department.Read.Response;
+using PeoManageSoft.Business.Application.Department.ReadAllWithPagination;
+using PeoManageSoft.Business.Application.Department.SearchWithPagination;
 
 namespace PeoManageSoft.Business.Application.Department
 {
@@ -52,6 +54,24 @@ namespace PeoManageSoft.Business.Application.Department
         /// Response data.
         /// </returns>
         Task<IEnumerable<ReadResponse>> GetAllAsync();
+        /// <summary>
+        /// Gets all registered departments with pagination and asynchronously using Task.
+        /// </summary>
+        /// <param name="request">Request data</param>
+        /// <returns>
+        /// Task: Represents an asynchronous operation. 
+        /// Response data.
+        /// </returns>
+        Task<IEnumerable<ReadResponse>> GetAllWithPaginationAsync(ReadAllWithPaginationRequest request);
+        /// <summary>
+        /// Search departments with pagination and asynchronously using Task.
+        /// </summary>
+        /// <param name="request">Request data</param>
+        /// <returns>
+        /// Task: Represents an asynchronous operation. 
+        /// Response data.
+        /// </returns>
+        Task<IEnumerable<ReadResponse>> SearchWithPaginationAsync(SearchWithPaginationRequest request);
 
         #endregion
     }

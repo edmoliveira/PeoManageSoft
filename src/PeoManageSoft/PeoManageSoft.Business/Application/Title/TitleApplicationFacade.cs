@@ -4,6 +4,8 @@ using PeoManageSoft.Business.Application.Title.New;
 using PeoManageSoft.Business.Application.Title.Read;
 using PeoManageSoft.Business.Application.Title.Read.Response;
 using PeoManageSoft.Business.Application.Title.ReadAll;
+using PeoManageSoft.Business.Application.Title.ReadAllWithPagination;
+using PeoManageSoft.Business.Application.Title.SearchWithPagination;
 using PeoManageSoft.Business.Infrastructure.Helpers.Exceptions;
 
 namespace PeoManageSoft.Business.Application.Title
@@ -39,6 +41,14 @@ namespace PeoManageSoft.Business.Application.Title
         /// Read all title application layer.
         /// </summary>
         private readonly Lazy<IReadAllApplication> _readAllApplication;
+        /// <summary>
+        /// Read all titles with pagination application layer.
+        /// </summary>
+        private readonly Lazy<IReadAllWithPaginationApplication> _readAllWithPaginationApplication;
+        /// <summary>
+        /// Search titles with pagination application layer.
+        /// </summary>
+        private readonly Lazy<ISearchWithPaginationApplication> _searchWithPaginationApplication;
 
         #endregion
 
@@ -57,6 +67,8 @@ namespace PeoManageSoft.Business.Application.Title
             _deleteApplication = new Lazy<IDeleteApplication>(() => GetService<IDeleteApplication>());
             _readApplication = new Lazy<IReadApplication>(() => GetService<IReadApplication>());
             _readAllApplication = new Lazy<IReadAllApplication>(() => GetService<IReadAllApplication>());
+            _readAllWithPaginationApplication = new Lazy<IReadAllWithPaginationApplication>(() => GetService<IReadAllWithPaginationApplication>());
+            _searchWithPaginationApplication = new Lazy<ISearchWithPaginationApplication>(() => GetService<ISearchWithPaginationApplication>());
         }
 
         #endregion
@@ -121,6 +133,32 @@ namespace PeoManageSoft.Business.Application.Title
         public async Task<IEnumerable<ReadResponse>> GetAllAsync()
         {
             return await _readAllApplication.Value.HandleAsync().ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// Gets all registered titles with pagination and asynchronously using Task.
+        /// </summary>
+        /// <param name="request">Request data</param>
+        /// <returns>
+        /// Task: Represents an asynchronous operation. 
+        /// Response data.
+        /// </returns>
+        public async Task<IEnumerable<ReadResponse>> GetAllWithPaginationAsync(ReadAllWithPaginationRequest request)
+        {
+            return await _readAllWithPaginationApplication.Value.HandleAsync(request).ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// Search titles with pagination and asynchronously using Task.
+        /// </summary>
+        /// <param name="request">Request data</param>
+        /// <returns>
+        /// Task: Represents an asynchronous operation. 
+        /// Response data.
+        /// </returns>
+        public async Task<IEnumerable<ReadResponse>> SearchWithPaginationAsync(SearchWithPaginationRequest request)
+        {
+            return await _searchWithPaginationApplication.Value.HandleAsync(request).ConfigureAwait(false);
         }
 
         #endregion

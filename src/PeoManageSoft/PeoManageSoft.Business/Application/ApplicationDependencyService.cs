@@ -1,4 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using PeoManageSoft.Business.Application.Department;
+using PeoManageSoft.Business.Application.Title;
 using PeoManageSoft.Business.Application.User;
 
 namespace PeoManageSoft.Business.Application
@@ -20,6 +22,10 @@ namespace PeoManageSoft.Business.Application
         {
             services.AddUserApplicationDependencies();
             services.AddUserApplicationValidation();
+            services.AddTitleApplicationDependencies();
+            services.AddTitleApplicationValidation();
+            services.AddDepartmentApplicationDependencies();
+            services.AddDepartmentApplicationValidation();
         }
 
         #endregion

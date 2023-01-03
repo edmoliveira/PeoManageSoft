@@ -1,14 +1,14 @@
 ﻿using Microsoft.Extensions.Logging;
-using PeoManageSoft.Business.Domain.Services.Queries.Title.Get.Response;
+using PeoManageSoft.Business.Domain.Services.Queries.Department.Get.Response;
 using PeoManageSoft.Business.Infrastructure.Helpers.Extensions;
 using PeoManageSoft.Business.Infrastructure.ObjectRelationalMapper.Interfaces;
 
-namespace PeoManageSoft.Business.Domain.Services.Queries.Title.GetAllWithPagination
+namespace PeoManageSoft.Business.Domain.Services.Queries.Department.GetAllWithPagination
 {
     /// <summary>
-    /// Handles all queries to get all the title with paginationg.
+    /// Handles all queries to get all the department with pagination.
     /// </summary>
-    internal sealed class GetAllWithPaginationgHandler : IGetAllWithPaginationgHandler
+    internal sealed class GetAllWithPaginationHandler : IGetAllWithPaginationHandler
     {
         #region Fields
 
@@ -17,28 +17,28 @@ namespace PeoManageSoft.Business.Domain.Services.Queries.Title.GetAllWithPaginat
         /// </summary>
         private readonly ITransactionScope _transactionScope;
         /// <summary>
-        /// Query to get all titles with pagination.
+        /// Query to get all departments with pagination.
         /// </summary>
         private readonly IGetAllWithPaginationQuery _query;
         /// <summary>
         /// Log
         /// </summary>
-        private readonly ILogger<GetAllWithPaginationgHandler> _logger;
+        private readonly ILogger<GetAllWithPaginationHandler> _logger;
 
         #endregion
 
         #region Constructors
 
         /// <summary>
-        /// Initializes a new instance of the PeoManageSoft.Business.Domain.Services.Queries.Title.GetAllWithPagination.GetAllWithPaginationgHandler class.
+        /// Initializes a new instance of the PeoManageSoft.Business.Domain.Services.Queries.Department.GetAllWithPagination.GetAllWithPaginationHandler class.
         /// </summary>
         /// <param name="transactionScope">Create the code block transactional.</param>
-        /// <param name="query">Query to get all titles with pagination.</param>
+        /// <param name="query">Query to get all departments with pagination.</param>
         /// <param name="logger">Log</param>
-        public GetAllWithPaginationgHandler(
+        public GetAllWithPaginationHandler(
                 ITransactionScope transactionScope,
                 IGetAllWithPaginationQuery query,
-                ILogger<GetAllWithPaginationgHandler> logger
+                ILogger<GetAllWithPaginationHandler> logger
             )
         {
             _transactionScope = transactionScope;
@@ -53,12 +53,12 @@ namespace PeoManageSoft.Business.Domain.Services.Queries.Title.GetAllWithPaginat
         #region public
 
         /// <summary>
-        /// Handles the query to get all titles with pagination.
+        /// Handles the query to get all departments with pagination.
         /// </summary>
-        /// <param name="request">Request for the query to get all titles with pagination..</param>
+        /// <param name="request">Request for the query to get all departments with pagination..</param>
         /// <returns>
         /// Task: Represents an asynchronous operation. 
-        /// Response for the query to get all titles with pagination.
+        /// Response for the query to get all departments with pagination.
         /// </returns>
         public async Task<IEnumerable<GetResponse>> HandleAsync(GetAllWithPaginationRequest request)
         {

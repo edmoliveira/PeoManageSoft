@@ -6,6 +6,8 @@ using PeoManageSoft.Business.Application.User.Delete;
 using PeoManageSoft.Business.Application.User.New;
 using PeoManageSoft.Business.Application.User.Read;
 using PeoManageSoft.Business.Application.User.Read.Response;
+using PeoManageSoft.Business.Application.User.ReadAllWithPagination;
+using PeoManageSoft.Business.Application.User.SearchWithPagination;
 using PeoManageSoft.Business.Application.User.SendPasswordToken;
 using PeoManageSoft.Business.Application.User.SendReminderActivateUser;
 using PeoManageSoft.Business.Application.User.SignIn;
@@ -65,6 +67,24 @@ namespace PeoManageSoft.Business.Application.User
         /// Response data.
         /// </returns>
         Task<IEnumerable<ReadResponse>> GetAllAsync();
+        /// <summary>
+        /// Gets all registered users with pagination and asynchronously using Task.
+        /// </summary>
+        /// <param name="request">Request data</param>
+        /// <returns>
+        /// Task: Represents an asynchronous operation. 
+        /// Response data.
+        /// </returns>
+        Task<IEnumerable<ReadResponse>> GetAllWithPaginationAsync(ReadAllWithPaginationRequest request);
+        /// <summary>
+        /// Search users with pagination and asynchronously using Task.
+        /// </summary>
+        /// <param name="request">Request data</param>
+        /// <returns>
+        /// Task: Represents an asynchronous operation. 
+        /// Response data.
+        /// </returns>
+        Task<IEnumerable<ReadResponse>> SearchWithPaginationAsync(SearchWithPaginationRequest request);
         /// <summary>
         /// Accesses the system through authentication and asynchronously using Task.
         /// </summary>

@@ -8,6 +8,8 @@ using PeoManageSoft.Business.Application.User.Delete;
 using PeoManageSoft.Business.Application.User.New;
 using PeoManageSoft.Business.Application.User.Read;
 using PeoManageSoft.Business.Application.User.ReadAll;
+using PeoManageSoft.Business.Application.User.ReadAllWithPagination;
+using PeoManageSoft.Business.Application.User.SearchWithPagination;
 using PeoManageSoft.Business.Application.User.SendPasswordToken;
 using PeoManageSoft.Business.Application.User.SendReminderActivateUser;
 using PeoManageSoft.Business.Application.User.SignIn;
@@ -43,6 +45,8 @@ namespace PeoManageSoft.Business.Application.User
             services.AddScoped<IReadApplication, ReadApplication>();
             services.AddScoped<IReadValidation, ReadValidation>(); 
             services.AddScoped<IReadAllApplication, ReadAllApplication>();
+            services.AddScoped<IReadAllWithPaginationApplication, ReadAllWithPaginationApplication>();
+            services.AddScoped<ISearchWithPaginationApplication, SearchWithPaginationApplication>();
             services.AddScoped<ISendPasswordTokenApplication, SendPasswordTokenApplication>();
             services.AddScoped<ISendReminderActivateUserApplication, SendReminderActivateUserApplication>();
             services.AddScoped<ISignInApplication, SignInApplication>();
@@ -66,6 +70,8 @@ namespace PeoManageSoft.Business.Application.User
             services.AddScoped<IValidator<SendReminderActivateUserRequest>, SendReminderActivateUserValidator>();
             services.AddScoped<IValidator<SignInRequest>, SignInValidator>();
             services.AddScoped<IValidator<ValidatePasswordTokenRequest>, ValidatePasswordTokenValidator>();
+            services.AddScoped<IValidator<ReadAllWithPaginationRequest>, ReadAllWithPaginationValidator>();
+            services.AddScoped<IValidator<SearchWithPaginationRequest>, SearchWithPaginationValidator>();
         }
 
         #endregion

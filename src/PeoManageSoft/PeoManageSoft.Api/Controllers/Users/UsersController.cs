@@ -202,6 +202,8 @@ namespace PeoManageSoft.Api.Controllers.Users
 
                 Logger.LogInformation(GetMethodBeginMessage(methodName));
 
+                ValidateModelState();
+
                 Logger.DebugIsEnabled(() => string.Concat("Request: ", JsonConvert.SerializeObject(request)));
 
                 await _facade.UpdateAsync(request).ConfigureAwait(false);

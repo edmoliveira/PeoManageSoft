@@ -10,6 +10,77 @@
 );
 GO
 
+CREATE PROCEDURE sp_insert_title
+	@IsActive BIT, 
+	@Name NVARCHAR ( 200 ),
+	@RequestId NVARCHAR ( 500 ),
+	@CreationUser NVARCHAR ( 70 ),
+	@CreationDate DATETIME
+AS
+BEGIN 
+	INSERT INTO Title
+	(
+		IsActive, 
+		Name,
+		RequestId,
+		CreationUser,
+		CreationDate	
+	)
+	OUTPUT Inserted.ID
+	VALUES 
+	(
+		@IsActive, 
+		@Name,
+		@RequestId,
+		@CreationUser,
+		@CreationDate	
+	);
+END;
+GO
+
+CREATE PROCEDURE sp_update_title
+	@Id BIGINT,
+	@IsActive BIT, 
+	@Name NVARCHAR ( 200 ) ,
+	@RequestId NVARCHAR ( 500 ),
+	@UpdatedUser NVARCHAR ( 70 ),
+	@UpdatedDate DATETIME
+AS
+BEGIN 
+	UPDATE dbo.Title
+	   SET IsActive = @IsActive
+		  ,Name = @Name
+		  ,RequestId = @RequestId
+		  ,UpdatedUser = @UpdatedUser
+		  ,UpdatedDate = @UpdatedDate
+	 WHERE 
+		Id = @Id
+END;
+GO
+
+CREATE PROCEDURE sp_delete_title
+	@Id BIGINT
+AS
+BEGIN 
+	DELETE FROM dbo.Title WHERE Id = @Id
+END;
+GO
+
+CREATE VIEW TitleView
+AS
+	SELECT
+		Id AS Title_Id,
+		IsActive AS Title_IsActive, 
+		Name AS Title_Name,
+		RequestId AS Title_RequestId,
+		CreationUser AS Title_CreationUser,
+		CreationDate AS Title_CreationDate,
+		UpdatedUser AS Title_UpdatedUser,
+		UpdatedDate AS Title_UpdatedDate	
+	FROM
+		Title 
+GO
+
 CREATE TABLE Department (
 	Id BIGINT IDENTITY PRIMARY KEY NOT NULL,
 	IsActive BIT NOT NULL, 
@@ -20,6 +91,77 @@ CREATE TABLE Department (
 	UpdatedUser NVARCHAR ( 70 ) NULL,
 	UpdatedDate DATETIME NULL
 );
+GO
+
+CREATE PROCEDURE sp_insert_department
+	@IsActive BIT, 
+	@Name NVARCHAR ( 200 ),
+	@RequestId NVARCHAR ( 500 ),
+	@CreationUser NVARCHAR ( 70 ),
+	@CreationDate DATETIME
+AS
+BEGIN 
+	INSERT INTO Department
+	(
+		IsActive, 
+		Name,
+		RequestId,
+		CreationUser,
+		CreationDate	
+	)
+	OUTPUT Inserted.ID
+	VALUES 
+	(
+		@IsActive, 
+		@Name,
+		@RequestId,
+		@CreationUser,
+		@CreationDate	
+	);
+END;
+GO
+
+CREATE PROCEDURE sp_update_department
+	@Id BIGINT,
+	@IsActive BIT, 
+	@Name NVARCHAR ( 200 ) ,
+	@RequestId NVARCHAR ( 500 ),
+	@UpdatedUser NVARCHAR ( 70 ),
+	@UpdatedDate DATETIME
+AS
+BEGIN 
+	UPDATE dbo.Department
+	   SET IsActive = @IsActive
+		  ,Name = @Name
+		  ,RequestId = @RequestId
+		  ,UpdatedUser = @UpdatedUser
+		  ,UpdatedDate = @UpdatedDate
+	 WHERE 
+		Id = @Id
+END;
+GO
+
+CREATE PROCEDURE sp_delete_department
+	@Id BIGINT
+AS
+BEGIN 
+	DELETE FROM dbo.Department WHERE Id = @Id
+END;
+GO
+
+CREATE VIEW DepartmentView
+AS
+	SELECT
+		Id AS Department_Id,
+		IsActive AS Department_IsActive, 
+		Name AS Department_Name,
+		RequestId AS Department_RequestId,
+		CreationUser AS Department_CreationUser,
+		CreationDate AS Department_CreationDate,
+		UpdatedUser AS Department_UpdatedUser,
+		UpdatedDate AS Department_UpdatedDate	
+	FROM
+		Department 
 GO
 
 CREATE TABLE IUser (
@@ -170,8 +312,10 @@ AS
 		U.TitleId AS IUser_TitleId,
 		U.DepartmentId AS IUser_DepartmentId,
 		T.Id AS Title_Id,
+		T.IsActive AS Title_IsActive, 
 		T.Name AS Title_Name,		
 		D.Id AS Department_Id,
+		D.IsActive AS Department_IsActive, 
 		D.Name AS Department_Name
 	FROM
 		IUser AS U

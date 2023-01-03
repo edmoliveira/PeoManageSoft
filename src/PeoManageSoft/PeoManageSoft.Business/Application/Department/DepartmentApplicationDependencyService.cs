@@ -5,6 +5,8 @@ using PeoManageSoft.Business.Application.Department.Delete;
 using PeoManageSoft.Business.Application.Department.New;
 using PeoManageSoft.Business.Application.Department.Read;
 using PeoManageSoft.Business.Application.Department.ReadAll;
+using PeoManageSoft.Business.Application.Department.ReadAllWithPagination;
+using PeoManageSoft.Business.Application.Department.SearchWithPagination;
 
 namespace PeoManageSoft.Business.Application.Department
 {
@@ -33,6 +35,8 @@ namespace PeoManageSoft.Business.Application.Department
             services.AddScoped<IReadApplication, ReadApplication>();
             services.AddScoped<IReadValidation, ReadValidation>();
             services.AddScoped<IReadAllApplication, ReadAllApplication>();
+            services.AddScoped<IReadAllWithPaginationApplication, ReadAllWithPaginationApplication>();
+            services.AddScoped<ISearchWithPaginationApplication, SearchWithPaginationApplication>();
         }
 
         /// <summary>
@@ -45,6 +49,8 @@ namespace PeoManageSoft.Business.Application.Department
             services.AddScoped<IValidator<DeleteRequest>, DeleteValidator>();
             services.AddScoped<IValidator<NewRequest>, NewValidator>();
             services.AddScoped<IValidator<ReadRequest>, ReadValidator>();
+            services.AddScoped<IValidator<ReadAllWithPaginationRequest>, ReadAllWithPaginationValidator>();
+            services.AddScoped<IValidator<SearchWithPaginationRequest>, SearchWithPaginationValidator>();
         }
 
         #endregion

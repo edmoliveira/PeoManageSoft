@@ -55,7 +55,8 @@
           "PasswordSpecialCharacter": "The password field must at least contain one special character!",
           "Unauthorized": "Not authorized!",
           "NotFound": "The {fieldName} not found!",
-          "ExpiredToken": "Expired token"
+          "ExpiredToken": "Expired token",
+          "GreaterThan": "The {fieldName} field must be greater than {value}"
         }
       },
       "Portuguese": {
@@ -74,7 +75,8 @@
           "PasswordSpecialCharacter": "O campo password deve conter pelo menos um caractere especial!",
           "Unauthorized": "Não autorizado!",
           "NotFound": "O {fieldName} não foi encontrado!",
-          "ExpiredToken": "Token expirado"
+          "ExpiredToken": "Token expirado",
+          "GreaterThan": "O campo {fieldName} deve ser maior que {value}."
         }
       }
     }

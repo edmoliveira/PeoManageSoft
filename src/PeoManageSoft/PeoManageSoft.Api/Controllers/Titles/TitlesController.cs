@@ -200,6 +200,8 @@ namespace PeoManageSoft.Api.Controllers.Titles
             {
                 string methodName = nameof(UpdateAsync);
 
+                ValidateModelState();
+
                 Logger.LogInformation(GetMethodBeginMessage(methodName));
 
                 Logger.DebugIsEnabled(() => string.Concat("Request: ", JsonConvert.SerializeObject(request)));

@@ -5,7 +5,7 @@ namespace PeoManageSoft.Business.Domain.Services.Queries.Title.GetAllWithPaginat
     /// <summary>
     /// Handles all queries to get all the title with paginationg.
     /// </summary>
-    internal interface IGetAllWithPaginationgHandler : IHandlerAsync<GetAllWithPaginationRequest, IEnumerable<GetResponse>>
+    internal interface IGetAllWithPaginationHandler : IHandlerAsync<GetAllWithPaginationRequest, IEnumerable<GetResponse>>
     {
     }
 }

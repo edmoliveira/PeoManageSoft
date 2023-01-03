@@ -4,6 +4,8 @@ using PeoManageSoft.Business.Application.Department.New;
 using PeoManageSoft.Business.Application.Department.Read;
 using PeoManageSoft.Business.Application.Department.Read.Response;
 using PeoManageSoft.Business.Application.Department.ReadAll;
+using PeoManageSoft.Business.Application.Department.ReadAllWithPagination;
+using PeoManageSoft.Business.Application.Department.SearchWithPagination;
 using PeoManageSoft.Business.Infrastructure.Helpers.Exceptions;
 
 namespace PeoManageSoft.Business.Application.Department
@@ -36,9 +38,17 @@ namespace PeoManageSoft.Business.Application.Department
         /// </summary>
         private readonly Lazy<IReadApplication> _readApplication;
         /// <summary>
-        /// Read all department application layer.
+        /// Read all departments application layer.
         /// </summary>
         private readonly Lazy<IReadAllApplication> _readAllApplication;
+        /// <summary>
+        /// Read all departments with pagination application layer.
+        /// </summary>
+        private readonly Lazy<IReadAllWithPaginationApplication> _readAllWithPaginationApplication;
+        /// <summary>
+        /// Search departments with pagination application layer.
+        /// </summary>
+        private readonly Lazy<ISearchWithPaginationApplication> _searchWithPaginationApplication;
 
         #endregion
 
@@ -57,6 +67,9 @@ namespace PeoManageSoft.Business.Application.Department
             _deleteApplication = new Lazy<IDeleteApplication>(() => GetService<IDeleteApplication>());
             _readApplication = new Lazy<IReadApplication>(() => GetService<IReadApplication>());
             _readAllApplication = new Lazy<IReadAllApplication>(() => GetService<IReadAllApplication>());
+            _readAllWithPaginationApplication = new Lazy<IReadAllWithPaginationApplication>(() => GetService<IReadAllWithPaginationApplication>());
+            _searchWithPaginationApplication = new Lazy<ISearchWithPaginationApplication>(() => GetService<ISearchWithPaginationApplication>());
+
         }
 
         #endregion
@@ -121,6 +134,32 @@ namespace PeoManageSoft.Business.Application.Department
         public async Task<IEnumerable<ReadResponse>> GetAllAsync()
         {
             return await _readAllApplication.Value.HandleAsync().ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// Gets all registered departments with pagination and asynchronously using Task.
+        /// </summary>
+        /// <param name="request">Request data</param>
+        /// <returns>
+        /// Task: Represents an asynchronous operation. 
+        /// Response data.
+        /// </returns>
+        public async Task<IEnumerable<ReadResponse>> GetAllWithPaginationAsync(ReadAllWithPaginationRequest request)
+        {
+            return await _readAllWithPaginationApplication.Value.HandleAsync(request).ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// Search departments with pagination and asynchronously using Task.
+        /// </summary>
+        /// <param name="request">Request data</param>
+        /// <returns>
+        /// Task: Represents an asynchronous operation. 
+        /// Response data.
+        /// </returns>
+        public async Task<IEnumerable<ReadResponse>> SearchWithPaginationAsync(SearchWithPaginationRequest request)
+        {
+            return await _searchWithPaginationApplication.Value.HandleAsync(request).ConfigureAwait(false);
         }
 
         #endregion

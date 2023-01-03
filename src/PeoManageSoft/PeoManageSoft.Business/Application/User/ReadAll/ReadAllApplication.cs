@@ -7,7 +7,7 @@ using PeoManageSoft.Business.Infrastructure.Helpers.Extensions;
 namespace PeoManageSoft.Business.Application.User.ReadAll
 {
     /// <summary>
-    /// Read all user application layer.
+    /// Read all users application layer.
     /// </summary>
     internal sealed class ReadAllApplication : IReadAllApplication
     {

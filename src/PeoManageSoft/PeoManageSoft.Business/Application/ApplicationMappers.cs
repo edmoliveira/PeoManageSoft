@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using PeoManageSoft.Business.Application.Department;
+using PeoManageSoft.Business.Application.Title;
 using PeoManageSoft.Business.Application.User;
 
 namespace PeoManageSoft.Business.Application
@@ -19,6 +21,8 @@ namespace PeoManageSoft.Business.Application
         public static void AddApplicationProfiles(this IMapperConfigurationExpression configuration)
         {
             configuration.AddUserApplicationProfiles();
+            configuration.AddTitleApplicationProfiles();
+            configuration.AddDepartmentApplicationProfiles();
         }
 
         #endregion

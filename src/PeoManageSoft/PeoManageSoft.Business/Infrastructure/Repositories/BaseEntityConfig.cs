@@ -660,6 +660,7 @@ namespace PeoManageSoft.Business.Infrastructure.Repositories
                 SqlComparisonOperator.GreaterThanOrEqualTo => ">=",
                 SqlComparisonOperator.LessThanOrEqualTo => "<=",
                 SqlComparisonOperator.NotEqualTo => "<>",
+                SqlComparisonOperator.Like => "LIKE",
                 _ => "In"
             };
         }

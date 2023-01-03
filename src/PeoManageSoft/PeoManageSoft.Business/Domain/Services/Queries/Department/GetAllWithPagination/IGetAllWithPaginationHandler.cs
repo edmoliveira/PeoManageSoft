@@ -5,7 +5,7 @@ namespace PeoManageSoft.Business.Domain.Services.Queries.Department.GetAllWithPa
     /// <summary>
     /// Handles all queries to get all the department with paginationg.
     /// </summary>
-    internal interface IGetAllWithPaginationgHandler : IHandlerAsync<GetAllWithPaginationRequest, IEnumerable<GetResponse>>
+    internal interface IGetAllWithPaginationHandler : IHandlerAsync<GetAllWithPaginationRequest, IEnumerable<GetResponse>>
     {
     }
 }

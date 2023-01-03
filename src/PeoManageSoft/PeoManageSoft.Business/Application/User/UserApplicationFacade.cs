@@ -7,6 +7,8 @@ using PeoManageSoft.Business.Application.User.New;
 using PeoManageSoft.Business.Application.User.Read;
 using PeoManageSoft.Business.Application.User.Read.Response;
 using PeoManageSoft.Business.Application.User.ReadAll;
+using PeoManageSoft.Business.Application.User.ReadAllWithPagination;
+using PeoManageSoft.Business.Application.User.SearchWithPagination;
 using PeoManageSoft.Business.Application.User.SendPasswordToken;
 using PeoManageSoft.Business.Application.User.SendReminderActivateUser;
 using PeoManageSoft.Business.Application.User.SignIn;
@@ -51,6 +53,14 @@ namespace PeoManageSoft.Business.Application.User
         /// </summary>
         private readonly Lazy<IReadAllApplication> _readAllApplication;
         /// <summary>
+        /// Read all users with pagination application layer.
+        /// </summary>
+        private readonly Lazy<IReadAllWithPaginationApplication> _readAllWithPaginationApplication;
+        /// <summary>
+        /// Search users with pagination application layer.
+        /// </summary>
+        private readonly Lazy<ISearchWithPaginationApplication> _searchWithPaginationApplication;
+        /// <summary>
         /// Sign in application layer.
         /// </summary>
         private readonly Lazy<ISignInApplication> _signInApplication;
@@ -93,6 +103,8 @@ namespace PeoManageSoft.Business.Application.User
             _deleteApplication = new Lazy<IDeleteApplication>(() => GetService<IDeleteApplication>());
             _readApplication = new Lazy<IReadApplication>(() => GetService<IReadApplication>());
             _readAllApplication = new Lazy<IReadAllApplication>(() => GetService<IReadAllApplication>());
+            _readAllWithPaginationApplication = new Lazy<IReadAllWithPaginationApplication>(() => GetService<IReadAllWithPaginationApplication>());
+            _searchWithPaginationApplication = new Lazy<ISearchWithPaginationApplication>(() => GetService<ISearchWithPaginationApplication>());
             _signInApplication = new Lazy<ISignInApplication>(() => GetService<ISignInApplication>());
             _sendPasswordTokenApplication = new Lazy<ISendPasswordTokenApplication>(() => GetService<ISendPasswordTokenApplication>());
             _sendReminderActivateUserApplication = new Lazy<ISendReminderActivateUserApplication>(() => GetService<ISendReminderActivateUserApplication>());
@@ -173,6 +185,32 @@ namespace PeoManageSoft.Business.Application.User
         public async Task<IEnumerable<ReadResponse>> GetAllAsync()
         {
             return await _readAllApplication.Value.HandleAsync().ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// Gets all registered users with pagination and asynchronously using Task.
+        /// </summary>
+        /// <param name="request">Request data</param>
+        /// <returns>
+        /// Task: Represents an asynchronous operation. 
+        /// Response data.
+        /// </returns>
+        public async Task<IEnumerable<ReadResponse>> GetAllWithPaginationAsync(ReadAllWithPaginationRequest request)
+        {
+            return await _readAllWithPaginationApplication.Value.HandleAsync(request).ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// Search users with pagination and asynchronously using Task.
+        /// </summary>
+        /// <param name="request">Request data</param>
+        /// <returns>
+        /// Task: Represents an asynchronous operation. 
+        /// Response data.
+        /// </returns>
+        public async Task<IEnumerable<ReadResponse>> SearchWithPaginationAsync(SearchWithPaginationRequest request)
+        {
+            return await _searchWithPaginationApplication.Value.HandleAsync(request).ConfigureAwait(false);
         }
 
         /// <summary>

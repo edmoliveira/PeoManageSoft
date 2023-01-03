@@ -3,9 +3,9 @@
 namespace PeoManageSoft.Business.Domain.Services.Queries.User.GetAllWithPagination
 {
     /// <summary>
-    /// Handles all queries to get all the user with paginationg.
+    /// Handles all queries to get all the user with pagination.
     /// </summary>
-    internal interface IGetAllWithPaginationgHandler : IHandlerAsync<GetAllWithPaginationRequest, IEnumerable<GetResponse>>
+    internal interface IGetAllWithPaginationHandler : IHandlerAsync<GetAllWithPaginationRequest, IEnumerable<GetResponse>>
     {
     }
 }

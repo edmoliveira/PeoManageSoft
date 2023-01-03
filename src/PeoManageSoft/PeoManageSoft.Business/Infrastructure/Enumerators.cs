@@ -125,6 +125,11 @@ namespace PeoManageSoft.Business.Infrastructure
         /// </summary>
         [Description("Not Found")]
         NotFound,
+        /// <summary>
+        /// Greater Than
+        /// </summary>
+        [Description("Greater Than")]
+        GreaterThan,
     }
 
     /// <summary>
@@ -266,6 +271,11 @@ namespace PeoManageSoft.Business.Infrastructure
         /// </summary>
         [Description("In")]
         In = 6,
+        /// <summary>
+        /// Like 
+        /// </summary>
+        [Description("Like")]
+        Like = 7,
     }
 
     /// <summary>

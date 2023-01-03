@@ -11,7 +11,7 @@ namespace PeoManageSoft.Business.Application.User.Read
         #region Constructors
 
         /// <summary>
-        /// Initializes a new instance of the PeoManageSoft.Business.Application.User.New.ReadValidator class.
+        /// Initializes a new instance of the PeoManageSoft.Business.Application.User.Read.ReadValidator class.
         /// </summary>
         /// <param name="appConfig">Application Configuration</param>
         public ReadValidator(IAppConfig appConfig)

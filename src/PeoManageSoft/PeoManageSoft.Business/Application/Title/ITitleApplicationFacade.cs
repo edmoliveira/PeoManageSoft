@@ -3,6 +3,8 @@ using PeoManageSoft.Business.Application.Title.Delete;
 using PeoManageSoft.Business.Application.Title.New;
 using PeoManageSoft.Business.Application.Title.Read;
 using PeoManageSoft.Business.Application.Title.Read.Response;
+using PeoManageSoft.Business.Application.Title.ReadAllWithPagination;
+using PeoManageSoft.Business.Application.Title.SearchWithPagination;
 
 namespace PeoManageSoft.Business.Application.Title
 {
@@ -52,6 +54,24 @@ namespace PeoManageSoft.Business.Application.Title
         /// Response data.
         /// </returns>
         Task<IEnumerable<ReadResponse>> GetAllAsync();
+        /// <summary>
+        /// Gets all registered titles with pagination and asynchronously using Task.
+        /// </summary>
+        /// <param name="request">Request data</param>
+        /// <returns>
+        /// Task: Represents an asynchronous operation. 
+        /// Response data.
+        /// </returns>
+        Task<IEnumerable<ReadResponse>> GetAllWithPaginationAsync(ReadAllWithPaginationRequest request);
+        /// <summary>
+        /// Search titles with pagination and asynchronously using Task.
+        /// </summary>
+        /// <param name="request">Request data</param>
+        /// <returns>
+        /// Task: Represents an asynchronous operation. 
+        /// Response data.
+        /// </returns>
+        Task<IEnumerable<ReadResponse>> SearchWithPaginationAsync(SearchWithPaginationRequest request);
 
         #endregion
     }

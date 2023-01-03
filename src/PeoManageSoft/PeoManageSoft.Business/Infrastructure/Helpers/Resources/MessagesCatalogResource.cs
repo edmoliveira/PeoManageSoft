@@ -169,6 +169,19 @@ namespace PeoManageSoft.Business.Infrastructure.Helpers.Resources
             return MessageDictionary[ResourceMessageKey.NotFound].Replace("{fieldName}", fieldName);
         }
 
+        /// <summary>
+        /// Gets the message greater than.
+        /// </summary>
+        /// <param name="fieldName">Field Name</param>
+        /// <param name="value">The compared value</param>
+        /// <returns>Returns the message greater than.</returns>
+        public string GetMessageGreaterThan(string fieldName, double value)
+        {
+            return MessageDictionary[ResourceMessageKey.GreaterThan]
+                .Replace("{fieldName}", fieldName)
+                .Replace("{value}", value.ToString());
+        }
+
         #endregion
 
         #endregion

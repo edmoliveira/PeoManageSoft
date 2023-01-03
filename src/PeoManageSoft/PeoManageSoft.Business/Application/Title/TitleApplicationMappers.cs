@@ -3,6 +3,7 @@ using PeoManageSoft.Business.Application.Title.Change;
 using PeoManageSoft.Business.Application.Title.Delete;
 using PeoManageSoft.Business.Application.Title.New;
 using PeoManageSoft.Business.Application.Title.Read;
+using PeoManageSoft.Business.Application.Title.ReadAllWithPagination;
 
 namespace PeoManageSoft.Business.Application.Title
 {
@@ -25,6 +26,7 @@ namespace PeoManageSoft.Business.Application.Title
             configuration.AddProfile<DeleteMapper>();
             configuration.AddProfile<NewMapper>();
             configuration.AddProfile<ReadMapper>();
+            configuration.AddProfile<ReadAllWithPaginationMapper>();
         }
 
         #endregion

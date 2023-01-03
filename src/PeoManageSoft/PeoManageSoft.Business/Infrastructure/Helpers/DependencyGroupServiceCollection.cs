@@ -61,6 +61,10 @@ namespace PeoManageSoft.Business.Infrastructure.Helpers
             AddMapperConfiguration(services);
 
             services.AddControllers();
+            services.AddControllers(
+                options => options.SuppressImplicitRequiredAttributeForNonNullableReferenceTypes = true
+            );
+
             services.AddHttpContextAccessor();
 
             services.AddFluentValidation(options =>

@@ -124,7 +124,7 @@ namespace PeoManageSoft.Business.Infrastructure.ObjectRelationalMapper
 
             try
             {
-                return func(GetScope(connection));
+                return func(scope);
             }
             catch (Exception)
             {
@@ -159,7 +159,7 @@ namespace PeoManageSoft.Business.Infrastructure.ObjectRelationalMapper
 
             try
             {
-                return await func(GetScope(connection)).ConfigureAwait(false);
+                return await func(scope).ConfigureAwait(false);
             }
             catch (Exception)
             {

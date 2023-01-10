@@ -38,6 +38,10 @@ namespace PeoManageSoft.Business.Infrastructure.Helpers.Interfaces
         /// </summary>
         string ConnectionString { get; }
         /// <summary>
+        /// The connection used to open the database NOSQL.
+        /// </summary>
+        string ConnectionStringNoSql { get; }
+        /// <summary>
         /// The command timeout (in seconds).
         /// </summary>
         int SqlCommandTimeout { get; }

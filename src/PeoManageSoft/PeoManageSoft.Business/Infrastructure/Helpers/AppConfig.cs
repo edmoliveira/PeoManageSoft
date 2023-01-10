@@ -45,6 +45,10 @@ namespace PeoManageSoft.Business.Infrastructure.Helpers
         /// </summary>
         public int SqlCommandTimeout { get; set; }
         /// <summary>
+        /// The connection used to open the database NOSQL.
+        /// </summary>
+        public string ConnectionStringNoSql { get; set; }
+        /// <summary>
         /// Authnetication token cache address.
         /// </summary>
         public string TokenCacheAddress { get; set; }

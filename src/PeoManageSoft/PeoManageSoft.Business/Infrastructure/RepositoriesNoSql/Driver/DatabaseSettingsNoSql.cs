@@ -1,6 +1,6 @@
 ﻿using MongoDB.Driver;
 
-namespace PeoManageSoft.Business.Infrastructure.RepositoriesNoSql
+namespace PeoManageSoft.Business.Infrastructure.RepositoriesNoSql.Driver
 {
     /// <summary>
     /// The settings used to access a database.
@@ -11,9 +11,9 @@ namespace PeoManageSoft.Business.Infrastructure.RepositoriesNoSql
 
         public DatabaseSettingsNoSql()
         {
-            
+
         }
 
-        
+
     }
 }

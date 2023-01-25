@@ -25,6 +25,7 @@ using PeoManageSoft.Business.Infrastructure.Helpers.Interfaces;
 using PeoManageSoft.Business.Infrastructure.ObjectRelationalMapper;
 using PeoManageSoft.Business.Infrastructure.ObjectRelationalMapper.Interfaces;
 using PeoManageSoft.Business.Infrastructure.Repositories;
+using PeoManageSoft.Business.Infrastructure.RepositoriesNoSql;
 using PeoManageSoft.Business.Infrastructure.Tokens;
 
 namespace PeoManageSoft.Business.Infrastructure.Helpers
@@ -81,6 +82,7 @@ namespace PeoManageSoft.Business.Infrastructure.Helpers
             services.AddScoped<IDbContext, DbContext>();
 
             services.AddRepositoryDependencies();
+            services.AddRepositoryNoSqlDependencies();
             services.AddFactoryDependencies();
             services.AddMiddlewareDependencies();
             services.AddCreatorDependencies();

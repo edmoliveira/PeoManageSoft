@@ -1,4 +1,5 @@
-﻿using PeoManageSoft.Business.Infrastructure;
+﻿using PeoManageSoft.Business.Domain.Services.Commands.User.Add.Models;
+using PeoManageSoft.Business.Infrastructure;
 using PeoManageSoft.Business.Infrastructure.Helpers.Structs;
 
 namespace PeoManageSoft.Business.Domain.Services.Commands.User.Add
@@ -58,6 +59,14 @@ namespace PeoManageSoft.Business.Domain.Services.Commands.User.Add
         /// Indicates the last location where the user logged in "Longitude and latitude"
         /// </summary>
         public GeoLocation Location { get; set; }
+        /// <summary>
+        /// User Policies
+        /// </summary>
+        public IEnumerable<UserPolicy> Policies { get; set; }
+        /// <summary>
+        /// Schema resources
+        /// </summary>
+        public IEnumerable<SchemaResource> SchemaResources { get; set; }
 
         #endregion
     }

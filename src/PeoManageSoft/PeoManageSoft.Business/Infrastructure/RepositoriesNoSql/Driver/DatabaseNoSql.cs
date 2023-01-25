@@ -1,6 +1,6 @@
 ﻿using MongoDB.Driver;
 
-namespace PeoManageSoft.Business.Infrastructure.RepositoriesNoSql
+namespace PeoManageSoft.Business.Infrastructure.RepositoriesNoSql.Driver
 {
     /// <summary>
     /// Cross-platform NoSQL database.
@@ -19,7 +19,7 @@ namespace PeoManageSoft.Business.Infrastructure.RepositoriesNoSql
         #region Constructors
 
         /// <summary>
-        /// Initializes a new instance of the PeoManageSoft.Business.Infrastructure.RepositoriesNoSql.DatabaseNoSql class.
+        /// Initializes a new instance of the PeoManageSoft.Business.Infrastructure.RepositoriesNoSql.Driver.DatabaseNoSql class.
         /// </summary>
         /// <param name="database">Cross-platform NoSQL database.</param>
         public DatabaseNoSql(IMongoDatabase database)
@@ -36,11 +36,13 @@ namespace PeoManageSoft.Business.Infrastructure.RepositoriesNoSql
         /// <summary>
         /// Gets the collection object.
         /// </summary>
-        /// <typeparam name="TDocument">The document type.</typeparam>
+        /// <typeparam name="IDocumentNoSql">The document type.</typeparam>
         /// <param name="name">Collection name</param>
         /// <param name="settings">Collection settings</param>
         /// <returns>Returns the collection object.</returns>
-        public ICollectionNoSql<TDocument> GetCollection<TDocument>(string name, CollectionSettingsNoSql settings = default)
+        public ICollectionNoSql<T> GetCollection<T>
+            (string name, CollectionSettingsNoSql settings = default)
+            where T : IDocumentNoSql
         {
             MongoCollectionSettings mongoCollectionSettings = default;
 
@@ -49,7 +51,7 @@ namespace PeoManageSoft.Business.Infrastructure.RepositoriesNoSql
                 mongoCollectionSettings = ((ICollectionSettingsNoSql)settings).MongoCollectionSettings;
             }
 
-            return new CollectionNoSql<TDocument>(_database.GetCollection<TDocument>(name, mongoCollectionSettings));
+            return new CollectionNoSql<T>(_database.GetCollection<T>(name, mongoCollectionSettings));
         }
 
         #endregion

@@ -1,9 +1,9 @@
-﻿namespace PeoManageSoft.Business.Infrastructure.RepositoriesNoSql
+﻿namespace PeoManageSoft.Business.Infrastructure.RepositoriesNoSql.Driver
 {
     /// <summary>
     /// Cross-platform NoSQL document-oriented database client.
     /// </summary>
-    internal interface IClientNoSql: IDisposable
+    internal interface IClientNoSql : IDisposable
     {
         #region Methods
 

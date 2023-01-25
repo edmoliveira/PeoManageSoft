@@ -72,6 +72,7 @@ namespace PeoManageSoft.Business.Infrastructure.Helpers
         /// <returns>Encrypted password</returns>
         public string EncryptPassword(string password)
         {
+            //TODO: https://jasonwatmore.com/post/2021/05/27/net-5-hash-and-verify-passwords-with-bcrypt
             return Cryptography.Encrypt(password, _appConfig.AuthTokenSecrect);
         }
 

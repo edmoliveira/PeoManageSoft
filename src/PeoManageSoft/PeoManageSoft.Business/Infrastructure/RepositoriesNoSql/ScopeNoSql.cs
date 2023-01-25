@@ -1,4 +1,5 @@
 ﻿using PeoManageSoft.Business.Infrastructure.Helpers.Exceptions;
+using PeoManageSoft.Business.Infrastructure.RepositoriesNoSql.Driver;
 
 namespace PeoManageSoft.Business.Infrastructure.RepositoriesNoSql
 {

@@ -1,4 +1,5 @@
 ﻿using PeoManageSoft.Business.Infrastructure.RepositoriesNoSql.Databases.Authorization;
+using PeoManageSoft.Business.Infrastructure.RepositoriesNoSql.Driver;
 
 namespace PeoManageSoft.Business.Infrastructure.RepositoriesNoSql
 {

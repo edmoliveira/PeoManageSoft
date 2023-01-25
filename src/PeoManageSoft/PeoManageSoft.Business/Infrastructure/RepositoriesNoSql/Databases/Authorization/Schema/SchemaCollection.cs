@@ -1,26 +1,18 @@
-﻿
+﻿using PeoManageSoft.Business.Infrastructure.RepositoriesNoSql.Driver;
+
 namespace PeoManageSoft.Business.Infrastructure.RepositoriesNoSql.Databases.Authorization.Schema
 {
     /// <summary>
     /// Cross-platform NoSQL collection.
     /// </summary>
-    internal sealed class SchemaCollection : ISchemaCollection
+    internal sealed class SchemaCollection : BaseCollection<SchemaDocument>, ISchemaCollection
     {
         #region Constants
 
         /// <summary>
-        /// Database name.
+        /// Collection name.
         /// </summary>
         private const string CollectionName = "schemas";
-
-        #endregion
-
-        #region Fields
-
-        /// <summary>
-        /// Cross-platform NoSQL collection.
-        /// </summary>
-        private readonly ICollectionNoSql<SchemaEntity> _collection;
 
         #endregion
 
@@ -31,8 +23,9 @@ namespace PeoManageSoft.Business.Infrastructure.RepositoriesNoSql.Databases.Auth
         /// </summary>
         /// <param name="client">Cross-platform NoSQL database.</param>
         public SchemaCollection(IDatabaseNoSql _database)
+            : base(_database.GetCollection<SchemaDocument>(CollectionName))
         {
-            _collection = _database.GetCollection<SchemaEntity>(CollectionName);
+
         }
 
         #endregion

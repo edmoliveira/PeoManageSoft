@@ -1,25 +1,18 @@
-﻿namespace PeoManageSoft.Business.Infrastructure.RepositoriesNoSql.Databases.Authorization.Policy
+﻿using PeoManageSoft.Business.Infrastructure.RepositoriesNoSql.Driver;
+
+namespace PeoManageSoft.Business.Infrastructure.RepositoriesNoSql.Databases.Authorization.Policy
 {
     /// <summary>
     /// Cross-platform NoSQL collection.
     /// </summary>
-    internal sealed class PolicyCollection : IPolicyCollection
+    internal sealed class PolicyCollection : BaseCollection<PolicyDocument>, IPolicyCollection
     {
         #region Constants
 
         /// <summary>
-        /// Database name.
+        /// Collection name.
         /// </summary>
-        private const string CollectionName = "policies";
-
-        #endregion
-
-        #region Fields
-
-        /// <summary>
-        /// Cross-platform NoSQL collection.
-        /// </summary>
-        private readonly ICollectionNoSql<PolicyEnity> _collection;
+        public const string CollectionName = "policies";
 
         #endregion
 
@@ -30,8 +23,9 @@
         /// </summary>
         /// <param name="client">Cross-platform NoSQL database.</param>
         public PolicyCollection(IDatabaseNoSql _database)
+            : base(_database.GetCollection<PolicyDocument>(CollectionName))
         {
-            _collection = _database.GetCollection<PolicyEnity>(CollectionName);
+
         }
 
         #endregion

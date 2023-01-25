@@ -51,7 +51,7 @@ namespace PeoManageSoft.Business.Infrastructure.Helpers.Exceptions
         }
 
         /// <summary>
-        /// Initializes a new instance of the QuixaPartners.Entities.Exceptions.BadRequestException class with a specific messages that describes the current exception and an inner exception.
+        /// Initializes a new instance of the PeoManageSoft.Business.Infrastructure.Exceptions.BadRequestException class with a specific messages that describes the current exception and an inner exception.
         /// </summary>
         /// <param name="statusCode">Contains the values of status codes defined for HTTP</param>
         /// <param name="messageList">Message collection.</param>

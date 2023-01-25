@@ -3,7 +3,7 @@
     /// <summary>
     /// Cross-platform NoSQL collection.
     /// </summary>
-    internal interface ISchemaCollection
+    internal interface ISchemaCollection : IBaseCollection<SchemaDocument>
     {
     }
 }

@@ -63,7 +63,7 @@ namespace PeoManageSoft.Business.Domain.Services.Commands.User.Update
             _logger.LogBeginInformation(methodName);
 
             await _transactionScope
-                    .UsingAsync(async scope => await _command.ExecuteAsync(scope, request))
+                    .UsingAsync(async scope => await _command.ExecuteAsync(scope, request).ConfigureAwait(false))
                     .ConfigureAwait(false);
 
             _logger.LogEndInformation(methodName);

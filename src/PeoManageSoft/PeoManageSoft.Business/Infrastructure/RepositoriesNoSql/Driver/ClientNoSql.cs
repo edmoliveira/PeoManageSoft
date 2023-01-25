@@ -1,7 +1,7 @@
 ﻿using MongoDB.Driver;
 using PeoManageSoft.Business.Infrastructure.Helpers.Interfaces;
 
-namespace PeoManageSoft.Business.Infrastructure.RepositoriesNoSql
+namespace PeoManageSoft.Business.Infrastructure.RepositoriesNoSql.Driver
 {
     /// <summary>
     /// Cross-platform NoSQL document-oriented database client.
@@ -20,7 +20,7 @@ namespace PeoManageSoft.Business.Infrastructure.RepositoriesNoSql
         #region Constructors
 
         /// <summary>
-        /// Initializes a new instance of the PeoManageSoft.Business.Infrastructure.RepositoriesNoSql.ClientNoSql class.
+        /// Initializes a new instance of the PeoManageSoft.Business.Infrastructure.RepositoriesNoSql.Driver.ClientNoSql class.
         /// </summary>
         /// <param name="appConfig">Application Configuration</param>
         public ClientNoSql(IAppConfig appConfig)
@@ -44,7 +44,7 @@ namespace PeoManageSoft.Business.Infrastructure.RepositoriesNoSql
         {
             MongoDatabaseSettings mongoDatabaseSettings = default;
 
-            if(settings != null)
+            if (settings != null)
             {
                 mongoDatabaseSettings = ((IDatabaseSettingsNoSql)settings).MongoDatabaseSettings;
             }
@@ -57,7 +57,7 @@ namespace PeoManageSoft.Business.Infrastructure.RepositoriesNoSql
         /// </summary>
         public void Dispose()
         {
-            
+
         }
 
         #endregion

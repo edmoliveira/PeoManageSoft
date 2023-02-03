@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.Extensions.Logging;
+using PeoManageSoft.Business.Domain.Services.Commands.User._Models;
 using PeoManageSoft.Business.Domain.Services.Commands.User.Add;
 using PeoManageSoft.Business.Domain.Services.Functions.Department;
 using PeoManageSoft.Business.Domain.Services.Functions.Title;
@@ -7,6 +8,7 @@ using PeoManageSoft.Business.Domain.Services.Functions.User;
 using PeoManageSoft.Business.Domain.Services.Functions.User.SendEmailToActiveUser;
 using PeoManageSoft.Business.Infrastructure.Helpers.Extensions;
 using PeoManageSoft.Business.Infrastructure.Helpers.Interfaces;
+using PeoManageSoft.Business.Infrastructure.Helpers.ResourcesPolicySettings.Interfaces;
 
 namespace PeoManageSoft.Business.Application.User.New
 {
@@ -42,6 +44,10 @@ namespace PeoManageSoft.Business.Application.User.New
         /// </summary>
         private readonly ITokenJwt _tokenJwt;
         /// <summary>
+        /// Resources policy configuration.
+        /// </summary>
+        private readonly IResourcesPolicyConfiguration _resourcesPolicyConfiguration;
+        /// <summary>
         /// Application Configuration
         /// </summary>
         private readonly IAppConfig _appConfig;
@@ -67,6 +73,7 @@ namespace PeoManageSoft.Business.Application.User.New
         /// <param name="titleFunctionFacade">Title function facade that provides a simplified interface.</param>
         /// <param name="departmentFunctionFacade">Department function facade that provides a simplified interface.</param>
         /// <param name="tokenJwt">Manages Json Web Token and Cryptography.</param>
+        /// <param name="resourcesPolicyConfiguration">Resources policy configuration.</param>
         /// <param name="appConfig">Application Configuration</param>
         /// <param name="mapper">Data Mapper </param>
         /// <param name="logger">Log</param>
@@ -77,6 +84,7 @@ namespace PeoManageSoft.Business.Application.User.New
                 ITitleFunctionFacade titleFunctionFacade,
                 IDepartmentFunctionFacade departmentFunctionFacade,
                 ITokenJwt tokenJwt,
+                IResourcesPolicyConfiguration resourcesPolicyConfiguration,
                 IAppConfig appConfig,
                 IMapper mapper,
                 ILogger<NewApplication> logger
@@ -88,6 +96,7 @@ namespace PeoManageSoft.Business.Application.User.New
             _titleFunctionFacade = titleFunctionFacade;
             _departmentFunctionFacade = departmentFunctionFacade;
             _tokenJwt = tokenJwt;
+            _resourcesPolicyConfiguration = resourcesPolicyConfiguration;
             _appConfig = appConfig;
             _mapper = mapper;
             _logger = logger;
@@ -116,7 +125,13 @@ namespace PeoManageSoft.Business.Application.User.New
             await _newValidation.RunValidationAsync(request).ConfigureAwait(false);
 
             AddRequest commandRequest = _mapper.Map<AddRequest>(request);
-            
+
+            commandRequest.Policies = _resourcesPolicyConfiguration.GetPolicies(commandRequest.Role).Select(item => new UserPolicy
+            {
+                ResourceName = item.ResourceName,
+                Permissions = item.Permissions
+            });
+
             commandRequest.Password = _tokenJwt.EncryptPassword(request.Password);
             commandRequest.IsActive = false;
 

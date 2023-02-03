@@ -48,7 +48,7 @@ namespace PeoManageSoft.Business.Infrastructure.RepositoriesNoSql
         /// </summary>
         public void Dispose()
         {
-            
+
         }
 
         #endregion

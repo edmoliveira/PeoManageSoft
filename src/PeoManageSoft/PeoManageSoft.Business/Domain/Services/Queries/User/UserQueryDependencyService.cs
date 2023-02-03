@@ -27,7 +27,7 @@ namespace PeoManageSoft.Business.Domain.Services.Queries.User
             services.AddScoped<IGetAllHandler, GetAllHandler>();
             services.AddScoped<IGetAllQuery, GetAllQuery>();
             services.AddScoped<IGetAllWithPaginationHandler, GetAllWithPaginationHandler>();
-            services.AddScoped<IGetAllWithPaginationQuery, GetAllWithPaginationQuery>();            
+            services.AddScoped<IGetAllWithPaginationQuery, GetAllWithPaginationQuery>();
             services.AddScoped<IGetByRulesHandler, GetByRulesHandler>();
             services.AddScoped<IGetByRulesQuery, GetByRulesQuery>();
             services.AddScoped<IGetByRulesWithPaginationHandler, GetByRulesWithPaginationHandler>();

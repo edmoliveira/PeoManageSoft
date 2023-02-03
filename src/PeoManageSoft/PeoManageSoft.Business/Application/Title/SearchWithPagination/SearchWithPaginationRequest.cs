@@ -30,7 +30,7 @@
         /// <summary>
         /// Search field value
         /// </summary>
-        public string SearchFieldValue  { get; set; }
+        public string SearchFieldValue { get; set; }
 
         #endregion
     }

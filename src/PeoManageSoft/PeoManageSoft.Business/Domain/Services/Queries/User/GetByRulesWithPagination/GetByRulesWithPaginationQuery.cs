@@ -71,9 +71,9 @@ namespace PeoManageSoft.Business.Domain.Services.Queries.User.GetByRulesWithPagi
 
             IEnumerable<GetResponse> response = _mapper.Map<IEnumerable<GetResponse>>(
                 await _repository.SelectByRulesWithPaginationAsync(
-                    scope, 
-                    request.Page, 
-                    request.QuantityPerPage, 
+                    scope,
+                    request.Page,
+                    request.QuantityPerPage,
                     request.OrderBy,
                     request.Rule
                 ).ConfigureAwait(false)

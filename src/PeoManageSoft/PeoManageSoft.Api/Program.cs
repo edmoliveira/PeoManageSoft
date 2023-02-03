@@ -7,6 +7,7 @@ WebApplicationBuilder? builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
 
 configuration.AddJsonFile("configuration.json", false, true);
+configuration.AddJsonFile("resourcespolicy.json", false, true);
 
 LogManager.Configuration = new NLogLoggingConfiguration(configuration.GetSection("NLog"));
 

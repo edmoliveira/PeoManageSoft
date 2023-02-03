@@ -5,7 +5,7 @@ namespace PeoManageSoft.Business.Infrastructure.RepositoriesNoSql
     /// <summary>
     /// Non-SQL repositories
     /// </summary>
-    internal interface IRepositoryNoSql: IDisposable
+    internal interface IRepositoryNoSql : IDisposable
     {
         #region Properties
 

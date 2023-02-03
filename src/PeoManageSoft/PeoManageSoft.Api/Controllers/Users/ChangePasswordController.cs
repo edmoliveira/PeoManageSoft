@@ -19,7 +19,7 @@ namespace PeoManageSoft.Api.Controllers.Users
     [Produces("application/json")]
     [Route("api/users/change-password")]
     [SerialNumberAuthorizationFilter]
-    [AuthorizeRoles(UserRole.Admin, UserRole.User)]
+    [AuthorizeRoles(UserRole.Admin, UserRole.Manager, UserRole.User)]
     public class ChangePasswordController : CustomControllerBase
     {
         #region Fields private

@@ -149,7 +149,7 @@ namespace PeoManageSoft.Business.Application.User.SearchWithPagination
         /// <returns>Returns the rule object.</returns>
         private IRule<UserEntityField> CreateRule(Fields searchField, object searchFieldValue)
         {
-            IRule<UserEntityField> create(UserEntityField field, 
+            IRule<UserEntityField> create(UserEntityField field,
                                             SqlComparisonOperator comparisonOperator,
                                             object value)
             {

@@ -1,5 +1,4 @@
 ﻿using PeoManageSoft.Business.Infrastructure.RepositoriesNoSql.Driver;
-using System.Reflection.Metadata;
 
 namespace PeoManageSoft.Business.Infrastructure.RepositoriesNoSql.Databases
 {
@@ -7,7 +6,7 @@ namespace PeoManageSoft.Business.Infrastructure.RepositoriesNoSql.Databases
     /// Cross-platform NoSQL collection base class.
     /// </summary>
     /// <typeparam name="TDocument">The type of the documents stored in the collection.</typeparam>
-    internal abstract class BaseCollection<TDocument>  : IBaseCollection<TDocument> where TDocument : IDocumentNoSql
+    internal abstract class BaseCollection<TDocument> : IBaseCollection<TDocument> where TDocument : IDocumentNoSql
     {
         #region Properties
 
@@ -42,7 +41,7 @@ namespace PeoManageSoft.Business.Infrastructure.RepositoriesNoSql.Databases
         /// Task: Represents an asynchronous operation. 
         /// Returns the list of documents.
         /// </returns>
-        public async Task<IEnumerable<TDocument>> SelectAllAsync() 
+        public async Task<IEnumerable<TDocument>> SelectAllAsync()
         {
             return await Collection.SelectAllAsync().ConfigureAwait(false);
         }

@@ -6,7 +6,7 @@ namespace PeoManageSoft.Business.Infrastructure.RepositoriesNoSql.Databases.Auth
     /// <summary>
     /// NoSql document "Policy".
     /// </summary>
-    internal sealed class PolicyDocument: BaseDocumentNoSql, IDocumentNoSql
+    internal sealed class PolicyDocument : BaseDocumentNoSql, IDocumentNoSql
     {
         #region Properties
 

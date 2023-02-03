@@ -22,6 +22,8 @@ using PeoManageSoft.Business.Infrastructure.Helpers.Exceptions;
 using PeoManageSoft.Business.Infrastructure.Helpers.Extensions;
 using PeoManageSoft.Business.Infrastructure.Helpers.Filters;
 using PeoManageSoft.Business.Infrastructure.Helpers.Interfaces;
+using PeoManageSoft.Business.Infrastructure.Helpers.ResourcesPolicySettings;
+using PeoManageSoft.Business.Infrastructure.Helpers.ResourcesPolicySettings.Interfaces;
 using PeoManageSoft.Business.Infrastructure.ObjectRelationalMapper;
 using PeoManageSoft.Business.Infrastructure.ObjectRelationalMapper.Interfaces;
 using PeoManageSoft.Business.Infrastructure.Repositories;
@@ -58,6 +60,8 @@ namespace PeoManageSoft.Business.Infrastructure.Helpers
 
             services.AddScoped<IApplicationContext, ApplicationContext>();
             services.AddScoped(c => (ISetApplicationContext)c.GetService<IApplicationContext>());
+
+            services.AddScoped<IResourcesPolicyConfiguration, ResourcesPolicyConfiguration>();
 
             AddMapperConfiguration(services);
 

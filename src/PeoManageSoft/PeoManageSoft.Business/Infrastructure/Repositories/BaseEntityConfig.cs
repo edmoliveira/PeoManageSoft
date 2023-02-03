@@ -460,7 +460,7 @@ namespace PeoManageSoft.Business.Infrastructure.Repositories
         {
             var sqlStatement = GetSelectSqlStatement(null);
 
-            if(whereParameters is not null)
+            if (whereParameters is not null)
             {
                 sqlStatement += $"WHERE {whereParameters} ";
             }

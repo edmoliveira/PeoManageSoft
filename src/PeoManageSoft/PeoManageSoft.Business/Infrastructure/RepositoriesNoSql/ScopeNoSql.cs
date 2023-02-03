@@ -6,7 +6,7 @@ namespace PeoManageSoft.Business.Infrastructure.RepositoriesNoSql
     /// <summary>
     /// Makes a code block. 
     /// </summary>
-    internal sealed class ScopeNoSql: IScopeNoSql
+    internal sealed class ScopeNoSql : IScopeNoSql
     {
         #region Fields
 
@@ -67,7 +67,7 @@ namespace PeoManageSoft.Business.Infrastructure.RepositoriesNoSql
         /// <returns>Returns the type "T"</returns>
         public T Using<T>(Func<IRepositoryNoSql, T> func)
         {
-            using var client = GetClientNoSql(); 
+            using var client = GetClientNoSql();
             using var repository = CreateRepositoryNoSql(client);
 
             return func(repository);

@@ -87,7 +87,8 @@ namespace PeoManageSoft.Business.Domain.Services.Commands.User.Add
             _logger.LogBeginInformation(methodName);
 
             AddResponse result = await _transactionScope
-                                            .UsingAsync(async scope => {
+                                            .UsingAsync(async scope =>
+                                            {
                                                 scope.BeginTransaction();
 
                                                 var response = await _command.ExecuteAsync(scope, request).ConfigureAwait(false);
@@ -112,7 +113,7 @@ namespace PeoManageSoft.Business.Domain.Services.Commands.User.Add
                                                             }
                                                     ).ConfigureAwait(false);
 
-                                                }).ConfigureAwait(false); 
+                                                }).ConfigureAwait(false);
 
                                                 return response;
                                             })

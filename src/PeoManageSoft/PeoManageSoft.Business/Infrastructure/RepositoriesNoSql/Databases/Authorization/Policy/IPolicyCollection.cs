@@ -3,7 +3,7 @@
     /// <summary>
     /// Cross-platform NoSQL collection.
     /// </summary>
-    internal interface IPolicyCollection: IBaseCollection<PolicyDocument>
+    internal interface IPolicyCollection : IBaseCollection<PolicyDocument>
     {
     }
 }

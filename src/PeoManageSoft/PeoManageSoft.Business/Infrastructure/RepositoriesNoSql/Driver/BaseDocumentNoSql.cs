@@ -6,7 +6,7 @@ namespace PeoManageSoft.Business.Infrastructure.RepositoriesNoSql.Driver
     /// <summary>
     /// NoSql document base class.
     /// </summary>
-    internal abstract class BaseDocumentNoSql 
+    internal abstract class BaseDocumentNoSql
     {
         #region Properties
 

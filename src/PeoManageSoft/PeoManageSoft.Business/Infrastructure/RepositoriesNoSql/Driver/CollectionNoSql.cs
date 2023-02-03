@@ -103,7 +103,7 @@ namespace PeoManageSoft.Business.Infrastructure.RepositoriesNoSql.Driver
         /// <param name="document">The document.</param>
         public void Insert(TDocument document)
         {
-            _collection.InsertOne(document); 
+            _collection.InsertOne(document);
         }
 
         /// <summary>

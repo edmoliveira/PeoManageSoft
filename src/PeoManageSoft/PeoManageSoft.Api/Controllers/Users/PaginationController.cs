@@ -4,12 +4,12 @@ using PeoManageSoft.Business.Application.User;
 using PeoManageSoft.Business.Application.User.Read.Response;
 using PeoManageSoft.Business.Application.User.ReadAllWithPagination;
 using PeoManageSoft.Business.Application.User.SearchWithPagination;
+using PeoManageSoft.Business.Infrastructure;
+using PeoManageSoft.Business.Infrastructure.Helpers.Attributes;
 using PeoManageSoft.Business.Infrastructure.Helpers.Controllers;
 using PeoManageSoft.Business.Infrastructure.Helpers.Extensions;
 using PeoManageSoft.Business.Infrastructure.Helpers.Filters;
 using Swashbuckle.AspNetCore.Annotations;
-using PeoManageSoft.Business.Infrastructure;
-using PeoManageSoft.Business.Infrastructure.Helpers.Attributes;
 
 namespace PeoManageSoft.Api.Controllers.Users
 {

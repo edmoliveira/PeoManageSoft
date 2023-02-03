@@ -34,8 +34,8 @@ namespace PeoManageSoft.Business.Infrastructure.RepositoriesNoSql.Databases.Auth
         /// </summary>
         /// <param name="userId">User identifier</param>
         /// <param name="resources">Resources</param>
-        public SchemaDocument(long userId, IEnumerable<ResourceDocument> resources) 
-        { 
+        public SchemaDocument(long userId, IEnumerable<ResourceDocument> resources)
+        {
             this.UserId = userId;
             this.Resources = resources;
         }

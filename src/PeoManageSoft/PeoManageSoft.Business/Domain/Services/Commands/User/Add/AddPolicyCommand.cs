@@ -39,15 +39,21 @@ namespace PeoManageSoft.Business.Domain.Services.Commands.User.Add
         /// Executes the command and asynchronously using Task.
         /// </summary>
         /// <param name="collection">The type of the cross-platform NoSQL collection.</param>
-        /// <param name="request">NoSql documents "Policy"..</param>
+        /// <param name="request">Request for the add policy command.</param>
         /// <returns>Represents an asynchronous operation. </returns>
-        public async Task ExecuteAsync(IPolicyCollection collection, IEnumerable<PolicyDocument> request)
+        public async Task ExecuteAsync(IPolicyCollection collection, AddPolicyRequest request)
         {
             string methodName = nameof(ExecuteAsync);
 
             _logger.LogBeginInformation(methodName);
 
-            await collection.InsertManyAsync(request).ConfigureAwait(false);
+            var documents = request.Policies.Select(item => new PolicyDocument(
+                   request.UserId,
+                   item.ResourceName,
+                   item.Permissions
+                ));
+
+            await collection.InsertManyAsync(documents).ConfigureAwait(false);
 
             _logger.LogEndInformation(methodName);
         }

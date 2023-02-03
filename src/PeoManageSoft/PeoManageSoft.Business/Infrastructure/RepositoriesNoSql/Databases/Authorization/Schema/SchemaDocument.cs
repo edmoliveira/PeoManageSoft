@@ -21,5 +21,25 @@ namespace PeoManageSoft.Business.Infrastructure.RepositoriesNoSql.Databases.Auth
         public IEnumerable<ResourceDocument> Resources { get; private set; }
 
         #endregion
+
+        #region Constructors
+
+        /// <summary>
+        /// Initializes a new instance of the PeoManageSoft.Business.Infrastructure.RepositoriesNoSql.Databases.Authorization.Schema.SchemaDocument class.
+        /// </summary>
+        public SchemaDocument() { }
+
+        /// <summary>
+        /// Initializes a new instance of the PeoManageSoft.Business.Infrastructure.RepositoriesNoSql.Databases.Authorization.Schema.SchemaDocument class.
+        /// </summary>
+        /// <param name="userId">User identifier</param>
+        /// <param name="resources">Resources</param>
+        public SchemaDocument(long userId, IEnumerable<ResourceDocument> resources) 
+        { 
+            this.UserId = userId;
+            this.Resources = resources;
+        }
+
+        #endregion
     }
 }

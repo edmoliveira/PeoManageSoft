@@ -19,7 +19,7 @@ namespace PeoManageSoft.Business.Application.User.New
         public NewValidator(IAppConfig appConfig)
         {
             RuleFor(x => x.RoleId)
-            .Cascade(CascadeMode.Stop)
+                .Cascade(CascadeMode.Stop)
                 .NotEmpty().WithMessage(x => appConfig.MessagesCatalogResource.GetMessageRequired(nameof(x.RoleId)));
 
             RuleFor(x => x.RoleId)
@@ -61,6 +61,10 @@ namespace PeoManageSoft.Business.Application.User.New
                 .Cascade(CascadeMode.Stop)
                 .NotEmpty().WithMessage(x => appConfig.MessagesCatalogResource.GetMessageRequired(nameof(x.Email)))
                 .EmailAddress().WithMessage(x => appConfig.MessagesCatalogResource.GetMessageInvalidEmail(nameof(x.Email)));
+
+            RuleFor(x => x.SchemaResources)
+                .Cascade(CascadeMode.Stop)
+                .Must(x => x.Any()).WithMessage(x => appConfig.MessagesCatalogResource.GetMessageGreaterThan(nameof(x.SchemaResources), 0));
         }
 
         #endregion

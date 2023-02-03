@@ -116,7 +116,7 @@ namespace PeoManageSoft.Business.Application.User.New
             await _newValidation.RunValidationAsync(request).ConfigureAwait(false);
 
             AddRequest commandRequest = _mapper.Map<AddRequest>(request);
-
+            
             commandRequest.Password = _tokenJwt.EncryptPassword(request.Password);
             commandRequest.IsActive = false;
 

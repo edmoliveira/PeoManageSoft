@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
+using PeoManageSoft.Business.Domain.Services.Commands.User._Models;
 using PeoManageSoft.Business.Infrastructure.Repositories.User;
+using PeoManageSoft.Business.Infrastructure.RepositoriesNoSql.Databases.Authorization.Schema.Models;
 
 namespace PeoManageSoft.Business.Domain.Services.Commands.User.Add
 {
@@ -31,6 +33,11 @@ namespace PeoManageSoft.Business.Domain.Services.Commands.User.Add
 
             CreateMap<UserEntity, AddResponse>()
                 .ForMember(dest => dest.NewId, opt => opt.MapFrom(src => src.Id));
+
+            CreateMap<SchemaResource, ResourceDocument>()
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
+                .ForMember(dest => dest.Permissions, opt => opt.MapFrom(src => src.Permissions))
+                .ForMember(dest => dest.Children, opt => opt.MapFrom(src => src.Children));
         }
 
         #endregion

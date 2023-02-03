@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using PeoManageSoft.Business.Application.User._Models;
+using PeoManageSoft.Business.Domain.Services.Commands.User._Models;
 using PeoManageSoft.Business.Domain.Services.Commands.User.Add;
 using PeoManageSoft.Business.Infrastructure;
 
@@ -16,6 +18,11 @@ namespace PeoManageSoft.Business.Application.User.New
         /// </summary>
         public NewMapper()
         {
+            CreateMap<UserSchemaResource, SchemaResource>()
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
+                .ForMember(dest => dest.Permissions, opt => opt.MapFrom(src => src.Permissions))
+                .ForMember(dest => dest.Children, opt => opt.MapFrom(src => src.Children));
+
             CreateMap<NewRequest, AddRequest>()
                 .ForMember(dest => dest.Role, opt => opt.MapFrom(src => (UserRole)src.RoleId))
                 .ForMember(dest => dest.Login, opt => opt.MapFrom(src => src.Login))
@@ -26,7 +33,8 @@ namespace PeoManageSoft.Business.Application.User.New
                 .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.Email))
                 .ForMember(dest => dest.BussinessPhone, opt => opt.MapFrom(src => src.BussinessPhone))
                 .ForMember(dest => dest.MobilePhone, opt => opt.MapFrom(src => src.MobilePhone))
-                .ForMember(dest => dest.Location, opt => opt.MapFrom(src => src.Location));
+                .ForMember(dest => dest.Location, opt => opt.MapFrom(src => src.Location))
+                .ForMember(dest => dest.SchemaResources, opt => opt.MapFrom(src => src.SchemaResources));
 
             CreateMap<AddResponse, NewResponse>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.NewId));

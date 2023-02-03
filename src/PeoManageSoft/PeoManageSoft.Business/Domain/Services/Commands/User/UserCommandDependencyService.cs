@@ -24,6 +24,8 @@ namespace PeoManageSoft.Business.Domain.Services.Commands.User
         {
             services.AddScoped<IAddHandler, AddHandler>();
             services.AddScoped<IAddCommand, AddCommand>();
+            services.AddScoped<IAddPolicyCommand, AddPolicyCommand>();
+            services.AddScoped<IAddSchemaCommand, AddSchemaCommand>();
             services.AddScoped<IUpdateHandler, UpdateHandler>();
             services.AddScoped<IUpdateCommand, UpdateCommand>();
             services.AddScoped<IPatchHandler, PatchHandler>();

@@ -1,26 +1,23 @@
 ﻿using PeoManageSoft.Business.Infrastructure.Helpers.Structs;
 
-namespace PeoManageSoft.Business.Domain.Services.Commands.User.Add.Models
+namespace PeoManageSoft.Business.Domain.Services.Commands.User._Models
 {
     /// <summary>
-    /// Resource
+    /// Request for the add policy command.
     /// </summary>
-    internal sealed class SchemaResource
+    internal sealed class UserPolicy
     {
         #region Properties
 
         /// <summary>
-        /// Identifier
+        /// Resource name
         /// </summary>
-        public string Id { get; set; }
+        public string ResourceName { get; set; }
+
         /// <summary>
         /// User permissions.
         /// </summary>
         public Grant Permissions { get; set; }
-        /// <summary>
-        /// Children
-        /// </summary>
-        public IEnumerable<SchemaResource> Children { get; set; }
 
         #endregion
     }

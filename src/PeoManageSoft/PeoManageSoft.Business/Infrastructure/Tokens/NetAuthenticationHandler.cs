@@ -48,7 +48,7 @@ namespace PeoManageSoft.Business.Infrastructure.Tokens
             try
             {
                 NetResultValidToken result = new() { Sucess = false };
-                string headerKey = ApplicationResource.AuthorizationHeaderKey;
+                string headerKey = InfraSettings.AuthorizationHeaderKey;
 
                 if (Request.Headers.TryGetValue(headerKey, out StringValues authorization))
                 {

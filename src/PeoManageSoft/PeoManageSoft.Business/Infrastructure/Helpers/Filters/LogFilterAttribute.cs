@@ -50,7 +50,7 @@ namespace PeoManageSoft.Business.Infrastructure.Helpers.Filters
         /// <param name="context">Information about the current request and action</param>
         public override void OnActionExecuting(ActionExecutingContext context)
         {
-            if (context.HttpContext.Request.Headers.TryGetValue(ApplicationResource.RequestIdHeaderKey, out StringValues requestId))
+            if (context.HttpContext.Request.Headers.TryGetValue(InfraSettings.RequestIdHeaderKey, out StringValues requestId))
             {
                 _applicationContext.SetRequestId(requestId.FirstOrDefault());
             }
@@ -59,14 +59,14 @@ namespace PeoManageSoft.Business.Infrastructure.Helpers.Filters
                 _applicationContext.SetRequestId(Guid.NewGuid().ToString("N"));
             }
 
-            if (context.HttpContext.Request.Headers.TryGetValue(ApplicationResource.AuthorizationHeaderKey, out StringValues authorization))
+            if (context.HttpContext.Request.Headers.TryGetValue(InfraSettings.AuthorizationHeaderKey, out StringValues authorization))
             {
                 AuthenticationHeaderValue token = AuthenticationHeaderValue.Parse(authorization.FirstOrDefault());
 
                 _applicationContext.SetToken(token.Parameter);
             }
 
-            if (context.HttpContext.Request.Headers.TryGetValue(ApplicationResource.SerialNumberHeaderKey, out StringValues serialNumber))
+            if (context.HttpContext.Request.Headers.TryGetValue(InfraSettings.SerialNumberHeaderKey, out StringValues serialNumber))
             {
                 _applicationContext.SetSerialNumber(serialNumber.FirstOrDefault());
             }
@@ -74,21 +74,11 @@ namespace PeoManageSoft.Business.Infrastructure.Helpers.Filters
             if (context.HttpContext.User.Identity is ClaimsIdentity claimsIdentity &&
                 claimsIdentity.IsAuthenticated)
             {
-                _applicationContext.SetLoggedUser(new LoggedUser
-                {
-                    Id = long.Parse(claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value),
-                    User = claimsIdentity.FindFirst(ClaimTypes.Name).Value,
-                    Role = (UserRole)Enum.Parse(typeof(UserRole), claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value)
-                });
+                _applicationContext.SetLoggedUser(new LoggedUser(claimsIdentity));
             }
             else
             {
-                _applicationContext.SetLoggedUser(new LoggedUser
-                {
-                    Id = -1,
-                    User = UserRole.Anonymous.ToString(),
-                    Role = UserRole.Anonymous
-                });
+                _applicationContext.SetLoggedUser(new LoggedUser());
             }
 
             _logger.DebugIsEnabled(() => string.Concat("Request.Query: ", JsonConvert.SerializeObject(context?.HttpContext?.Request?.Query)));

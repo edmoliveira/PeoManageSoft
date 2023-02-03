@@ -66,10 +66,10 @@ namespace PeoManageSoft.Business.Domain.Services.Creators.RememberPasswordEmail
             EmailLinkedResource keysLinkedResource = new(imagesResource.Keys256x256, Guid.NewGuid().ToString());
 
             string html = templateResource.ReadHtmlFile(_appConfig.ApplicationLanguage)
-                            .Replace(ApplicationResource.EmailLogoGuidVariable, logoLinkedResource.ContentId)
-                            .Replace(ApplicationResource.EmailKeysGuidVariable, keysLinkedResource.ContentId)
-                            .Replace(ApplicationResource.EmailUrlVariable, urlToken)
-                            .Replace(ApplicationResource.RememberPasswordLocationVariable, location);
+                            .Replace(InfraSettings.EmailLogoGuidVariable, logoLinkedResource.ContentId)
+                            .Replace(InfraSettings.EmailKeysGuidVariable, keysLinkedResource.ContentId)
+                            .Replace(InfraSettings.EmailUrlVariable, urlToken)
+                            .Replace(InfraSettings.RememberPasswordLocationVariable, location);
 
             EmailAlternateView alternateView = new(html, new EmailContentType(System.Net.Mime.MediaTypeNames.Text.Html))
             {
@@ -85,7 +85,7 @@ namespace PeoManageSoft.Business.Domain.Services.Creators.RememberPasswordEmail
                 To = new List<EmailAddress> { new EmailAddress(to) },
                 Priority = EmailPriority.High,
                 IsBodyHtml = true,
-                Subject = templateResource.ReadSubjectFile(_appConfig.ApplicationLanguage).Replace(ApplicationResource.ApplicationNameVariable, _appConfig.ApplicationName),
+                Subject = templateResource.ReadSubjectFile(_appConfig.ApplicationLanguage).Replace(InfraSettings.ApplicationNameVariable, _appConfig.ApplicationName),
                 AlternateViews = new List<EmailAlternateView> { alternateView }
             };
 

@@ -1,6 +1,6 @@
 ﻿using PeoManageSoft.Business.Infrastructure.Helpers.Structs;
 
-namespace PeoManageSoft.Business.Domain.Services.Commands.User._Models
+namespace PeoManageSoft.Business.Domain.Services.Commands.User.Add.Models
 {
     /// <summary>
     /// Request for the add policy command.

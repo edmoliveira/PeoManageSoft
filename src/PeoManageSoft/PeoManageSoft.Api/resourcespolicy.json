@@ -8,34 +8,34 @@ User = 3
     "ResourcePolicyConfig": {
         "Resources": [
             {
-                "Name": "user",
+                "Name": "User",
                 "Roles": [ 1 ]
             },
             {
-                "Name": "change-password",
+                "Name": "ChangePassword",
                 "Roles": [ 1, 2, 3 ]
             },
             {
-                "Name": "title",
+                "Name": "Title",
                 "Roles": [ 1, 2 ]
             },
             {
-                "Name": "department",
+                "Name": "Department",
                 "Roles": [ 1, 2 ]
             }
         ],
         "ResourcesDescriptions": {
             "English": {
-                "user": "User",
-                "change-password": "Change Password",
-                "title": "Title",
-                "department": "Department"
+                "User": "User",
+                "ChangePassword": "Change Password",
+                "Title": "Title",
+                "Department": "Department"
             },
             "Portuguese": {
-                "user": "Usuário",
-                "change-password": "Alterar senha",
-                "title": "Título",
-                "department": "Departamento"
+                "User": "Usuário",
+                "ChangePassword": "Alterar senha",
+                "Title": "Título",
+                "Department": "Departamento"
             }
         }
     }

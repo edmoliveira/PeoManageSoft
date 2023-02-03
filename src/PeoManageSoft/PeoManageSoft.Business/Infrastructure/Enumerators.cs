@@ -21,6 +21,16 @@ namespace PeoManageSoft.Business.Infrastructure
             return value > 0 && Enum.IsDefined(typeof(UserRole), value);
         }
 
+        /// <summary>
+        /// Converts the span of chars representation of the name or numeric value of one or more enumerated constants to an enumerated AppResources.
+        /// </summary>
+        /// <param name="resourceName">Resource name</param>
+        /// <returns>An object of type AppResources whose value is represented by resourceName.</returns>
+        public static AppResources ToAppResources(string resourceName)
+        {
+            return (AppResources)Enum.Parse(typeof(AppResources), resourceName);
+        }
+
         #endregion
 
         #endregion
@@ -158,6 +168,34 @@ namespace PeoManageSoft.Business.Infrastructure
         /// </summary>
         [Description("Standard user")]
         User = 3
+    }
+
+    /// <summary>
+    /// Application Resources
+    /// </summary>
+    public enum AppResources
+    {
+
+        /// <summary>
+        /// User
+        /// </summary>
+        [Description("User")]
+        User = 0,
+        /// <summary>
+        /// ChangePassword
+        /// </summary>
+        [Description("ChangePassword")]
+        ChangePassword = 1,
+        /// <summary>
+        /// Title
+        /// </summary>
+        [Description("Title")]
+        Title = 2,
+        /// <summary>
+        /// Department
+        /// </summary>
+        [Description("Department")]
+        Department = 3
     }
 
     /// <summary>

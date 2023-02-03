@@ -52,7 +52,7 @@ namespace PeoManageSoft.Business.Infrastructure.Helpers.Filters
 
             operation.Parameters.Add(new OpenApiParameter
             {
-                Name = ApplicationResource.SerialNumberHeaderKey,
+                Name = InfraSettings.SerialNumberHeaderKey,
                 In = ParameterLocation.Header,
                 Description = "Serial mumber of the platform.",
                 Required = true,
@@ -64,7 +64,7 @@ namespace PeoManageSoft.Business.Infrastructure.Helpers.Filters
 
             operation.Parameters.Add(new OpenApiParameter
             {
-                Name = ApplicationResource.RequestIdHeaderKey,
+                Name = InfraSettings.RequestIdHeaderKey,
                 In = ParameterLocation.Header,
                 Description = "Request id for all transaction in the platform.",
                 Required = false,

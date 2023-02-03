@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using PeoManageSoft.Business.Application.User._Models;
-using PeoManageSoft.Business.Domain.Services.Commands.User._Models;
 using PeoManageSoft.Business.Domain.Services.Commands.User.Add;
+using PeoManageSoft.Business.Domain.Services.Commands.User.Add.Models;
 using PeoManageSoft.Business.Infrastructure;
 
 namespace PeoManageSoft.Business.Application.User.New

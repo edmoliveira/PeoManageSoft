@@ -1,9 +1,9 @@
 ﻿namespace PeoManageSoft.Business.Infrastructure.Helpers
 {
     /// <summary>
-    /// Resources of the application
+    /// Infrastructure settings.
     /// </summary>
-    internal static class ApplicationResource
+    internal static class InfraSettings
     {
         #region Properties
 

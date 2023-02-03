@@ -1,6 +1,6 @@
 ﻿using System.Security.Cryptography;
 using System.Text;
-using System.Text.Json;
+using Newtonsoft.Json;
 using System.Web;
 
 namespace PeoManageSoft.Business.Infrastructure.Helpers
@@ -36,7 +36,7 @@ namespace PeoManageSoft.Business.Infrastructure.Helpers
         /// <returns>Encrypted object</returns>
         public static string Encrypt<T>(T obj, string password)
         {
-            return Encrypt(JsonSerializer.Serialize(obj), password);
+            return Encrypt(JsonConvert.SerializeObject(obj), password);
         }
 
         /// <summary>
@@ -48,7 +48,7 @@ namespace PeoManageSoft.Business.Infrastructure.Helpers
         /// <returns>Object</returns>
         public static T Decrypt<T>(string encryptedObj, string password)
         {
-            return JsonSerializer.Deserialize<T>(Decrypt(encryptedObj, password));
+            return JsonConvert.DeserializeObject<T>(Decrypt(encryptedObj, password));
         }
 
         /// <summary>

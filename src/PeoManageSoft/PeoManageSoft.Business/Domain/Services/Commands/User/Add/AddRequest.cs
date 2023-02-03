@@ -1,4 +1,4 @@
-﻿using PeoManageSoft.Business.Domain.Services.Commands.User._Models;
+﻿using PeoManageSoft.Business.Domain.Services.Commands.User.Add.Models;
 using PeoManageSoft.Business.Infrastructure;
 using PeoManageSoft.Business.Infrastructure.Helpers.Structs;
 

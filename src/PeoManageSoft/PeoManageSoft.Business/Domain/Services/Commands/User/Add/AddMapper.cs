@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using PeoManageSoft.Business.Domain.Services.Commands.User._Models;
+using PeoManageSoft.Business.Domain.Services.Commands.User.Add.Models;
 using PeoManageSoft.Business.Infrastructure.Repositories.User;
 using PeoManageSoft.Business.Infrastructure.RepositoriesNoSql.Databases.Authorization.Schema.Models;
 

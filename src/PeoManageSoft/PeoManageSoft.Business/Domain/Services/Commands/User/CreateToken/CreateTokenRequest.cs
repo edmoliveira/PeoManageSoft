@@ -22,6 +22,10 @@ namespace PeoManageSoft.Business.Domain.Services.Commands.User.CreateToken
         /// </summary>
         public string Login { get; set; }
         /// <summary>
+        /// User policies
+        /// </summary>
+        public IEnumerable<LoggedUserPolicy> Policies { get; set; }
+        /// <summary>
         /// Authentication Token expiration in seconds.
         /// </summary>
         public double ExpireSeconds { get; set; }

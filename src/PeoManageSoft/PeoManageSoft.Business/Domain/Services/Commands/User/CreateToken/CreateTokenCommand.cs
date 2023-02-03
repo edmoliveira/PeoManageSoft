@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using PeoManageSoft.Business.Infrastructure;
 using PeoManageSoft.Business.Infrastructure.Helpers.Extensions;
 using PeoManageSoft.Business.Infrastructure.Helpers.Interfaces;
 using System.Security.Claims;
@@ -61,12 +62,7 @@ namespace PeoManageSoft.Business.Domain.Services.Commands.User.CreateToken
 
             DateTime expires = DateTime.UtcNow.AddSeconds(request.ExpireSeconds);
 
-            ClaimsIdentity claimsIdentity = new(new Claim[]
-            {
-                new Claim(ClaimTypes.NameIdentifier, request.Id.ToString()),
-                new Claim(ClaimTypes.Name, request.Login),
-                new Claim(ClaimTypes.Role, request.Role.ToString())
-            });
+            ClaimsIdentity claimsIdentity = new(LoggedUser.CreateClaims(request.Id, request.Login, request.Role, request.Policies));
 
             string token = await _tokenJwt.CreateTokenAsync(claimsIdentity, expires).ConfigureAwait(false);
 

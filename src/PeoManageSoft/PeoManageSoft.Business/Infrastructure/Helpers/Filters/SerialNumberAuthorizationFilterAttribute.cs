@@ -24,7 +24,7 @@ namespace PeoManageSoft.Business.Infrastructure.Helpers.Filters
                 throw new ProviderServiceNotFoundException(nameof(IAppConfig));
             }
 
-            if (!context.HttpContext.Request.Headers.TryGetValue(ApplicationResource.SerialNumberHeaderKey, out StringValues serialNumber) ||
+            if (!context.HttpContext.Request.Headers.TryGetValue(InfraSettings.SerialNumberHeaderKey, out StringValues serialNumber) ||
                 serialNumber.FirstOrDefault() != appConfig.SerialNumber)
             {
                 context.Result = new UnauthorizedResult();

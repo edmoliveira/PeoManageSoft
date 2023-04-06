@@ -1,14 +1,16 @@
 ﻿using AutoMapper;
 using Microsoft.Extensions.Logging;
-using PeoManageSoft.Business.Domain.Services.Commands.User._Models;
 using PeoManageSoft.Business.Domain.Services.Commands.User.Add;
+using PeoManageSoft.Business.Domain.Services.Commands.User.Add.Models;
 using PeoManageSoft.Business.Domain.Services.Functions.Department;
 using PeoManageSoft.Business.Domain.Services.Functions.Title;
 using PeoManageSoft.Business.Domain.Services.Functions.User;
 using PeoManageSoft.Business.Domain.Services.Functions.User.SendEmailToActiveUser;
+using PeoManageSoft.Business.Domain.Services.Queries.Role.GetResources;
 using PeoManageSoft.Business.Infrastructure.Helpers.Extensions;
 using PeoManageSoft.Business.Infrastructure.Helpers.Interfaces;
 using PeoManageSoft.Business.Infrastructure.Helpers.ResourcesPolicySettings.Interfaces;
+using PeoManageSoft.Business.Infrastructure.Helpers.Structs;
 
 namespace PeoManageSoft.Business.Application.User.New
 {
@@ -27,6 +29,10 @@ namespace PeoManageSoft.Business.Application.User.New
         ///  Handles all commands to add the user.
         /// </summary>
         private readonly IAddHandler _addHandler;
+        /// <summary>
+        /// Handles all queries to get the role resources.
+        /// </summary>
+        private readonly IGetResourcesHandler _getResourcesHandler;
         /// <summary>
         /// User function facade that provides a simplified interface.
         /// </summary>
@@ -69,6 +75,7 @@ namespace PeoManageSoft.Business.Application.User.New
         /// </summary>
         /// <param name="newValidation">Application layer validation object.</param>
         /// <param name="addHandler">Handles all commands to add the user.</param>
+        /// <param name="getResourcesHandler">Handles all queries to get the role resources.</param>
         /// <param name="functionFacade">User function facade that provides a simplified interface.</param>
         /// <param name="titleFunctionFacade">Title function facade that provides a simplified interface.</param>
         /// <param name="departmentFunctionFacade">Department function facade that provides a simplified interface.</param>
@@ -80,6 +87,7 @@ namespace PeoManageSoft.Business.Application.User.New
         public NewApplication(
                 INewValidation newValidation,
                 IAddHandler addHandler,
+                IGetResourcesHandler getResourcesHandler,
                 IUserFunctionFacade functionFacade,
                 ITitleFunctionFacade titleFunctionFacade,
                 IDepartmentFunctionFacade departmentFunctionFacade,
@@ -92,6 +100,7 @@ namespace PeoManageSoft.Business.Application.User.New
         {
             _newValidation = newValidation;
             _addHandler = addHandler;
+            _getResourcesHandler = getResourcesHandler;
             _functionFacade = functionFacade;
             _titleFunctionFacade = titleFunctionFacade;
             _departmentFunctionFacade = departmentFunctionFacade;
@@ -126,12 +135,32 @@ namespace PeoManageSoft.Business.Application.User.New
 
             AddRequest commandRequest = _mapper.Map<AddRequest>(request);
 
-            commandRequest.Policies = _resourcesPolicyConfiguration.GetPolicies(commandRequest.Role).Select(item => new UserPolicy
-            {
-                ResourceName = item.ResourceName,
-                Permissions = item.Permissions
-            });
+            var policies = new List<UserPolicy>();
 
+            var roleResources = await _getResourcesHandler.HandleAsync(new GetResourcesRequest { RoleId = commandRequest.RoleId }).ConfigureAwait(false);
+
+            foreach (var resource in _resourcesPolicyConfiguration.GetResources())
+            {
+                UserPolicy userPolicy = new()
+                {
+                    ResourceName = resource
+                };
+
+                var roleResource = roleResources.Where(r => string.Equals(r.ResourceName, resource, StringComparison.OrdinalIgnoreCase)).FirstOrDefault();
+
+                if (roleResource != null)
+                {
+                    userPolicy.Permissions = roleResource.Permissions;
+                }
+                else
+                {
+                    userPolicy.Permissions = new Grant(false, false, false, false);
+                }
+
+                policies.Add(userPolicy);
+            }
+
+            commandRequest.Policies = policies;
             commandRequest.Password = _tokenJwt.EncryptPassword(request.Password);
             commandRequest.IsActive = false;
 

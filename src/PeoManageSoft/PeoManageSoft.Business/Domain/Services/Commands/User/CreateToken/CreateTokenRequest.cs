@@ -1,6 +1,4 @@
-﻿using PeoManageSoft.Business.Infrastructure;
-
-namespace PeoManageSoft.Business.Domain.Services.Commands.User.CreateToken
+﻿namespace PeoManageSoft.Business.Domain.Services.Commands.User.CreateToken
 {
     /// <summary>
     /// Request for the create token command.
@@ -16,15 +14,11 @@ namespace PeoManageSoft.Business.Domain.Services.Commands.User.CreateToken
         /// <summary>
         /// Set of permissions for actions available in application
         /// </summary>
-        public UserRole Role { get; set; }
+        public long RoleId { get; set; }
         /// <summary>
         /// User login
         /// </summary>
         public string Login { get; set; }
-        /// <summary>
-        /// User policies
-        /// </summary>
-        public IEnumerable<LoggedUserPolicy> Policies { get; set; }
         /// <summary>
         /// Authentication Token expiration in seconds.
         /// </summary>

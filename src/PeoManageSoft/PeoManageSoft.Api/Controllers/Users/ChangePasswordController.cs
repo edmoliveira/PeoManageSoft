@@ -1,9 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using PeoManageSoft.Business.Application.User;
 using PeoManageSoft.Business.Application.User.ChangePassword;
-using PeoManageSoft.Business.Infrastructure;
-using PeoManageSoft.Business.Infrastructure.Helpers.Attributes;
 using PeoManageSoft.Business.Infrastructure.Helpers.Controllers;
 using PeoManageSoft.Business.Infrastructure.Helpers.Extensions;
 using PeoManageSoft.Business.Infrastructure.Helpers.Filters;
@@ -19,7 +18,7 @@ namespace PeoManageSoft.Api.Controllers.Users
     [Produces("application/json")]
     [Route("api/users/change-password")]
     [SerialNumberAuthorizationFilter]
-    [AuthorizeRoles(UserRole.Admin, UserRole.Manager, UserRole.User)]
+    [Authorize()]
     public class ChangePasswordController : CustomControllerBase
     {
         #region Fields private

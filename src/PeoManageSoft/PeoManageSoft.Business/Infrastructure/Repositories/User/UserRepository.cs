@@ -4,6 +4,7 @@ using PeoManageSoft.Business.Infrastructure.Helpers.Interfaces;
 using PeoManageSoft.Business.Infrastructure.ObjectRelationalMapper.Interfaces;
 using PeoManageSoft.Business.Infrastructure.Repositories.Department;
 using PeoManageSoft.Business.Infrastructure.Repositories.Interfaces;
+using PeoManageSoft.Business.Infrastructure.Repositories.Role;
 using PeoManageSoft.Business.Infrastructure.Repositories.Title;
 
 namespace PeoManageSoft.Business.Infrastructure.Repositories.User
@@ -15,6 +16,10 @@ namespace PeoManageSoft.Business.Infrastructure.Repositories.User
     {
         #region Fields
 
+        /// <summary>
+        /// The role entity configuration.
+        /// </summary>
+        private readonly IBaseEntityConfig<RoleEntity, RoleEntityField> _roleEntityConfig;
         /// <summary>
         /// The title entity configuration.
         /// </summary>
@@ -38,6 +43,7 @@ namespace PeoManageSoft.Business.Infrastructure.Repositories.User
         /// <param name="logger">Log</param>
         public UserRepository(
             IBaseEntityConfig<UserEntity, UserEntityField> entityConfig,
+            IBaseEntityConfig<RoleEntity, RoleEntityField> roleEntityConfig,
             IBaseEntityConfig<TitleEntity, TitleEntityField> titleEntityConfig,
             IBaseEntityConfig<DepartmentEntity, DepartmentEntityField> departmentEntityConfig,
             IDbContext dbContext,
@@ -47,6 +53,7 @@ namespace PeoManageSoft.Business.Infrastructure.Repositories.User
             ILogger<UserRepository> logger)
             : base(entityConfig, dbContext, applicationContext, provider, mapper, logger)
         {
+            _roleEntityConfig = roleEntityConfig;
             _titleEntityConfig = titleEntityConfig;
             _departmentEntityConfig = departmentEntityConfig;
         }
@@ -77,6 +84,8 @@ namespace PeoManageSoft.Business.Infrastructure.Repositories.User
         protected override UserEntity SetEntity(IDataReaderGetValue dataReaderGetValue)
         {
             var userEntity = Mapper.Map<UserEntity>(dataReaderGetValue);
+            var roleEntity = Mapper.Map<RoleEntity>(
+                new DataReaderGetValue<RoleEntity, RoleEntityField>(_roleEntityConfig, dataReaderGetValue.GetDataReader()));
             var titleEntity = Mapper.Map<TitleEntity>(
                 new DataReaderGetValue<TitleEntity, TitleEntityField>(_titleEntityConfig, dataReaderGetValue.GetDataReader()));
             var departmentEntity = Mapper.Map<DepartmentEntity>(
@@ -84,6 +93,7 @@ namespace PeoManageSoft.Business.Infrastructure.Repositories.User
 
             IUser user = userEntity;
 
+            user.SetRole(roleEntity);
             user.SetTitle(titleEntity);
             user.SetDepartment(departmentEntity);
 

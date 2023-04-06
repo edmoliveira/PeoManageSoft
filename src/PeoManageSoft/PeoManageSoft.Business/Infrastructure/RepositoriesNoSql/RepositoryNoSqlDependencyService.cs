@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using PeoManageSoft.Business.Infrastructure.RepositoriesNoSql.Driver;
 
 namespace PeoManageSoft.Business.Infrastructure.RepositoriesNoSql
 {
@@ -17,6 +18,7 @@ namespace PeoManageSoft.Business.Infrastructure.RepositoriesNoSql
         /// <param name="services">Specifies the contract for a collection of service descriptors.</param>
         public static void AddRepositoryNoSqlDependencies(this IServiceCollection services)
         {
+            services.AddScoped<IClientNoSql, ClientNoSql>();
             services.AddScoped<IScopeNoSql, ScopeNoSql>();
             services.AddScoped<IRepositoryNoSql, RepositoryNoSql>();
         }

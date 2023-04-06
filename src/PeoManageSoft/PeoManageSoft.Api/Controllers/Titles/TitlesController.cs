@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Newtonsoft.Json;
 using PeoManageSoft.Business.Application.Title;
@@ -7,8 +8,6 @@ using PeoManageSoft.Business.Application.Title.Delete;
 using PeoManageSoft.Business.Application.Title.New;
 using PeoManageSoft.Business.Application.Title.Read;
 using PeoManageSoft.Business.Application.Title.Read.Response;
-using PeoManageSoft.Business.Infrastructure;
-using PeoManageSoft.Business.Infrastructure.Helpers.Attributes;
 using PeoManageSoft.Business.Infrastructure.Helpers.Controllers;
 using PeoManageSoft.Business.Infrastructure.Helpers.Extensions;
 using PeoManageSoft.Business.Infrastructure.Helpers.Filters;
@@ -25,7 +24,7 @@ namespace PeoManageSoft.Api.Controllers.Titles
     [Produces("application/json")]
     [Route("api/titles")]
     [SerialNumberAuthorizationFilter]
-    [AuthorizeRoles(UserRole.Admin, UserRole.Manager)]
+    [Authorize()]
     public sealed class TitlesController : CustomControllerBase
     {
         #region Fields private

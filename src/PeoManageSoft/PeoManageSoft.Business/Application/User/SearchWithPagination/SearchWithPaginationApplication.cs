@@ -161,7 +161,7 @@ namespace PeoManageSoft.Business.Application.User.SearchWithPagination
                 Fields.Id => create(UserEntityField.Id_Readonly, SqlComparisonOperator.EqualTo, SafeConvert.ToLong(searchFieldValue)),
                 Fields.IsActive => create(UserEntityField.IsActive, SqlComparisonOperator.EqualTo, SafeConvert.ToBoolean(searchFieldValue)),
                 Fields.Login => create(UserEntityField.Login_Readonly, SqlComparisonOperator.Like, searchFieldValue),
-                Fields.Role => create(UserEntityField.Role, SqlComparisonOperator.EqualTo, searchFieldValue),
+                Fields.RoleId => create(UserEntityField.RoleId, SqlComparisonOperator.EqualTo, searchFieldValue),
                 Fields.Name => create(UserEntityField.Name, SqlComparisonOperator.Like, searchFieldValue),
                 Fields.ShortName => create(UserEntityField.ShortName, SqlComparisonOperator.Like, searchFieldValue),
                 Fields.TitleId => create(UserEntityField.TitleId, SqlComparisonOperator.EqualTo, SafeConvert.ToLong(searchFieldValue)),

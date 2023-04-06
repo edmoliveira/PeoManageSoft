@@ -12,7 +12,7 @@
         /// </summary>
         public long Id { get; set; }
         /// <summary>
-        /// Indicates whether the user is active
+        /// Indicates whether the department is active
         /// </summary>
         public bool IsActive { get; set; }
         /// <summary>

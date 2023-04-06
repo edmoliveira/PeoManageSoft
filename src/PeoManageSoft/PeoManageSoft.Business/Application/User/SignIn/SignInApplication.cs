@@ -108,7 +108,7 @@ namespace PeoManageSoft.Business.Application.User.SignIn
             {
                 Id = userResponse.Id,
                 Login = userResponse.Login,
-                Role = userResponse.Role,
+                RoleId = userResponse.Role.Id,
                 ExpireSeconds = _appConfig.AuthTokenExpireSeconds
             }).ConfigureAwait(false);
 
@@ -118,7 +118,8 @@ namespace PeoManageSoft.Business.Application.User.SignIn
             {
                 Key = tokenResponse.Key,
                 ExpireSeconds = _appConfig.AuthTokenExpireSeconds,
-                Role = userResponse.Role,
+                RoleId = userResponse.Role.Id,
+                RoleName = userResponse.Role.Name,
                 Name = userResponse.Name,
                 ShortName = userResponse.ShortName
             };

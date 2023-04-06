@@ -1,7 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using PeoManageSoft.Business.Infrastructure.Helpers.ResourcesPolicySettings.Interfaces;
 using PeoManageSoft.Business.Infrastructure.Helpers.ResourcesPolicySettings.Models;
-using PeoManageSoft.Business.Infrastructure.Helpers.Structs;
 
 namespace PeoManageSoft.Business.Infrastructure.Helpers.ResourcesPolicySettings
 {
@@ -37,23 +36,12 @@ namespace PeoManageSoft.Business.Infrastructure.Helpers.ResourcesPolicySettings
         #region public
 
         /// <summary>
-        /// Gets the resource policies.
+        /// Gets the resources.
         /// </summary>
-        /// <returns></returns>
-        public IEnumerable<Policy> GetPolicies(UserRole userRole)
+        /// <returns>Resources</returns>
+        public IEnumerable<string> GetResources()
         {
-            Grant createGrant(int[] roles)
-            {
-                bool hasPermission = roles.Any(role => role == (int)userRole);
-
-                return new Grant(hasPermission, hasPermission, hasPermission, hasPermission);
-            }
-
-            return _resourcePolicyConfig.Resources.Select(item => new Policy
-            {
-                ResourceName = item.Name,
-                Permissions = createGrant(item.Roles)
-            });
+            return _resourcePolicyConfig.Resources.Select(item => item.Name);
         }
 
         #endregion

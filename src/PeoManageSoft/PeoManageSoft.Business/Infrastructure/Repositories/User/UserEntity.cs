@@ -1,6 +1,7 @@
 ﻿using PeoManageSoft.Business.Infrastructure.Helpers.Structs;
 using PeoManageSoft.Business.Infrastructure.Repositories.Department;
 using PeoManageSoft.Business.Infrastructure.Repositories.Interfaces;
+using PeoManageSoft.Business.Infrastructure.Repositories.Role;
 using PeoManageSoft.Business.Infrastructure.Repositories.Title;
 
 namespace PeoManageSoft.Business.Infrastructure.Repositories.User
@@ -33,9 +34,13 @@ namespace PeoManageSoft.Business.Infrastructure.Repositories.User
         /// </summary>
         public string PasswordToken { get; private set; }
         /// <summary>
+        /// Role identifier
+        /// </summary>
+        public long RoleId { get; private set; }
+        /// <summary>
         /// Set of permissions for actions available in application
         /// </summary>
-        public int Role { get; private set; }
+        public RoleEntity Role { get; private set; }
         /// <summary>
         /// Full username
         /// </summary>
@@ -135,6 +140,15 @@ namespace PeoManageSoft.Business.Infrastructure.Repositories.User
         #endregion
 
         #region IUser Members
+
+        /// <summary>
+        /// Set Role object
+        /// </summary>
+        /// <param name="role">The object that describes user's role.</param>
+        void IUser.SetRole(RoleEntity role)
+        {
+            this.Role = role;
+        }
 
         /// <summary>
         /// Set Title object

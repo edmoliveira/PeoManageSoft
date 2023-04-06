@@ -1,6 +1,5 @@
 ﻿using NLog;
 using PeoManageSoft.Business.Infrastructure.Helpers.Interfaces;
-using System.Globalization;
 
 namespace PeoManageSoft.Business.Infrastructure.Helpers
 {
@@ -35,7 +34,7 @@ namespace PeoManageSoft.Business.Infrastructure.Helpers
         {
             get
             {
-                return MappedDiagnosticsLogicalContext.Get(_requestIdName, CultureInfo.InvariantCulture);
+                return ScopeContext.TryGetProperty(_requestIdName, out var value) ? value?.ToString() : string.Empty;
             }
         }
         /// <summary>
@@ -53,7 +52,7 @@ namespace PeoManageSoft.Business.Infrastructure.Helpers
         /// <param name="value">Value of the Request id.</param>
         public void SetRequestId(string value)
         {
-            MappedDiagnosticsLogicalContext.Set(_requestIdName, value);
+            ScopeContext.PushProperty(_requestIdName, value);
         }
 
         /// <summary>

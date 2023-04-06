@@ -1,5 +1,4 @@
-﻿using PeoManageSoft.Business.Infrastructure;
-using PeoManageSoft.Business.Infrastructure.Helpers.Structs;
+﻿using PeoManageSoft.Business.Infrastructure.Helpers.Structs;
 
 namespace PeoManageSoft.Business.Domain.Services.Queries.User.Get.Response
 {
@@ -15,9 +14,9 @@ namespace PeoManageSoft.Business.Domain.Services.Queries.User.Get.Response
         /// </summary>
         public long Id { get; set; }
         /// <summary>
-        /// Set of permissions for actions available in application
+        /// The object that describes user's role.
         /// </summary>
-        public UserRole Role { get; set; }
+        public GetRoleResponse Role { get; set; }
         /// <summary>
         /// Indicates whether the user is active
         /// </summary>

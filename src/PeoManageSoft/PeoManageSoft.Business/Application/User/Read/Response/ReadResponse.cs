@@ -12,9 +12,9 @@
         /// </summary>
         public long Id { get; set; }
         /// <summary>
-        /// Set of permissions for actions available in application
+        /// The object that describes user's role.
         /// </summary>
-        public int RoleId { get; set; }
+        public ReadRoleResponse Role { get; set; }
         /// <summary>
         /// Indicates whether the user is active
         /// </summary>

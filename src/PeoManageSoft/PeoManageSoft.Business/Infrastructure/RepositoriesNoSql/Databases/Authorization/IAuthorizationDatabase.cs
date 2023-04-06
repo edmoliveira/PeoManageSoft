@@ -1,4 +1,5 @@
 ﻿using PeoManageSoft.Business.Infrastructure.RepositoriesNoSql.Databases.Authorization.Policy;
+using PeoManageSoft.Business.Infrastructure.RepositoriesNoSql.Databases.Authorization.Role;
 using PeoManageSoft.Business.Infrastructure.RepositoriesNoSql.Databases.Authorization.Schema;
 
 namespace PeoManageSoft.Business.Infrastructure.RepositoriesNoSql.Databases.Authorization
@@ -10,6 +11,10 @@ namespace PeoManageSoft.Business.Infrastructure.RepositoriesNoSql.Databases.Auth
     {
         #region Properties
 
+        /// <summary>
+        /// Cross-platform NoSQL collection. "Role". 
+        /// </summary>
+        IRoleCollection Role { get; }
         /// <summary>
         /// Cross-platform NoSQL collection. "Schema". 
         /// </summary>

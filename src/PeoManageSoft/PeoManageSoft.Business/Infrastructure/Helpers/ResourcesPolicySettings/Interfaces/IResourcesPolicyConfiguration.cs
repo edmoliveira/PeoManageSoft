@@ -1,6 +1,4 @@
-﻿using PeoManageSoft.Business.Infrastructure.Helpers.ResourcesPolicySettings.Models;
-
-namespace PeoManageSoft.Business.Infrastructure.Helpers.ResourcesPolicySettings.Interfaces
+﻿namespace PeoManageSoft.Business.Infrastructure.Helpers.ResourcesPolicySettings.Interfaces
 {
     /// <summary>
     /// Resources policy configuration.
@@ -10,10 +8,10 @@ namespace PeoManageSoft.Business.Infrastructure.Helpers.ResourcesPolicySettings.
         #region Methods
 
         /// <summary>
-        /// Gets the resource policies.
+        /// Gets the resources.
         /// </summary>
-        /// <returns></returns>
-        IEnumerable<Policy> GetPolicies(UserRole userRole);
+        /// <returns>Resources</returns>
+        IEnumerable<string> GetResources();
 
         #endregion
     }

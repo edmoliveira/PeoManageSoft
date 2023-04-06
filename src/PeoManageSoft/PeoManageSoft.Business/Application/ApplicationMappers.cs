@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using PeoManageSoft.Business.Application.Department;
+using PeoManageSoft.Business.Application.Role;
 using PeoManageSoft.Business.Application.Title;
 using PeoManageSoft.Business.Application.User;
 
@@ -20,6 +21,7 @@ namespace PeoManageSoft.Business.Application
         /// <param name="configuration">Create a MapperConfiguration instance and initialize configuration via the constructor.</param>
         public static void AddApplicationProfiles(this IMapperConfigurationExpression configuration)
         {
+            configuration.AddRoleApplicationProfiles();
             configuration.AddUserApplicationProfiles();
             configuration.AddTitleApplicationProfiles();
             configuration.AddDepartmentApplicationProfiles();

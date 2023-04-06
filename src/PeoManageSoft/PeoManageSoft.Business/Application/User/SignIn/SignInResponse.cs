@@ -1,6 +1,4 @@
-﻿using PeoManageSoft.Business.Infrastructure;
-
-namespace PeoManageSoft.Business.Application.User.SignIn
+﻿namespace PeoManageSoft.Business.Application.User.SignIn
 {
     /// <summary>
     /// Response data.
@@ -18,9 +16,13 @@ namespace PeoManageSoft.Business.Application.User.SignIn
         /// </summary>
         public double ExpireSeconds { get; set; }
         /// <summary>
-        /// Set of permissions for actions available in application
+        /// User's role id.
         /// </summary>
-        public UserRole Role { get; set; }
+        public long RoleId { get; set; }
+        /// <summary>
+        /// User's role name.
+        /// </summary>
+        public string RoleName { get; set; }
         /// <summary>
         /// Full username
         /// </summary>

@@ -35,3 +35,6 @@ dotnet_diagnostic.CS8634.severity = none
 
 # CS8714: The type cannot be used as type parameter in the generic type or method. Nullability of type argument doesn't match 'notnull' constraint.
 dotnet_diagnostic.CS8714.severity = none
+
+# CS8767: Nullability of reference types in type of parameter doesn't match implicitly implemented member (possibly because of nullability attributes).
+dotnet_diagnostic.CS8767.severity = none

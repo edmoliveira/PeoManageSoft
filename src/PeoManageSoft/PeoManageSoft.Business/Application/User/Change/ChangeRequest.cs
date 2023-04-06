@@ -14,7 +14,7 @@
         /// <summary>
         /// Set of permissions for actions available in application
         /// </summary>
-        public int RoleId { get; set; }
+        public long RoleId { get; set; }
         /// <summary>
         /// Indicates whether the user is active
         /// </summary>

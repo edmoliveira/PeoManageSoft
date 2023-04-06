@@ -2,40 +2,6 @@
 
 namespace PeoManageSoft.Business.Infrastructure
 {
-    /// <summary>
-    /// Provides a extension of the base class for application enumerations.
-    /// </summary>
-    public static class Enumerators
-    {
-        #region Methods
-
-        #region public
-
-        /// <summary>
-        ///  Returns a Boolean telling whether a given integral value, or its name as a string, exists in a specified enumeration.
-        /// </summary>
-        /// <param name="value">The value or name of a constant in enumType.</param>
-        /// <returns>true if a constant in enumType has a value equal to value; otherwise, false.</returns>
-        public static bool UserRoleIsDefined(int value)
-        {
-            return value > 0 && Enum.IsDefined(typeof(UserRole), value);
-        }
-
-        /// <summary>
-        /// Converts the span of chars representation of the name or numeric value of one or more enumerated constants to an enumerated AppResources.
-        /// </summary>
-        /// <param name="resourceName">Resource name</param>
-        /// <returns>An object of type AppResources whose value is represented by resourceName.</returns>
-        public static AppResources ToAppResources(string resourceName)
-        {
-            return (AppResources)Enum.Parse(typeof(AppResources), resourceName);
-        }
-
-        #endregion
-
-        #endregion
-    }
-
     #region Enumerators
 
     /// <summary>
@@ -140,62 +106,6 @@ namespace PeoManageSoft.Business.Infrastructure
         /// </summary>
         [Description("Greater Than")]
         GreaterThan,
-    }
-
-    /// <summary>
-    /// Roles
-    /// </summary>
-    public enum UserRole
-    {
-
-        /// <summary>
-        /// Anonymous
-        /// </summary>
-        [Description("Anonymous")]
-        Anonymous = 0,
-        /// <summary>
-        /// Administrator
-        /// </summary>
-        [Description("Administrator")]
-        Admin = 1,
-        /// <summary>
-        /// Manager
-        /// </summary>
-        [Description("Manager")]
-        Manager = 2,
-        /// <summary>
-        /// Standard user
-        /// </summary>
-        [Description("Standard user")]
-        User = 3
-    }
-
-    /// <summary>
-    /// Application Resources
-    /// </summary>
-    public enum AppResources
-    {
-
-        /// <summary>
-        /// User
-        /// </summary>
-        [Description("User")]
-        User = 0,
-        /// <summary>
-        /// ChangePassword
-        /// </summary>
-        [Description("ChangePassword")]
-        ChangePassword = 1,
-        /// <summary>
-        /// Title
-        /// </summary>
-        [Description("Title")]
-        Title = 2,
-        /// <summary>
-        /// Department
-        /// </summary>
-        [Description("Department")]
-        Department = 3
     }
 
     /// <summary>

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Newtonsoft.Json;
 using PeoManageSoft.Business.Application.User;
@@ -7,8 +8,6 @@ using PeoManageSoft.Business.Application.User.Delete;
 using PeoManageSoft.Business.Application.User.New;
 using PeoManageSoft.Business.Application.User.Read;
 using PeoManageSoft.Business.Application.User.Read.Response;
-using PeoManageSoft.Business.Infrastructure;
-using PeoManageSoft.Business.Infrastructure.Helpers.Attributes;
 using PeoManageSoft.Business.Infrastructure.Helpers.Controllers;
 using PeoManageSoft.Business.Infrastructure.Helpers.Extensions;
 using PeoManageSoft.Business.Infrastructure.Helpers.Filters;
@@ -25,7 +24,7 @@ namespace PeoManageSoft.Api.Controllers.Users
     [Produces("application/json")]
     [Route("api/users")]
     [SerialNumberAuthorizationFilter]
-    [AuthorizeRoles(UserRole.Admin)]
+    [Authorize]
     public sealed class UsersController : CustomControllerBase
     {
         #region Fields private

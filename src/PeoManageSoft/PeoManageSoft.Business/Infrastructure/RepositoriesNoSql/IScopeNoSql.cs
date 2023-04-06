@@ -11,7 +11,7 @@
         /// The statement defines a boundary for the object outside of which, the connection is automatically destroyed.
         /// </summary>
         /// <param name="action">Delegate that has the method that receives the IRepositoryNoSql parameter and does not return a value.</param>
-        public void Using(Action<IRepositoryNoSql> action);
+        void Using(Action<IRepositoryNoSql> action);
         /// <summary>
         /// The statement defines a boundary for the object outside of which, the connection is automatically destroyed and asynchronously using Task.
         /// </summary>

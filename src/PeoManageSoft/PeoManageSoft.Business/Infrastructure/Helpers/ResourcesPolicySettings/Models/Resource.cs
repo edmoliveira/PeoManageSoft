@@ -12,11 +12,6 @@
         /// </summary>
         public string Name { get; set; }
 
-        /// <summary>
-        /// Roles that have resource permissions
-        /// </summary>
-        public int[] Roles { get; set; }
-
         #endregion
     }
 }

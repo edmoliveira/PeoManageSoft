@@ -1,5 +1,4 @@
 ﻿using FluentValidation;
-using PeoManageSoft.Business.Infrastructure;
 using PeoManageSoft.Business.Infrastructure.Helpers.Interfaces;
 
 namespace PeoManageSoft.Business.Application.User.Change
@@ -23,8 +22,7 @@ namespace PeoManageSoft.Business.Application.User.Change
 
             RuleFor(x => x.RoleId)
                 .Cascade(CascadeMode.Stop)
-                .NotEmpty().WithMessage(x => appConfig.MessagesCatalogResource.GetMessageRequired(nameof(x.RoleId)))
-                .Must((x, roleId) => Enumerators.UserRoleIsDefined(roleId)).WithMessage(x => appConfig.MessagesCatalogResource.GetMessageNoExists(nameof(x.RoleId)));
+                .NotEmpty().WithMessage(x => appConfig.MessagesCatalogResource.GetMessageRequired(nameof(x.RoleId)));
 
             RuleFor(x => x.Name)
                 .Cascade(CascadeMode.Stop)

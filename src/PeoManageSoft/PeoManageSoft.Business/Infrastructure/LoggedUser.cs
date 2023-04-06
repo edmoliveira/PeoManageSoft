@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json;
-using PeoManageSoft.Business.Infrastructure.Helpers.Structs;
+﻿using PeoManageSoft.Business.Infrastructure.Helpers.Structs;
 using System.Security.Claims;
 
 namespace PeoManageSoft.Business.Infrastructure
@@ -22,7 +21,7 @@ namespace PeoManageSoft.Business.Infrastructure
         /// <summary>
         /// Set of permissions for actions available in application
         /// </summary>
-        public UserRole Role { get; private set; }
+        public long RoleId { get; private set; }
         /// <summary>
         /// User policies
         /// </summary>
@@ -38,8 +37,8 @@ namespace PeoManageSoft.Business.Infrastructure
         public LoggedUser()
         {
             Id = -1;
-            User = UserRole.Anonymous.ToString();
-            Role = UserRole.Anonymous;
+            User = "Anonymous";
+            RoleId = 0;
             Policies = null;
         }
 
@@ -51,8 +50,7 @@ namespace PeoManageSoft.Business.Infrastructure
         {
             Id = long.Parse(claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value);
             User = claimsIdentity.FindFirst(ClaimTypes.Name).Value;
-            Role = (UserRole)Enum.Parse(typeof(UserRole), claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value);
-            Policies = JsonConvert.DeserializeObject<IEnumerable<LoggedUserPolicy>>(claimsIdentity.FindFirst(ClaimTypes.UserData).Value);
+            RoleId = long.Parse(claimsIdentity.FindFirst(ClaimTypes.Role).Value);
         }
 
         #endregion
@@ -67,16 +65,14 @@ namespace PeoManageSoft.Business.Infrastructure
         /// <param name="id">User identifier</param>
         /// <param name="user">User login</param>
         /// <param name="role">Set of permissions for actions available in application</param>
-        /// <param name="policies">User policies</param>
         /// <returns>Returns an array of the Claim</returns>
-        public static Claim[] CreateClaims(long id, string user, UserRole role, IEnumerable<LoggedUserPolicy> policies)
+        public static Claim[] CreateClaims(long id, string user, long roleId)
         {
             return new Claim[]
             {
                 new Claim(ClaimTypes.NameIdentifier, id.ToString()),
                 new Claim(ClaimTypes.Name, user),
-                new Claim(ClaimTypes.Role, role.ToString()),
-                new Claim(ClaimTypes.UserData, JsonConvert.SerializeObject(policies))
+                new Claim(ClaimTypes.Role, roleId.ToString())
             };
         }
 
@@ -93,9 +89,9 @@ namespace PeoManageSoft.Business.Infrastructure
         #region Properties
 
         /// <summary>
-        /// Resource
+        /// Resource name
         /// </summary>
-        public AppResources Resource { get; set; }
+        public string ResourceName { get; set; }
 
         /// <summary>
         /// User permissions.

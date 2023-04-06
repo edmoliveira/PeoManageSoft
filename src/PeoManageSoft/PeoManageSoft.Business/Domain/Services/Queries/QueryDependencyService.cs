@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using PeoManageSoft.Business.Domain.Services.Queries.Department;
+using PeoManageSoft.Business.Domain.Services.Queries.Role;
 using PeoManageSoft.Business.Domain.Services.Queries.Title;
 using PeoManageSoft.Business.Domain.Services.Queries.User;
 
@@ -23,6 +24,7 @@ namespace PeoManageSoft.Business.Domain.Services.Queries
             services.AddDepartmentQueryDependencies();
             services.AddTitleQueryDependencies();
             services.AddUserQueryDependencies();
+            services.AddRoleQueryDependencies();
         }
 
         #endregion

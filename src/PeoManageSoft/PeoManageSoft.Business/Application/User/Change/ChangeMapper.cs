@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using PeoManageSoft.Business.Domain.Services.Commands.User.Update;
-using PeoManageSoft.Business.Infrastructure;
 
 namespace PeoManageSoft.Business.Application.User.Change
 {
@@ -19,7 +18,7 @@ namespace PeoManageSoft.Business.Application.User.Change
             CreateMap<ChangeRequest, UpdateRequest>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
                 .ForMember(dest => dest.IsActive, opt => opt.MapFrom(src => src.IsActive))
-                .ForMember(dest => dest.Role, opt => opt.MapFrom(src => (UserRole)src.RoleId))
+                .ForMember(dest => dest.RoleId, opt => opt.MapFrom(src => src.RoleId))
                 .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name))
                 .ForMember(dest => dest.ShortName, opt => opt.MapFrom(src => src.ShortName))
                 .ForMember(dest => dest.TitleId, opt => opt.MapFrom(src => src.TitleId))

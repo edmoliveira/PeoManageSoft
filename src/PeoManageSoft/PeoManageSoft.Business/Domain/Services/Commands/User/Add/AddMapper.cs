@@ -19,7 +19,7 @@ namespace PeoManageSoft.Business.Domain.Services.Commands.User.Add
         {
             CreateMap<AddRequest, UserEntity>()
                 .ForMember(dest => dest.IsActive, opt => opt.MapFrom(src => src.IsActive))
-                .ForMember(dest => dest.Role, opt => opt.MapFrom(src => (int)src.Role))
+                .ForMember(dest => dest.RoleId, opt => opt.MapFrom(src => src.RoleId))
                 .ForMember(dest => dest.Login, opt => opt.MapFrom(src => src.Login))
                 .ForMember(dest => dest.Password, opt => opt.MapFrom(src => src.Password))
                 .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name))

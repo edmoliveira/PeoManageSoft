@@ -2,7 +2,6 @@
 using PeoManageSoft.Business.Application.User._Models;
 using PeoManageSoft.Business.Domain.Services.Commands.User.Add;
 using PeoManageSoft.Business.Domain.Services.Commands.User.Add.Models;
-using PeoManageSoft.Business.Infrastructure;
 
 namespace PeoManageSoft.Business.Application.User.New
 {
@@ -24,7 +23,7 @@ namespace PeoManageSoft.Business.Application.User.New
                 .ForMember(dest => dest.Children, opt => opt.MapFrom(src => src.Children));
 
             CreateMap<NewRequest, AddRequest>()
-                .ForMember(dest => dest.Role, opt => opt.MapFrom(src => (UserRole)src.RoleId))
+                .ForMember(dest => dest.RoleId, opt => opt.MapFrom(src => src.RoleId))
                 .ForMember(dest => dest.Login, opt => opt.MapFrom(src => src.Login))
                 .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name))
                 .ForMember(dest => dest.ShortName, opt => opt.MapFrom(src => src.ShortName))

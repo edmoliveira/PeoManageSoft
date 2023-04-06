@@ -1,27 +1,17 @@
-/*
-Anonymous = 0,
-Admin = 1,
-Manager = 2,
-User = 3
-*/
 {
     "ResourcePolicyConfig": {
         "Resources": [
             {
-                "Name": "User",
-                "Roles": [ 1 ]
+                "Name": "User"
             },
             {
-                "Name": "ChangePassword",
-                "Roles": [ 1, 2, 3 ]
+                "Name": "ChangePassword"
             },
             {
-                "Name": "Title",
-                "Roles": [ 1, 2 ]
+                "Name": "Title"
             },
             {
-                "Name": "Department",
-                "Roles": [ 1, 2 ]
+                "Name": "Department"
             }
         ],
         "ResourcesDescriptions": {

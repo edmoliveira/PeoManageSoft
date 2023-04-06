@@ -1,4 +1,5 @@
 ﻿using PeoManageSoft.Business.Infrastructure.RepositoriesNoSql.Databases.Authorization.Policy;
+using PeoManageSoft.Business.Infrastructure.RepositoriesNoSql.Databases.Authorization.Role;
 using PeoManageSoft.Business.Infrastructure.RepositoriesNoSql.Databases.Authorization.Schema;
 using PeoManageSoft.Business.Infrastructure.RepositoriesNoSql.Driver;
 
@@ -21,6 +22,10 @@ namespace PeoManageSoft.Business.Infrastructure.RepositoriesNoSql.Databases.Auth
         #region Fields
 
         /// <summary>
+        /// Cross-platform NoSQL collection. "Role". 
+        /// </summary>
+        private readonly Lazy<IRoleCollection> _role;
+        /// <summary>
         /// Cross-platform NoSQL collection. "Schema". 
         /// </summary>
         private readonly Lazy<ISchemaCollection> _schema;
@@ -33,6 +38,10 @@ namespace PeoManageSoft.Business.Infrastructure.RepositoriesNoSql.Databases.Auth
 
         #region Properties
 
+        /// <summary>
+        /// Cross-platform NoSQL collection. "Role". 
+        /// </summary>
+        public IRoleCollection Role => _role.Value;
         /// <summary>
         /// Cross-platform NoSQL collection. "Schema". 
         /// </summary>
@@ -54,6 +63,7 @@ namespace PeoManageSoft.Business.Infrastructure.RepositoriesNoSql.Databases.Auth
         {
             var database = client.GetDatabase(DatabaseName);
 
+            _role = new Lazy<IRoleCollection>(() => new RoleCollection(database));
             _schema = new Lazy<ISchemaCollection>(() => new SchemaCollection(database));
             _policy = new Lazy<IPolicyCollection>(() => new PolicyCollection(database));
         }

@@ -1,4 +1,5 @@
 ﻿using MongoDB.Driver;
+using System.Linq.Expressions;
 
 namespace PeoManageSoft.Business.Infrastructure.RepositoriesNoSql.Driver
 {
@@ -33,6 +34,29 @@ namespace PeoManageSoft.Business.Infrastructure.RepositoriesNoSql.Driver
         #region Methods
 
         #region public
+
+        /// <summary>
+        /// Find the documents matching the filter.
+        /// </summary>
+        /// <param name="filter">The filter.</param>
+        /// <returns>Returns the list of documents.</returns>
+        public IEnumerable<TDocument> Find(Expression<Func<TDocument, bool>> filter)
+        {
+            return _collection.Find(filter).ToList();
+        }
+
+        /// <summary>
+        /// Find the documents matching the filter and asynchronously using Task.
+        /// </summary>
+        /// <param name="filter">The filter.</param>
+        /// <returns>
+        /// Task: Represents an asynchronous operation. 
+        /// Returns the list of documents.
+        /// </returns>
+        public async Task<IEnumerable<TDocument>> FindAsync(Expression<Func<TDocument, bool>> filter)
+        {
+            return (await _collection.FindAsync(filter).ConfigureAwait(false)).ToList();
+        }
 
         /// <summary>
         /// Returns a list containing all the documents returned by the cursor returned by a cursor source.

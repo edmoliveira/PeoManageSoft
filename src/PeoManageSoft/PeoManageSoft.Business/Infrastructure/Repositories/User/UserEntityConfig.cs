@@ -35,7 +35,7 @@ namespace PeoManageSoft.Business.Infrastructure.Repositories.User
         /// <summary>
         /// Read and Write
         /// </summary>
-        Role,
+        RoleId,
         /// <summary>
         /// Read and Write
         /// </summary>
@@ -106,7 +106,7 @@ namespace PeoManageSoft.Business.Infrastructure.Repositories.User
         /// <summary>
         /// Role parameter configuration.
         /// </summary>
-        private readonly ParameterConfig _roleConfig = new("Role", DbType.Int32, table: _oTable);
+        private readonly ParameterConfig _roleIdConfig = new("RoleId", DbType.Int64, table: _oTable);
         /// <summary>
         /// Name parameter configuration.
         /// </summary>
@@ -170,7 +170,7 @@ namespace PeoManageSoft.Business.Infrastructure.Repositories.User
                 {  UserEntityField.IsActive, _isActiveConfig },
                 {  UserEntityField.Password, _passwordConfig },
                 {  UserEntityField.PasswordToken, _passwordTokenConfig },
-                {  UserEntityField.Role, _roleConfig },
+                {  UserEntityField.RoleId, _roleIdConfig },
                 {  UserEntityField.Name, _nameConfig },
                 {  UserEntityField.ShortName, _shortNameConfig },
                 {  UserEntityField.TitleId, _titleIdConfig },
@@ -199,7 +199,7 @@ namespace PeoManageSoft.Business.Infrastructure.Repositories.User
                 CreateParameter(_isActiveConfig, entity.IsActive),
                 CreateParameter(_loginConfig, entity.Login),
                 CreateParameter(_passwordConfig, entity.Password),
-                CreateParameter(_roleConfig, entity.Role),
+                CreateParameter(_roleIdConfig, entity.RoleId),
                 CreateParameter(_nameConfig, entity.Name),
                 CreateParameter(_shortNameConfig, entity.ShortName),
                 CreateParameter(_titleIdConfig, entity.TitleId),
@@ -217,7 +217,7 @@ namespace PeoManageSoft.Business.Infrastructure.Repositories.User
             {
                 CreateParameter(_idConfig, entity.Id),
                 CreateParameter(_isActiveConfig, entity.IsActive),
-                CreateParameter(_roleConfig, entity.Role),
+                CreateParameter(_roleIdConfig, entity.RoleId),
                 CreateParameter(_nameConfig, entity.Name),
                 CreateParameter(_shortNameConfig, entity.ShortName),
                 CreateParameter(_titleIdConfig, entity.TitleId),

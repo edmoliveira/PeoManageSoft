@@ -1,4 +1,6 @@
-﻿namespace PeoManageSoft.Business.Infrastructure.RepositoriesNoSql.Driver
+﻿using System.Linq.Expressions;
+
+namespace PeoManageSoft.Business.Infrastructure.RepositoriesNoSql.Driver
 {
     /// <summary>
     /// Cross-platform NoSQL collection.
@@ -8,6 +10,21 @@
     {
         #region Methods
 
+        /// <summary>
+        /// Find the documents matching the filter.
+        /// </summary>
+        /// <param name="filter">The filter.</param>
+        /// <returns>Returns the list of documents.</returns>
+        IEnumerable<TDocument> Find(Expression<Func<TDocument, bool>> filter);
+        /// <summary>
+        /// Find the documents matching the filter and asynchronously using Task.
+        /// </summary>
+        /// <param name="filter">The filter.</param>
+        /// <returns>
+        /// Task: Represents an asynchronous operation. 
+        /// Returns the list of documents.
+        /// </returns>
+        Task<IEnumerable<TDocument>> FindAsync(Expression<Func<TDocument, bool>> filter);
         /// <summary>
         /// Returns a list containing all the documents returned by the cursor returned by a cursor source.
         /// </summary>

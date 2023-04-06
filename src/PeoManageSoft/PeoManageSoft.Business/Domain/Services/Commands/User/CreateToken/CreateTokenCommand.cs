@@ -62,7 +62,7 @@ namespace PeoManageSoft.Business.Domain.Services.Commands.User.CreateToken
 
             DateTime expires = DateTime.UtcNow.AddSeconds(request.ExpireSeconds);
 
-            ClaimsIdentity claimsIdentity = new(LoggedUser.CreateClaims(request.Id, request.Login, request.Role, request.Policies));
+            ClaimsIdentity claimsIdentity = new(LoggedUser.CreateClaims(request.Id, request.Login, request.RoleId));
 
             string token = await _tokenJwt.CreateTokenAsync(claimsIdentity, expires).ConfigureAwait(false);
 

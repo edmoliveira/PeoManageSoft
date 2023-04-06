@@ -1,19 +1,18 @@
 ﻿using PeoManageSoft.Business.Infrastructure.Helpers.Structs;
 
-namespace PeoManageSoft.Business.Infrastructure.Helpers.ResourcesPolicySettings.Models
+namespace PeoManageSoft.Business.Application.Role._Models
 {
     /// <summary>
-    /// Resourse policy.
+    /// Role resources
     /// </summary>
-    internal sealed class Policy
+    public sealed class RoleResource
     {
         #region Properties
 
         /// <summary>
         /// Resource name
         /// </summary>
-        public string ResourceName { get; set; }
-
+        public string Name { get; set; }
         /// <summary>
         /// User permissions.
         /// </summary>

@@ -4,6 +4,7 @@ using PeoManageSoft.Business.Domain.Services.Queries.User.GetAll;
 using PeoManageSoft.Business.Domain.Services.Queries.User.GetAllWithPagination;
 using PeoManageSoft.Business.Domain.Services.Queries.User.GetByRules;
 using PeoManageSoft.Business.Domain.Services.Queries.User.GetByRulesWithPagination;
+using PeoManageSoft.Business.Domain.Services.Queries.User.GetPolicies;
 
 namespace PeoManageSoft.Business.Domain.Services.Queries.User
 {
@@ -32,6 +33,8 @@ namespace PeoManageSoft.Business.Domain.Services.Queries.User
             services.AddScoped<IGetByRulesQuery, GetByRulesQuery>();
             services.AddScoped<IGetByRulesWithPaginationHandler, GetByRulesWithPaginationHandler>();
             services.AddScoped<IGetByRulesWithPaginationQuery, GetByRulesWithPaginationQuery>();
+            services.AddScoped<IGetPoliciesHandler, GetPoliciesHandler>();
+            services.AddScoped<IGetPoliciesQuery, GetPoliciesQuery>();
         }
 
         #endregion

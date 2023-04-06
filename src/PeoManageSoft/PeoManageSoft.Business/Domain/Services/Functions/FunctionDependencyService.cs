@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using PeoManageSoft.Business.Domain.Services.Functions.Department;
+using PeoManageSoft.Business.Domain.Services.Functions.Role;
 using PeoManageSoft.Business.Domain.Services.Functions.Title;
 using PeoManageSoft.Business.Domain.Services.Functions.User;
 
@@ -23,6 +24,7 @@ namespace PeoManageSoft.Business.Domain.Services.Functions
             services.AddDepartmentFunctionDependencies();
             services.AddTitleFunctionDependencies();
             services.AddUserFunctionDependencies();
+            services.AddRoleFunctionDependencies();
         }
 
         #endregion

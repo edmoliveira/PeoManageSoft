@@ -1,6 +1,6 @@
-﻿using System.Security.Cryptography;
+﻿using Newtonsoft.Json;
+using System.Security.Cryptography;
 using System.Text;
-using Newtonsoft.Json;
 using System.Web;
 
 namespace PeoManageSoft.Business.Infrastructure.Helpers

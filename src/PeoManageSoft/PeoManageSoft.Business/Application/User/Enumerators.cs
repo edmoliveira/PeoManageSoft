@@ -27,7 +27,7 @@ namespace PeoManageSoft.Business.Application.User
             /// <summary>
             /// Role
             /// </summary>
-            Role,
+            RoleId,
             /// <summary>
             /// Name
             /// </summary>
@@ -74,7 +74,7 @@ namespace PeoManageSoft.Business.Application.User
                 Fields.Id => UserEntityField.Id_Readonly,
                 Fields.IsActive => UserEntityField.IsActive,
                 Fields.Login => UserEntityField.Login_Readonly,
-                Fields.Role => UserEntityField.Role,
+                Fields.RoleId => UserEntityField.RoleId,
                 Fields.Name => UserEntityField.Name,
                 Fields.ShortName => UserEntityField.ShortName,
                 Fields.TitleId => UserEntityField.TitleId,

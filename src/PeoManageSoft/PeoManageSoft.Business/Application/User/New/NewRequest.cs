@@ -17,7 +17,7 @@ namespace PeoManageSoft.Business.Application.User.New
         /// <summary>
         /// Set of permissions for actions available in application
         /// </summary>
-        public int RoleId { get; set; }
+        public long RoleId { get; set; }
         /// <summary>
         /// User login
         /// </summary>

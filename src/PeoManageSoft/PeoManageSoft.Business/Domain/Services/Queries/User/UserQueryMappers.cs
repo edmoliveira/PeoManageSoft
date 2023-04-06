@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using PeoManageSoft.Business.Domain.Services.Queries.User.Get;
+using PeoManageSoft.Business.Domain.Services.Queries.User.GetPolicies;
 
 namespace PeoManageSoft.Business.Domain.Services.Queries.User
 {
@@ -19,6 +20,7 @@ namespace PeoManageSoft.Business.Domain.Services.Queries.User
         public static void AddUserQueryProfiles(this IMapperConfigurationExpression configuration)
         {
             configuration.AddProfile<GetMapper>();
+            configuration.AddProfile<GetPoliciesMapper>();
         }
 
         #endregion

@@ -1,4 +1,5 @@
 ﻿using PeoManageSoft.Business.Infrastructure.RepositoriesNoSql.Driver;
+using System.Linq.Expressions;
 
 namespace PeoManageSoft.Business.Infrastructure.RepositoriesNoSql.Databases
 {
@@ -9,6 +10,15 @@ namespace PeoManageSoft.Business.Infrastructure.RepositoriesNoSql.Databases
     {
         #region Methods
 
+        /// <summary>
+        /// Find the documents matching the filter and asynchronously using Task.
+        /// </summary>
+        /// <param name="filter">The filter.</param>
+        /// <returns>
+        /// Task: Represents an asynchronous operation. 
+        /// Returns the list of documents.
+        /// </returns>
+        Task<IEnumerable<TDocument>> FindAsync(Expression<Func<TDocument, bool>> filter);
         /// <summary>
         /// Returns a list containing all the documents returned by the cursor returned by a cursor source and asynchronously using Task.
         /// </summary>

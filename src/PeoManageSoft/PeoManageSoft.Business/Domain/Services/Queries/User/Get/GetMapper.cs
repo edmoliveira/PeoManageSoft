@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using PeoManageSoft.Business.Domain.Services.Queries.User.Get.Response;
-using PeoManageSoft.Business.Infrastructure;
 using PeoManageSoft.Business.Infrastructure.Repositories.Department;
+using PeoManageSoft.Business.Infrastructure.Repositories.Role;
 using PeoManageSoft.Business.Infrastructure.Repositories.Title;
 using PeoManageSoft.Business.Infrastructure.Repositories.User;
 
@@ -19,6 +19,11 @@ namespace PeoManageSoft.Business.Domain.Services.Queries.User.Get
         /// </summary>
         public GetMapper()
         {
+            CreateMap<RoleEntity, GetRoleResponse>()
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
+                .ForMember(dest => dest.IsActive, opt => opt.MapFrom(src => src.IsActive))
+                .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name));
+
             CreateMap<TitleEntity, GetTitleResponse>()
             .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
             .ForMember(dest => dest.IsActive, opt => opt.MapFrom(src => src.IsActive))
@@ -32,7 +37,7 @@ namespace PeoManageSoft.Business.Domain.Services.Queries.User.Get
             CreateMap<UserEntity, GetResponse>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
                 .ForMember(dest => dest.IsActive, opt => opt.MapFrom(src => src.IsActive))
-                .ForMember(dest => dest.Role, opt => opt.MapFrom(src => (UserRole)src.Role))
+                .ForMember(dest => dest.Role, opt => opt.MapFrom(src => src.Role))
                 .ForMember(dest => dest.Login, opt => opt.MapFrom(src => src.Login))
                 .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name))
                 .ForMember(dest => dest.ShortName, opt => opt.MapFrom(src => src.ShortName))

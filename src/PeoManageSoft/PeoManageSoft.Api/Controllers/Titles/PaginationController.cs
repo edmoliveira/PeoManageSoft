@@ -1,11 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using PeoManageSoft.Business.Application.Title;
 using PeoManageSoft.Business.Application.Title.Read.Response;
 using PeoManageSoft.Business.Application.Title.ReadAllWithPagination;
 using PeoManageSoft.Business.Application.Title.SearchWithPagination;
-using PeoManageSoft.Business.Infrastructure;
-using PeoManageSoft.Business.Infrastructure.Helpers.Attributes;
 using PeoManageSoft.Business.Infrastructure.Helpers.Controllers;
 using PeoManageSoft.Business.Infrastructure.Helpers.Extensions;
 using PeoManageSoft.Business.Infrastructure.Helpers.Filters;
@@ -21,7 +20,7 @@ namespace PeoManageSoft.Api.Controllers.Titles
     [Produces("application/json")]
     [Route("api/titles")]
     [SerialNumberAuthorizationFilter]
-    [AuthorizeRoles(UserRole.Admin)]
+    [Authorize()]
     public sealed class PaginationController : CustomControllerBase
     {
         #region Fields private

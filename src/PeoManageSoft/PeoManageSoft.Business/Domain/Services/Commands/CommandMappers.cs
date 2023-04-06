@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using PeoManageSoft.Business.Domain.Services.Commands.Department;
+using PeoManageSoft.Business.Domain.Services.Commands.Role;
 using PeoManageSoft.Business.Domain.Services.Commands.Title;
 using PeoManageSoft.Business.Domain.Services.Commands.User;
 
@@ -20,6 +21,7 @@ namespace PeoManageSoft.Business.Domain.Services.Commands
         /// <param name="configuration">Create a MapperConfiguration instance and initialize configuration via the constructor.</param>
         public static void AddCommandProfiles(this IMapperConfigurationExpression configuration)
         {
+            configuration.AddRoleCommandProfiles();
             configuration.AddUserCommandProfiles();
             configuration.AddTitleCommandProfiles();
             configuration.AddDepartmentCommandProfiles();

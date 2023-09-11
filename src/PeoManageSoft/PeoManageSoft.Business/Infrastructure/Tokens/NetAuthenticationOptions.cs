@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.Extensions.Logging;
 
 namespace PeoManageSoft.Business.Infrastructure.Tokens
 {
@@ -21,7 +22,7 @@ namespace PeoManageSoft.Business.Infrastructure.Tokens
         ///     Task<NetResultValidToken>:
         ///         Token validation result
         /// </remarks>
-        public Func<string, AuthenticationScheme, Task<NetResultValidToken>> ValidTokenAsync { get; set; }
+        public Func<string, AuthenticationScheme, IServiceProvider, ILogger, Task<NetResultValidToken>> ValidTokenAsync { get; set; }
 
         #endregion
     }

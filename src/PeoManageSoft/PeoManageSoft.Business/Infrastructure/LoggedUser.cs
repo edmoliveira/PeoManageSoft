@@ -11,6 +11,10 @@ namespace PeoManageSoft.Business.Infrastructure
         #region Properties
 
         /// <summary>
+        /// Gets a value that indicates if the user has been authenticated.
+        /// </summary>
+        public bool IsAuthenticated { get; private set; }
+        /// <summary>
         /// User identifier
         /// </summary>
         public long Id { get; private set; }
@@ -22,6 +26,10 @@ namespace PeoManageSoft.Business.Infrastructure
         /// Set of permissions for actions available in application
         /// </summary>
         public long RoleId { get; private set; }
+        /// <summary>
+        /// The value of the 'expiration'
+        /// </summary>
+        public DateTime Expires { get; private set; }
         /// <summary>
         /// User policies
         /// </summary>
@@ -36,6 +44,7 @@ namespace PeoManageSoft.Business.Infrastructure
         /// </summary>
         public LoggedUser()
         {
+            IsAuthenticated = false;
             Id = -1;
             User = "Anonymous";
             RoleId = 0;
@@ -48,9 +57,11 @@ namespace PeoManageSoft.Business.Infrastructure
         /// <param name="claimsIdentity">An Identity that is represented by a set of claims.</param>
         public LoggedUser(ClaimsIdentity claimsIdentity)
         {
+            IsAuthenticated = true;
             Id = long.Parse(claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value);
             User = claimsIdentity.FindFirst(ClaimTypes.Name).Value;
             RoleId = long.Parse(claimsIdentity.FindFirst(ClaimTypes.Role).Value);
+            Expires = DateTime.Parse(claimsIdentity.FindFirst(ClaimTypes.Expiration).Value);
         }
 
         #endregion
@@ -64,15 +75,17 @@ namespace PeoManageSoft.Business.Infrastructure
         /// </summary>
         /// <param name="id">User identifier</param>
         /// <param name="user">User login</param>
-        /// <param name="role">Set of permissions for actions available in application</param>
+        /// <param name="roleId">Set of permissions for actions available in application</param>
+        /// <param name="expires">The value of the 'expiration'.</param>
         /// <returns>Returns an array of the Claim</returns>
-        public static Claim[] CreateClaims(long id, string user, long roleId)
+        public static Claim[] CreateClaims(long id, string user, long roleId, DateTime expires)
         {
             return new Claim[]
             {
                 new Claim(ClaimTypes.NameIdentifier, id.ToString()),
                 new Claim(ClaimTypes.Name, user),
-                new Claim(ClaimTypes.Role, roleId.ToString())
+                new Claim(ClaimTypes.Role, roleId.ToString()),
+                new Claim(ClaimTypes.Expiration, expires.ToString())
             };
         }
 

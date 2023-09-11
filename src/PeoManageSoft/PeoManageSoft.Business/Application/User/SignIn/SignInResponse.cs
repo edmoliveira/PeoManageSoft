@@ -12,9 +12,9 @@
         /// </summary>
         public string Key { get; set; }
         /// <summary>
-        /// Authentication Token expiration in seconds.
+        /// The value of the 'expiration'.
         /// </summary>
-        public double ExpireSeconds { get; set; }
+        public DateTime Expires { get; set; }
         /// <summary>
         /// User's role id.
         /// </summary>

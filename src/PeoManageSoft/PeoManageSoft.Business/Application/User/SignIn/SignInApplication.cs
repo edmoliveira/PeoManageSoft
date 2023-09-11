@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Logging;
 using PeoManageSoft.Business.Domain.Services.Commands.User.CreateToken;
 using PeoManageSoft.Business.Domain.Services.Functions.User;
+using PeoManageSoft.Business.Domain.Services.Queries.User.GetPolicies;
 using PeoManageSoft.Business.Infrastructure.Helpers.Exceptions;
 using PeoManageSoft.Business.Infrastructure.Helpers.Extensions;
 using PeoManageSoft.Business.Infrastructure.Helpers.Interfaces;
@@ -16,6 +17,10 @@ namespace PeoManageSoft.Business.Application.User.SignIn
     {
         #region Fields
 
+        /// <summary>
+        /// Handles all queries to get the user policies.
+        /// </summary>
+        private readonly IGetPoliciesHandler _getPoliciesHandler;
         /// <summary>
         /// User function facade that provides a simplified interface.
         /// </summary>
@@ -48,6 +53,7 @@ namespace PeoManageSoft.Business.Application.User.SignIn
         /// <summary>
         /// Initializes a new instance of the PeoManageSoft.Business.Application.User.SignIn.SignInApplication class.
         /// </summary>
+        /// <param name="getPoliciesHandler">Handles all queries to get the user policies.</param>
         /// <param name="functionFacade">User function facade that provides a simplified interface.</param>
         /// <param name="createTokenHandler">Handles all commands to create the token.</param>
         /// <param name="tokenJwt">Manages Json Web Token and Cryptography.</param>
@@ -55,6 +61,7 @@ namespace PeoManageSoft.Business.Application.User.SignIn
         /// <param name="mapper">Data Mapper </param>
         /// <param name="logger">Log</param>
         public SignInApplication(
+                IGetPoliciesHandler getPoliciesHandler,
                 IUserFunctionFacade functionFacade,
                 ICreateTokenHandler createTokenHandler,
                 ITokenJwt tokenJwt,
@@ -63,6 +70,7 @@ namespace PeoManageSoft.Business.Application.User.SignIn
                 ILogger<SignInApplication> logger
             )
         {
+            _getPoliciesHandler = getPoliciesHandler;
             _functionFacade = functionFacade;
             _createTokenHandler = createTokenHandler;
             _tokenJwt = tokenJwt;
@@ -104,6 +112,8 @@ namespace PeoManageSoft.Business.Application.User.SignIn
                     .PutLocationAsync(userResponse.Id, request.Location)
                     .ConfigureAwait(false);
 
+            var policies = await _getPoliciesHandler.HandleAsync(new GetPoliciesRequest { UserId = userResponse.Id }).ConfigureAwait(false);
+
             CreateTokenResponse tokenResponse = await _createTokenHandler.HandleAsync(new CreateTokenRequest
             {
                 Id = userResponse.Id,
@@ -117,7 +127,7 @@ namespace PeoManageSoft.Business.Application.User.SignIn
             return new SignInResponse
             {
                 Key = tokenResponse.Key,
-                ExpireSeconds = _appConfig.AuthTokenExpireSeconds,
+                Expires = tokenResponse.Expires,
                 RoleId = userResponse.Role.Id,
                 RoleName = userResponse.Role.Name,
                 Name = userResponse.Name,

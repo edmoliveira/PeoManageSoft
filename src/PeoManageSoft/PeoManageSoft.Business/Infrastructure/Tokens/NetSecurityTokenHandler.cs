@@ -48,6 +48,11 @@ namespace PeoManageSoft.Business.Infrastructure.Tokens
             }
         }
 
+        public async Task<string> GetTokenAsync(ITokenCache tokenCache)
+        {
+
+        }
+
         /// <summary>
         /// Creates a Json Web Token (JWT).
         /// </summary>

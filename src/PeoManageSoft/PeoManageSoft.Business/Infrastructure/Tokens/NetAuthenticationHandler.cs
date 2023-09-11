@@ -54,7 +54,7 @@ namespace PeoManageSoft.Business.Infrastructure.Tokens
                 {
                     AuthenticationHeaderValue token = AuthenticationHeaderValue.Parse(authorization.FirstOrDefault());
 
-                    result = await Options.ValidTokenAsync(token.Parameter, Scheme).ConfigureAwait(false);
+                    result = await Options.ValidTokenAsync(token.Parameter, Scheme, Context.RequestServices, Logger).ConfigureAwait(false);
                 }
 
                 return result.Sucess ?

@@ -72,7 +72,7 @@ namespace PeoManageSoft.Business.Infrastructure.Helpers
 
             services.AddHttpContextAccessor();
 
-            services.AddFluentValidation(options =>
+            services.AddFluentValidationAutoValidation(options =>
             {
                 options.ImplicitlyValidateChildProperties = true;
                 options.ImplicitlyValidateRootCollectionElements = true;
@@ -188,16 +188,6 @@ namespace PeoManageSoft.Business.Infrastructure.Helpers
                 option.InstanceName = appConfig.TokenCacheInstance;
             });
 
-            IServiceProvider serviceProvider = services.BuildServiceProvider();
-
-            if (serviceProvider.GetService(typeof(ILoggerFactory))
-                    is not ILoggerFactory loggerFactory)
-            {
-                throw new ProviderServiceNotFoundException(nameof(ILoggerFactory));
-            }
-
-            ILogger logger = loggerFactory.CreateLogger(loggerType);
-
             services.AddAuthentication(x =>
             {
                 x.DefaultAuthenticateScheme = NetBearerDefaults.AuthenticationScheme;
@@ -205,7 +195,7 @@ namespace PeoManageSoft.Business.Infrastructure.Helpers
             })
             .AddNetBearer(options =>
             {
-                options.ValidTokenAsync = async (token, scheme) =>
+                options.ValidTokenAsync = async (token, scheme, serviceProvider, logger) =>
                 {
                     if (serviceProvider.GetService(typeof(INetSecurityTokenHandler)) is not INetSecurityTokenHandler handler)
                     {

@@ -11,6 +11,10 @@
         /// Token
         /// </summary>
         public string Key { get; set; }
+        /// <summary>
+        /// The value of the 'expiration'.
+        /// </summary>
+        public DateTime Expires { get; set; }
 
         #endregion
     }
